@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 
 import 'package:mystock/components/externalDir.dart';
@@ -86,6 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
+        backgroundColor: P_Settings.loginPagetheme,
         key: _scaffoldKey,
         resizeToAvoidBottomInset: true,
         body: InkWell(
@@ -103,14 +105,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top:18.0),
+                            padding: const EdgeInsets.only(top: 18.0),
                             child: Container(
-                              height: size.height * 0.4,
-                              // child: Image.asset(
-                              //   'asset/company.png',
-                              //   // height: size.height*0.3,
-                              //   // width: size.height*0.3,
-                              // ),
+                              height: size.height * 0.6,
+                              child: Lottie.asset(
+                                'asset/companylot.json',
+                                // height: size.height*0.3,
+                                // width: size.height*0.3,
+                              ),
                             ),
                           ),
                           // Visibility(
@@ -140,48 +142,88 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           // SizedBox(
                           //   height: size.height * 0.12,
                           // ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8, left: 20, right: 20),
-                            child: TextFormField(
-                              controller: codeController,
-                              decoration: const InputDecoration(
-                                icon: Icon(
-                                  Icons.business,
-                                  color: Colors.grey,
+                          Container(
+                            height: size.height * 0.08,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+                              child: TextFormField(
+                                style: TextStyle(color: Colors.white),
+                                controller: codeController,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: P_Settings.buttonColor,
+                                        width: 1.0),
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: P_Settings.buttonColor,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.business,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                  hintStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                  hintText: 'Company Key',
                                 ),
-                                labelText: 'Company Key',
+                                validator: (text) {
+                                  if (text == null || text.isEmpty) {
+                                    return 'Please Enter Company Key';
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (text) {
-                                if (text == null || text.isEmpty) {
-                                  return 'Please Enter Company Key';
-                                }
-                                return null;
-                              },
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, left: 20, right: 20),
-                            child: TextFormField(
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              controller: phoneController,
-                              decoration: const InputDecoration(
-                                icon: Icon(
-                                  Icons.phone,
-                                  color: Colors.grey,
+                          Container(
+                            height: size.height * 0.08,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+                              child: TextFormField(
+                                style: TextStyle(color: Colors.white),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                controller: phoneController,
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: P_Settings.buttonColor,
+                                        width: 1.0),
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.phone,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                  hintText: 'Mobile Number',
+                                  hintStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: P_Settings.buttonColor,
+                                      width: 2.0,
+                                    ),
+                                  ),
                                 ),
-                                labelText: 'Mobile Number',
+                                validator: (text) {
+                                  if (text == null || text.isEmpty) {
+                                    return 'Please Enter Mobile Number';
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.number,
                               ),
-                              validator: (text) {
-                                if (text == null || text.isEmpty) {
-                                  return 'Please Enter Mobile Number';
-                                }
-                                return null;
-                              },
-                              keyboardType: TextInputType.number,
                             ),
                           ),
                           SizedBox(
@@ -231,24 +273,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 label: Text(
                                   "Register",
                                   style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 15,
-                                      color: Colors.white),
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: P_Settings.loginPagetheme,
+                                  ),
                                 ),
                                 icon: value.isLoading
                                     ? Container(
                                         width: 24,
                                         height: 24,
                                         padding: const EdgeInsets.all(2.0),
-                                        child: const CircularProgressIndicator(
-                                          color: Colors.white,
+                                        child: CircularProgressIndicator(
+                                          color: P_Settings.loginPagetheme,
                                           strokeWidth: 3,
                                         ),
                                       )
-                                    : Icon(Icons.arrow_back),
+                                    : Icon(
+                                        Icons.arrow_back,
+                                        color: P_Settings.loginPagetheme,
+                                      ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.loginPagetheme,
+                                  primary: P_Settings.buttonColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(15), // <-- Radius

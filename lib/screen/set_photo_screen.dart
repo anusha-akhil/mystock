@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fast_image_resizer/fast_image_resizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -27,9 +28,24 @@ class SetPhotoScreen extends StatefulWidget {
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
   String date = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
-
+// final picker = ImagePicker();
   File? _image;
+//////////////////////////////////////////////////////////////
+  captureAndSaveImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImage == null) return null;
 
+    try {
+      final directory = await getExternalStorageDirectory();
+      if (directory != null)
+        File(pickedImage.path).copy('${directory.path}/name.png');
+    } catch (e) {
+      return null;
+    }
+  }
+
+////////////////////////////////////////////////////
   Future _pickImage(ImageSource source) async {
     String? tempFp;
     print("date----$date");
@@ -37,57 +53,39 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
-      // final Directory dir = await getApplicationDocumentsDirectory();
-      // final String appDir = dir.path;
 
       // String path;
-      // Directory? extDir = await getExternalStorageDirectory();
-      // String dirPath = '${extDir!.path}/imageCropper/';
-      // print("dirPath----$dirPath");
-    
-    
-      // final File imageFile = File(dirPath + '/profile_picture.jpg');
-      // if (await imageFile.exists()) {
-      //   imageFile.delete();
-      // }
+      Directory? extDir = await getExternalStorageDirectory();
+      String dirPath = '${extDir!.path}/imageCropper/';
 
-      // imageCache.clearLiveImages();
-      // imageCache.clear();
+      imageCache.clearLiveImages();
+      imageCache.clear();
 
-      // dirPath =
-      //     dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
+      dirPath =
+          dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
 
-      // await Directory(dirPath).create(recursive: true);
+      await Directory(dirPath).create(recursive: true);
 
-      // final File file = File('${dirPath}/fpCode.txt');
-      // print("file...$file");
-      // String filpath = '$dirPath/fpCode.txt';
-      // if (await File(filpath).exists()) {
-      //   print("existgfgf");
-      //   tempFp = await file.readAsString();
-      //   print("file exist----$tempFp");
-      // } else {
-      //   tempFp = "";
-      // }
-
-      // print("path----$path");
-
-      String imagefile = "${image}" + "$date";
-      print("");
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
-      Uint8List bytes = await img!.readAsBytes();
-      GallerySaver.saveImage(img.path,toDcim: true,albumName: 'image cropper');
-      // print(result);
-      // if (result["isSuccess"] == true) {
-      //   print("Image saved successfully.");
-      // } else {
-      //   print(result["errorMessage"]);
+      File copiedImage = await img!.copy('$dirPath/profile_picture.jpg');
+      File newImage = File(copiedImage.path);
+
+      // Uint8List bytes = await img.readAsBytes();
+      // final resizedbytes =
+      //     await resizeImage(Uint8List.view(bytes.buffer), height: 200);
+
+      // if (resizedbytes != null) {
+      //   final testing = Image.memory(Uint8List.view(bytes.buffer));
+      //   // GallerySaver.saveImage(img.path,
+      //   //     toDcim: true, albumName: 'image cropper');
+      //   var result = await ImageGallerySaver.saveImage(
+      //     Uint8List.view(resizedbytes.buffer),
+      //     quality: 80,
+      //     name: "new_mage.jpg",
+      //   );
+
       // }
-      
-      // final File copiedImage = await img!.copy('$appDir/profile_picture.jpg');
-      // File newImage = File(copiedImage.path);
-      // final File newImage = await img!.copy('$dirPath/profile_picture.jpg');
 
       print("img----$img");
       setState(() {
@@ -106,7 +104,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage = await ImageCropper().cropImage(
       sourcePath: imageFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 2.0),
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1.0),
       // maxHeight: 100,
       // maxWidth: 100,
       // compressFormat: ,

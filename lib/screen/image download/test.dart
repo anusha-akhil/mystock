@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fast_image_resizer/fast_image_resizer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -116,7 +117,40 @@ class _HomeImageState extends State<HomeImage> {
                           },
                           child: Text("Crop Image"))
                       : Container(),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (imagefile != null) {
+                          final rawImage = await imagefile.readAsBytes();
+                          final bytes = await resizeImage(
+                              Uint8List.view(rawImage.buffer),
+                              height: 250);
 
+                          //  Uint8List bytesw = await imagefile.readAsBytes();
+
+                              print("jkzdfj-----${bytes.runtimeType}---------${rawImage.runtimeType}-----");
+
+                          if (bytes != null) {
+                            final testing =
+                                Image.memory(Uint8List.view(bytes.buffer));
+
+                             var result = await ImageGallerySaver.saveImage(
+                              Uint8List.view(bytes.buffer),
+                              quality: 60,
+                              name: "new_mage.jpg",
+                            );
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (BuildContext context) {
+                            //       return AlertDialog(
+                            //         title: Text("Image"),
+                            //         content: testing,
+                            //       );
+                            //     });
+                          }
+                        }
+                        // openImage();
+                      },
+                      child: Text("Resize Image")),
                   //save button -------------------
                   // imagepath != ""
                   //     ? ElevatedButton(

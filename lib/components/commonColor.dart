@@ -13,6 +13,8 @@ class P_Settings {
   /// [title] Project Title
   // static String get title => 'Order App';
   static Color get loginPagetheme => Colors.black;
+  static Color get buttonColor => Colors.white;
+
   static Color get homeappbarColor => Colors.purple;
 
   

@@ -24,20 +24,24 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
+        backgroundColor: P_Settings.loginPagetheme,
         body: SafeArea(
-          child: Consumer<Controller>(
-            builder: (context, value, child) {
-              return Form(
-                key: _formKey,
-                child: Container(
-                  height: double.infinity,
+          child: SingleChildScrollView(
+            // reverse: true,
+            child: Consumer<Controller>(
+              builder: (context, value, child) {
+                return Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                       SizedBox(
+                        height: size.height * 0.1,
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 18.0),
+                        padding: const EdgeInsets.only(bottom: 18.0, top: 40),
                         child: Container(
                           height: size.height * 0.15,
                           child: Image.asset(
@@ -49,13 +53,21 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Text(
                         "Login",
-                        style: TextStyle(fontSize: 23),
-                      ),SizedBox( height: size.height * 0.007,),
+                        style: TextStyle(
+                            fontSize: 23, color: P_Settings.buttonColor),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.007,
+                      ),
                       Text(
                         "Login to your account",
                         style: TextStyle(
+                          color: P_Settings.buttonColor,
                           fontSize: 14,
                         ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.19,
                       ),
                       customTextField(
                           "Username", controller1, "username", context),
@@ -64,27 +76,26 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 14),
                         child: Container(
-                          width: size.width * 0.9,
+                         width: size.width * 0.4,
                           height: size.height * 0.055,
                           child: Directionality(
                             textDirection: TextDirection.rtl,
                             child: ElevatedButton.icon(
                               onPressed: () {
-                                Provider.of<Controller>(context,
-                                          listen: false)
-                                      .getProductDetails("CO1003");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ItemSelection(
-                                              list: value.productList,
-                                            )),
-                                  );
+                                Provider.of<Controller>(context, listen: false)
+                                    .getProductDetails("CO1003");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ItemSelection(
+                                            list: value.productList,
+                                          )),
+                                );
                                 if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  
+          
                                   // Navigator.push(
                                   //   context,
                                   //   MaterialPageRoute(
@@ -95,24 +106,29 @@ class _LoginPageState extends State<LoginPage> {
                               label: Text(
                                 "Login",
                                 style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 20,
-                                    color: Colors.white),
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
+                                ),
                               ),
                               icon: isLoading
                                   ? Container(
                                       width: 24,
                                       height: 24,
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.white,
+                                      padding: EdgeInsets.all(2.0),
+                                      child: CircularProgressIndicator(
+                                        color: P_Settings.loginPagetheme,
                                         strokeWidth: 3,
                                       ),
                                     )
-                                  : Icon(Icons.arrow_back),
+                                  : Icon(
+                                      Icons.arrow_back,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
                               style: ElevatedButton.styleFrom(
-                                primary: P_Settings.loginPagetheme,
+                                primary: P_Settings.buttonColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.circular(15), // <-- Radius
@@ -124,9 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ],
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ));
   }
@@ -151,15 +167,15 @@ class _LoginPageState extends State<LoginPage> {
                   EdgeInsets.only(bottom: topInsets + size.height * 0.34),
               controller: controllerValue,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
+                  contentPadding: EdgeInsets.zero,
                   prefixIcon: type == "password"
                       ? Icon(
                           Icons.password,
-                          color: P_Settings.loginPagetheme,
+                          color: P_Settings.buttonColor,
                         )
                       : Icon(
                           Icons.person,
-                          color: P_Settings.loginPagetheme,
+                          color: P_Settings.buttonColor,
                         ),
                   suffixIcon: type == "password"
                       ? IconButton(
@@ -176,18 +192,21 @@ class _LoginPageState extends State<LoginPage> {
                         )
                       : null,
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: P_Settings.loginPagetheme, width: 1.0),
+                    borderSide:
+                        BorderSide(color: P_Settings.buttonColor, width: 1.0),
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
                     borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 3,
+                      color: P_Settings.buttonColor,
+                      width: 2.0,
                     ),
                   ),
-                  hintStyle: TextStyle(fontSize: 15),
+                  hintStyle: TextStyle(
+                    fontSize: 15,
+                    color: P_Settings.buttonColor,
+                  ),
                   hintText: hinttext.toString()),
               validator: (text) {
                 if (text == null || text.isEmpty) {
