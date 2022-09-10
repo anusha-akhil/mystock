@@ -4,7 +4,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class AlphabetScrollPage extends StatefulWidget {
-  List<Map<String,dynamic>> items;
+  List<Map<String, dynamic>> items;
   final ValueChanged<String> onClickedItem;
   AlphabetScrollPage(
       {Key? key, required this.items, required this.onClickedItem})
@@ -26,7 +26,7 @@ class _AlphabetScrollPageState extends State<AlphabetScrollPage> {
     initList(widget.items);
   }
 
-  void initList(List<Map<String,dynamic>> items) {
+  void initList(List<Map<String, dynamic>> items) {
     print("cjncn----${items}");
     this.items = items
         .map(
@@ -43,15 +43,16 @@ class _AlphabetScrollPageState extends State<AlphabetScrollPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Consumer<Controller>(
       builder: (context, value, child) {
-       return AzListView(
+        return AzListView(
           data: items,
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
             print("itemmmm------$item");
-            return buildListitem(item);
+            return buildListitem(item, size);
           },
           indexHintBuilder: (context, tag) {
             return Container(
@@ -67,8 +68,8 @@ class _AlphabetScrollPageState extends State<AlphabetScrollPage> {
             );
           },
           indexBarMargin: EdgeInsets.all(10),
-          indexBarAlignment: Alignment.centerRight,
-          indexBarItemHeight: 25,
+          indexBarAlignment: Alignment.centerLeft,
+          indexBarItemHeight: 30,
           indexBarData: value.uniquelist,
           indexBarOptions: IndexBarOptions(
             needRebuild: true,
@@ -84,14 +85,15 @@ class _AlphabetScrollPageState extends State<AlphabetScrollPage> {
     );
   }
 
-  Widget buildListitem(_AZItem item) {
+  Widget buildListitem(_AZItem item, Size size) {
     // final tag = item.getSuspensionTag();
     final offStage = item.isShowSuspension;
     return Column(
       children: [
         // Offstage(offstage: offStage, child: buildHeader(tag)),
         Container(
-          margin: EdgeInsets.only(right: 4),
+          height: size.height * 0.05,
+          margin: EdgeInsets.only(left: 40),
           child: ListTile(
               title: Text(item.title!),
               onTap: () => widget.onClickedItem(item.title!)),

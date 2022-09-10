@@ -1,35 +1,97 @@
-// import 'dart:async';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mystock/screen/secondScreen.dart';
+import 'package:mystock/screen/service/local_notification_service.dart';
 
-// void main() {
-//   runApp(
-//     new MaterialApp(home: new MyApp()),
-//   );
-// }
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
-// class MyApp extends StatefulWidget {
-//   @override
-//   _MyAppState createState() => new _MyAppState();
-// }
+  @override
+  State<Home> createState() => _HomeState();
+}
 
-// class _MyAppState extends State<MyApp> {
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       home: new Scaffold(
-//         appBar: new AppBar(
-//           title: new Text('Plugin example app'),
-//         ),
-//         body: Row(
-//           children: [
-//             ElevatedButton(onPressed: () {
+class _HomeState extends State<Home> {
+  late final LocalNotificationService service;
 
-//             }, child: Text("notification"))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  void initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Notification Demo'),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Center(
+            child: SizedBox(
+              height: 300,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    'This is a demo of how to use local notifications in Flutter.',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await service.showNotification(
+                          id: 0,
+                          title: 'Notification Title',
+                          body: 'Some body jhjhbjhbj ');
+                    },
+                    child: const Text('Show Local Notification'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await service.showScheduledNotification(
+                        id: 0,
+                        title: 'Notification Title',
+                        body: 'Some body',
+                        seconds: 4,
+                      );
+                    },
+                    child: const Text('Show Scheduled Notification'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await service.showNotificationWithPayload(
+                          id: 0,
+                          title: 'Notification Title',
+                          body: 'Some body',
+                          payload: 'payload navigation');
+                    },
+                    child: const Text('Show Notification With Payload'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => SecondScreen(payload: payload))));
+    }
+  } 
+}

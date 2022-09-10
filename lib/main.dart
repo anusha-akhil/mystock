@@ -5,12 +5,43 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/clickPage.dart';
 import 'package:mystock/screen/companyRegistration.dart';
+import 'package:mystock/screen/image%20download/downloadscreen.dart';
 import 'package:mystock/screen/itemCreation.dart';
 import 'package:mystock/screen/itemSelection.dart';
+import 'package:mystock/screen/localNotification.dart';
 import 'package:mystock/screen/loginPage.dart';
+import 'package:mystock/screen/notification/notificationButtonScreen.dart';
+import 'package:mystock/screen/set_photo_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import 'screen/saveImage.dart';
+import 'screen/image download/test.dart';
+
+void requestPermission() async {
+  var status = await Permission.storage.status;
+  // var statusbl= await Permission.bluetooth.status;
+
+  var status1 = await Permission.manageExternalStorage.status;
+
+  if (!status1.isGranted) {
+    await Permission.storage.request();
+  }
+  if (!status1.isGranted) {
+    var status = await Permission.manageExternalStorage.request();
+    if (status.isGranted) {
+      await Permission.bluetooth.request();
+    } else {
+      openAppSettings();
+    }
+    // await Permission.app
+  }
+  if (!status1.isRestricted) {
+    await Permission.manageExternalStorage.request();
+  }
+  if (!status1.isPermanentlyDenied) {
+    await Permission.manageExternalStorage.request();
+  }
+}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +49,7 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  requestPermission();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => Controller()),
@@ -61,7 +93,7 @@ class _MyAppState extends State<MyApp> {
         //   ),
         // ),
       ),
-      home: RegistrationScreen(),
+      home: SetPhotoScreen(),
     );
   }
 }

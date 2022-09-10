@@ -47,14 +47,15 @@ class _ItemSelectionState extends State<ItemSelection> {
             } else {
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Select Item Category",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  Divider(),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     "Select Item Category",
+                  //     style: TextStyle(fontSize: 20),
+                  //   ),
+                  // ),
+                  // Divider(),
+                  SizedBox(height: size.height*0.01,),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),

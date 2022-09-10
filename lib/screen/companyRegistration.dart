@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 
 import 'package:mystock/components/externalDir.dart';
+import 'package:mystock/screen/loginPage.dart';
 
 import 'package:provider/provider.dart';
 
@@ -101,50 +102,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          Container(
-                            height: size.height * 0.3,
-                            // child: Stack(
-                            //   children: <Widget>[
-                            //     // ClipPath(
-                            //     //   // clipper:
-                            //     //   //     WaveClipper(), //set our custom wave clipper.
-                            //     //   child: Container(
-                            //     //     padding: EdgeInsets.only(bottom: 50),
-                            //     //     color: P_Settings.loginPagetheme,
-                            //     //     height: size.height * 0.3,
-                            //     //     alignment: Alignment.center,
-                            //     //   ),
-                            //     // ),
-                            //   ],
-                            // ),
-                          ),
-                          Visibility(
-                            visible: false,
+                          Padding(
+                            padding: const EdgeInsets.only(top:18.0),
                             child: Container(
-                              height: size.height * 0.08,
-                              child: ListView(
-                                children: _deviceData.keys.map(
-                                  (String property) {
-                                    return Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                            child: Container(
-                                          child: Text(
-                                            '${_deviceData[property]}',
-                                            maxLines: 10,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        )),
-                                      ],
-                                    );
-                                  },
-                                ).toList(),
-                              ),
+                              height: size.height * 0.4,
+                              // child: Image.asset(
+                              //   'asset/company.png',
+                              //   // height: size.height*0.3,
+                              //   // width: size.height*0.3,
+                              // ),
                             ),
                           ),
-                          SizedBox(
-                            height: size.height * 0.12,
-                          ),
+                          // Visibility(
+                          //   visible: false,
+                          //   child: Container(
+                          //     height: size.height * 0.08,
+                          //     child: ListView(
+                          //       children: _deviceData.keys.map(
+                          //         (String property) {
+                          //           return Row(
+                          //             children: <Widget>[
+                          //               Expanded(
+                          //                   child: Container(
+                          //                 child: Text(
+                          //                   '${_deviceData[property]}',
+                          //                   maxLines: 10,
+                          //                   overflow: TextOverflow.ellipsis,
+                          //                 ),
+                          //               )),
+                          //             ],
+                          //           );
+                          //         },
+                          //       ).toList(),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: size.height * 0.12,
+                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 8, left: 20, right: 20),
@@ -167,7 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20),
+                                top: 10, left: 20, right: 20),
                             child: TextFormField(
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
@@ -202,7 +197,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   String deviceInfo =
                                       "$manufacturer" + '' + "$model";
                                   print("device info-----$deviceInfo");
-
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()),
+                                  );
                                   // await OrderAppDB.instance
                                   //     .deleteFromTableCommonQuery('menuTable', "");
                                   FocusScope.of(context)
