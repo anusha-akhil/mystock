@@ -1,16 +1,20 @@
 class RegistrationData {
   String? cid;
   String? type;
+  String? apptype;
+
   String? fp;
   String? os;
   List<CD>? c_d;
   String? msg;
   String? sof;
-  RegistrationData({this.cid,this.type, this.fp, this.os, this.c_d, this.msg,this.sof});
+  RegistrationData({this.cid,this.type,this.apptype, this.fp, this.os, this.c_d, this.msg,this.sof});
 
   RegistrationData.fromJson(Map<String, dynamic> json) {
     cid = json['cid'];
     type = json['type'];
+    apptype = json['apptype'];
+
 
     fp = json['fp'];
     os = json['os'];
@@ -28,6 +32,8 @@ class RegistrationData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['cid'] = this.cid;
     data['type'] = this.type;
+    data['apptype'] = this.apptype;
+
 
     data['fp'] = this.fp;
     data['os'] = this.os;

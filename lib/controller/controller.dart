@@ -6,16 +6,28 @@ import 'package:mystock/components/externalDir.dart';
 import 'package:mystock/components/globalData.dart';
 import 'package:mystock/components/network_connectivity.dart';
 import 'package:mystock/model/branchModel.dart';
+import 'package:mystock/model/itemcategroy.dart';
 import 'package:mystock/model/registrationModel.dart';
+import 'package:mystock/model/transactionModel.dart';
 import 'package:mystock/screen/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
+  String? fromDate;
+  String? todate;
   String urlgolabl = Globaldata.apiglobal;
   bool isLoading = false;
+  bool qtyerror = false;
+  bool stocktransferselected = false;
+  String? branch_id;
+  String? staff_name;
+  String? branch_name;
+  String? branch_prefix;
+  String? user_id;
+
   String? menu_index;
   List<Map<String, dynamic>> menuList = [];
-
+  // String urlgolabl = Globaldata.apiglobal;
   bool filter = false;
   double? totalPrice;
   String? priceval;
@@ -23,9 +35,10 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> qty = [];
 
   List<Map<String, dynamic>> productList = [];
-  List<Map<String, dynamic>> branchist = [];
+  List<BranchModel> branchist = [];
+  List<TransactionTypeModel> transactionist = [];
 
-  List<Map<String, dynamic>> itemCategoryList = [];
+  List<ItemCategoryModel> itemCategoryList = [];
 
   List<Map<String, dynamic>> filteredproductList = [];
 
@@ -41,29 +54,26 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////////////////////
 
-  Future<List<Map<String, dynamic>>> getItemCategory(String cid) async {
-    print("cid...............${cid}");
+  getItemCategory() async {
     try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
-      Map body = {
-        'cid': cid,
-      };
-      print("compny----${cid}");
+      Uri url = Uri.parse("$urlgolabl/category_list.php");
+
       // isDownloaded = true;
       isLoading = true;
       // notifyListeners();
 
       http.Response response = await http.post(
         url,
-        body: body,
       );
 
       // print("body ${body}");
+      ItemCategoryModel itemCategory;
       List map = jsonDecode(response.body);
       productList.clear();
       productbar.clear();
       for (var item in map) {
-        itemCategoryList.add(item);
+        itemCategory = ItemCategoryModel.fromJson(item);
+        itemCategoryList.add(itemCategory);
       }
 
       isLoading = false;
@@ -78,31 +88,31 @@ class Controller extends ChangeNotifier {
   }
 
 /////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getBranchList(String cid) async {
-    print("cid...............${cid}");
+  getBranchList() async {
+    // print("cid...............${cid}");
     try {
       BranchModel brnachModel = BranchModel();
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
-      Map body = {
-        'cid': cid,
-      };
-      print("compny----${cid}");
+      Uri url = Uri.parse("$urlgolabl/branch_list.php");
+      // Map body = {
+      //   'cid': cid,
+      // };
+      // print("compny----${cid}");
       // isDownloaded = true;
       isLoading = true;
       // notifyListeners();
 
       http.Response response = await http.post(
         url,
-        body: body,
+        // body: body,
       );
 
       // print("body ${body}");
       List map = jsonDecode(response.body);
       branchist.clear();
       // productbar.clear();
-      for (var item in branchist) {
-        // brnachModel=BranchModel.fromJson(item);
-        branchist.add(item);
+      for (var item in map) {
+        brnachModel = BranchModel.fromJson(item);
+        branchist.add(brnachModel);
       }
 
       isLoading = false;
@@ -117,16 +127,103 @@ class Controller extends ChangeNotifier {
   }
 
 /////////////////////////////////////////////////////////////////////////
+  getTransactionList() async {
+    // print("cid...............${cid}");
+    try {
+      BranchModel brnachModel = BranchModel();
+      Uri url = Uri.parse("$urlgolabl/transaction_type.php");
+      // Map body = {
+      //   'cid': cid,
+      // };
+
+      // isDownloaded = true;
+      isLoading = true;
+      // notifyListeners();
+
+      http.Response response = await http.post(
+        url,
+        // body: body,
+      );
+      var map = jsonDecode(response.body);
+      print("transaction map----$map");
+      TransactionTypeModel transactionTypeModel;
+      transactionist.clear();
+
+      for (var item in map) {
+        transactionTypeModel = TransactionTypeModel.fromJson(item);
+        transactionist.add(transactionTypeModel);
+      }
+
+      isLoading = false;
+      notifyListeners();
+
+      /////////////// insert into local db /////////////////////
+    } catch (e) {
+      print(e);
+      // return null;
+      return [];
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////
+  addTobag(
+    String itemId,
+    double srate1,
+    double srate2,
+    double qty
+  ) async {
+    // print("cid...............${cid}");
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      branch_id = prefs.getString("branch_id");
+      user_id = prefs.getString("user_id");
+      print("kjn---------------$branch_id----$user_id-");
+      Uri url = Uri.parse("$urlgolabl/products_list.php");
+      Map body = {
+        'staff_id': user_id,
+        'branch_id': branch_id,
+        'item_id': itemId,
+        'srate1': srate1,
+        'srate2': srate2,
+        'qty':qty
+      };
+     print("body-----$body");
+      // isDownloaded = true;
+      isLoading = true;
+      // notifyListeners();
+
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      var map = jsonDecode(response.body);
+      print("response-----------------$map");
+
+      isLoading = false;
+      notifyListeners();
+
+      /////////////// insert into local db /////////////////////
+    } catch (e) {
+      print(e);
+      // return null;
+      return [];
+    }
+  }
 
 /////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getProductDetails(String cid) async {
-    print("cid...............${cid}");
+  Future<List<Map<String, dynamic>>> getProductDetails() async {
+    // print("sid.......$branchid........${sid}");
     try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_prod.php");
-      Map body = {
-        'cid': cid,
-      };
-      print("compny----${cid}");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      branch_id = prefs.getString("branch_id");
+      staff_name = prefs.getString("staff_name");
+      branch_name = prefs.getString("branch_name");
+      branch_prefix = prefs.getString("branch_prefix");
+      user_id = prefs.getString("user_id");
+      print("kjn---------------$branch_id----$user_id-");
+      Uri url = Uri.parse("$urlgolabl/products_list.php");
+      Map body = {'staff_id': user_id, 'branch_id': branch_id};
+      // print("compny----${cid}");
       // isDownloaded = true;
       isLoading = true;
       notifyListeners();
@@ -309,4 +406,31 @@ class Controller extends ChangeNotifier {
 
   //   notifyListeners();
   // }
+
+  setstockTranserselected(bool value) {
+    stocktransferselected = value;
+    notifyListeners();
+  }
+
+  userDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? staff_nam = prefs.getString("staff_name");
+    String? branch_nam = prefs.getString("branch_name");
+
+    staff_name = staff_nam;
+    branch_name = branch_nam;
+    notifyListeners();
+  }
+
+  setqtyErrormsg(bool qtyerrormsg) {
+    qtyerror = qtyerrormsg;
+    notifyListeners();
+  }
+
+  setDate(String date1, String date2) {
+    fromDate = date1;
+    todate = date2;
+    print("gtyy----$fromDate----$todate");
+    notifyListeners();
+  }
 }

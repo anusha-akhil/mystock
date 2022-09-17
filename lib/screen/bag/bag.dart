@@ -68,46 +68,7 @@ class _BagPageState extends State<BagPage> {
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: size.height * 0.05,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: P_Settings.loginPagetheme,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2), // <-- Radius
-                      ),
-                    ),
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ConfirmationPage()),
-                      );
-                      // return await showDialog(
-                      //     context: context,
-                      //     barrierDismissible: false, // user must tap button!
-                      //     builder: (BuildContext context) {
-                      //       return WillPopScope(
-                      //         onWillPop: () async => false,
-                      //         child: buildPopupDialog("content", context, size),
-                      //       );
-                      //     });
-                    },
-                    child: Text(
-                      'Confirmation',
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: P_Settings.buttonColor,
-                      ),
-                    )),
-              ),
-            ],
-          )
+        
         ],
       ),
     );

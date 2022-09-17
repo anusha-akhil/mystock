@@ -1,5 +1,6 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/modalBottomsheet.dart';
@@ -9,7 +10,9 @@ import 'package:provider/provider.dart';
 
 class ItemSelection extends StatefulWidget {
   List<Map<String, dynamic>> list;
-  ItemSelection({required this.list});
+  int transVal;
+
+  ItemSelection({required this.list, required this.transVal});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -88,10 +91,9 @@ class _ItemSelectionState extends State<ItemSelection> {
         body: Consumer<Controller>(
       builder: (context, value, child) {
         if (value.isLoading) {
-          return Center(
-              child: CircularProgressIndicator(
+          return SpinKitFadingCircle(
             color: P_Settings.loginPagetheme,
-          ));
+          );
         } else {
           return Column(
             children: [
@@ -104,12 +106,12 @@ class _ItemSelectionState extends State<ItemSelection> {
               // ),
               // Divider(),
               SizedBox(
-                height: size.height * 0.01,
+                height: size.height * 0.02,
               ),
               Container(
                 width: size.width * 0.9,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
                       color: P_Settings.loginPagetheme,
                       style: BorderStyle.solid,
@@ -129,13 +131,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                   elevation: 0,
                   items: value.itemCategoryList
                       .map((item) => DropdownMenuItem<String>(
-                          value: item["cat_id"].toString(),
+                          value: item.catId.toString(),
                           child: Container(
                             width: size.width * 0.9,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                item["cat_name"].toString(),
+                                item.catName.toString(),
                                 style: TextStyle(fontSize: 14),
                               ),
                             ),
@@ -162,6 +164,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   },
                 ),
               ),
+              Divider(),
               Expanded(child: Consumer<Controller>(
                 builder: (context, value, child) {
                   print("value------${value.filter}");
@@ -236,7 +239,7 @@ class _ItemSelectionState extends State<ItemSelection> {
         Consumer<Controller>(
           builder: (context, value, child) {
             return Container(
-              height: size.height * 0.05,
+              height: size.height * 0.07,
               margin: EdgeInsets.only(left: 40),
               child: ListTile(
                   trailing: value.applyClicked[index]
@@ -250,17 +253,24 @@ class _ItemSelectionState extends State<ItemSelection> {
                         )
                       : IconButton(
                           onPressed: () {
-                            showsheet.showSheet(
-                                context,
-                                index,
-                                item.itemId!,
-                                item.catId!,
-                                item.batchCode!,
-                                item.itemName!,
-                                item.itemImg!,
-                                item.sRate1!,
-                                item.sRate2!,
-                                item.stock!);
+                            Provider.of<Controller>(context, listen: false)
+                                .addTobag(
+                                    item.itemId!,
+                                    double.parse(item.sRate1!),
+                                    double.parse(item.sRate2!),
+                                    double.parse(value.qty[index].text));
+                            // showsheet.showSheet(
+                            //     context,
+                            //     index,
+                            //     item.itemId!,
+                            //     item.catId!,
+                            //     item.batchCode!,
+                            //     item.itemName!,
+                            //     item.itemImg!,
+                            //     double.parse(item.sRate1!),
+                            //     double.parse(item.sRate2!),
+                            //     double.parse(item.stock!),
+                            //     widget.transVal);
                           },
                           icon: Icon(
                             Icons.add,
@@ -273,6 +283,14 @@ class _ItemSelectionState extends State<ItemSelection> {
                         // fontWeight: FontWeight.bold,
                         color: P_Settings.loginPagetheme,
                       )),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("SR1 :  ${item.sRate1}"),
+                      Text("SR2 :  ${item.sRate1}"),
+                      Text("Stock :  ${item.stock}"),
+                    ],
+                  ),
                   onTap: () {
                     // print("c--------------------${item.title.toString()}----${item.index.toString()}");
                     showsheet.showSheet(
@@ -283,9 +301,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                         item.batchCode!,
                         item.itemName!,
                         item.itemImg!,
-                        item.sRate1!,
-                        item.sRate2!,
-                        item.stock!);
+                        double.parse(item.sRate1!),
+                        double.parse(item.sRate2!),
+                        double.parse(item.stock!),
+                        widget.transVal);
                   }
                   // widget.onClickedItem(item.title!),
                   ),

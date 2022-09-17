@@ -15,7 +15,7 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
+    // Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/controller/registrationController.dart';
 import 'package:mystock/screen/dashboard/dashboard.dart';
 import 'package:mystock/screen/itemCreation.dart';
 import 'package:mystock/screen/itemSelection.dart';
@@ -102,48 +103,55 @@ class _LoginPageState extends State<LoginPage> {
                             child: ElevatedButton.icon(
                               onPressed: () async {
                                 var result;
-                                List<Map<String, dynamic>> list =
-                                    await Provider.of<Controller>(context,
-                                            listen: false)
-                                        .getProductDetails("CO1003");
-                                print("fkjdfjdjfnzskfn;lg------${list}");
+                                // List<Map<String, dynamic>> list =
+                                //     await Provider.of<Controller>(context,
+                                //             listen: false)
+                                //         .getProductDetails("CO1003");
+                                // print("fkjdfjdjfnzskfn;lg------${list}");
 
                                 Provider.of<Controller>(context, listen: false)
                                     .setfilter(false);
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StockTransfer(
-                                            list: value.productList,
-                                          )),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => StockTransfer(
+                                //             list: value.productList,
+                                //           )),
+                                // );
 
                                 if (_formKey.currentState!.validate()) {
-                                  result = await MystockDB.instance.selectStaff(
-                                      controller1.text, controller2.text);
 
-                                  if (result.length == 0) {
-                                    visible.value = true;
-                                    print("visible===${visible.value}");
-                                  } else if (result[0] == "success" &&
-                                      result[1] != null) {
-                                    visible.value = false;
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
-                                    await prefs.setString('sid', result[1]);
-                                    await prefs.setString(
-                                        'st_username', controller1.text);
-                                    await prefs.setString(
-                                        'st_pwd', controller2.text);
+                                   Provider.of<RegistrationController>(context,
+                                            listen: false)
+                                        .getLogin(
+                                            controller1.text,
+                                            controller2.text,context
+                                            );
+                                  // result = await MystockDB.instance.selectStaff(
+                                  //     controller1.text, controller2.text);
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DashboardPage()),
-                                    );
-                                  }
+                                  // if (result.length == 0) {
+                                  //   visible.value = true;
+                                  //   print("visible===${visible.value}");
+                                  // } else if (result[0] == "success" &&
+                                  //     result[1] != null) {
+                                  //   visible.value = false;
+                                  //   final prefs =
+                                  //       await SharedPreferences.getInstance();
+                                  //   await prefs.setString('sid', result[1]);
+                                  //   await prefs.setString(
+                                  //       'st_username', controller1.text);
+                                  //   await prefs.setString(
+                                  //       'st_pwd', controller2.text);
+
+                                  //   Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             DashboardPage()),
+                                  //   );
+                                  // }
                                 }
                               },
                               label: Text(
@@ -217,6 +225,7 @@ class _LoginPageState extends State<LoginPage> {
           valueListenable: _isObscure,
           builder: (context, value, child) {
             return TextFormField(
+              style: TextStyle(color: P_Settings.buttonColor),
               // textCapitalization: TextCapitalization.characters,
               obscureText: type == "password" ? _isObscure.value : false,
               scrollPadding:
@@ -239,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                             _isObscure.value
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: P_Settings.loginPagetheme,
+                            color: P_Settings.buttonColor,
                           ),
                           onPressed: () {
                             _isObscure.value = !_isObscure.value;

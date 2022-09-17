@@ -21,11 +21,11 @@ class _ClickPageState extends State<ClickPage> {
               builder: (context, value, child) {
                 return ElevatedButton(
                   onPressed: () {
-                    Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ItemSelection(list:value.productList,)),
-                    );
+                    // Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => ItemSelection(list:value.productList,)),
+                    // );
                   },
                   child: Text("click"));
               },

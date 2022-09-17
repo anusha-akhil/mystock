@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/components/externalDir.dart';
+import 'package:mystock/components/globalData.dart';
 import 'package:mystock/components/network_connectivity.dart';
+import 'package:mystock/model/loginModel.dart';
 import 'package:mystock/model/registrationModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:mystock/model/sideMenuModel.dart';
 import 'package:mystock/model/staffDetailsModel.dart';
+import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/services/dbHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RegistrationController extends ChangeNotifier {
   bool isLoading = false;
   StaffDetails staffModel = StaffDetails();
+  String urlgolabl = Globaldata.apiglobal;
 
   ExternalDir externalDir = ExternalDir();
   String? fp;
@@ -67,7 +71,8 @@ class RegistrationController extends ChangeNotifier {
           print("sof----${sof}");
 
           if (sof == "1") {
-            if (appType == 'VO') {
+            print("apptype----$appType");
+            if (appType == 'SM') {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               /////////////// insert into local db /////////////////////
               late CD dataDetails;
@@ -101,12 +106,12 @@ class RegistrationController extends ChangeNotifier {
 
               print("fnjdxf----$user");
 
-              // getCompanyData();
-              // // OrderAppDB.instance.deleteFromTableCommonQuery('menuTable',"");
+              await MystockDB.instance
+                  .deleteFromTableCommonQuery("companyRegistrationTable", "");
               var res =
                   await MystockDB.instance.insertRegistrationDetails(regModel);
               // getMaxSerialNumber(os);
-              getMenuAPi(cid!, fp1, company_code, context);
+              // getMenuAPi(cid!, fp1, company_code, context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
@@ -132,6 +137,49 @@ class RegistrationController extends ChangeNotifier {
   }
 
   /////////////////////////////////////////////////////////////////
+  Future<StaffDetails?> getLogin(
+      String userName, String password, BuildContext context) async {
+    var restaff;
+    try {
+      Uri url = Uri.parse("$urlgolabl/login.php");
+      Map body = {'user': userName, 'pass': password};
+
+      isLoading = true;
+      notifyListeners();
+      http.Response response = await http.post(
+        url,
+        body: body,
+      );
+      var map = jsonDecode(response.body);
+      print("login map ${map}");
+      LoginModel loginModel;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      for (var item in map) {
+        loginModel = LoginModel.fromJson(item);
+        prefs.setString("user_id", loginModel.userId!);
+        prefs.setString("branch_id", loginModel.branchId!);
+        prefs.setString("staff_name", loginModel.staffName!);
+        prefs.setString("branch_name", loginModel.branchName!);
+        prefs.setString("branch_prefix", loginModel.branchPrefix!);
+      }
+      // print("stafff-------${loginModel.staffName}");
+
+      isLoading = false;
+      notifyListeners();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainDashboard()),
+      );
+
+      return staffModel;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////
   Future<StaffDetails?> getStaffDetails(String cid, int index) async {
     print("getStaffDetails...............${cid}");
     var restaff;

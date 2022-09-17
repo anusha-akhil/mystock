@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +16,14 @@ class Bottomsheet {
       String batchocde,
       String itemName,
       String itemImg,
-      String srate1,
-      String srate2,
-      String stock) {
+      double srate1,
+      double srate2,
+      double stock,
+      int transval) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
+    CustomSnackbar snackbar = CustomSnackbar();
+
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
       isScrollControlled: true,
@@ -79,7 +85,7 @@ class Bottomsheet {
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 15,
+                                    fontSize: 17,
                                     // fontWeight: FontWeight.bold,
                                     color: P_Settings.loginPagetheme,
                                   ),
@@ -110,7 +116,7 @@ class Bottomsheet {
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 15,
+                                  fontSize: 17,
                                   // fontWeight: FontWeight.bold,
                                   color: P_Settings.loginPagetheme,
                                 ),
@@ -129,7 +135,7 @@ class Bottomsheet {
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 15,
+                                    fontSize: 17,
                                     // fontWeight: FontWeight.bold,
                                     color: P_Settings.loginPagetheme,
                                   ),
@@ -171,7 +177,7 @@ class Bottomsheet {
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 15,
+                                  fontSize: 17,
                                   // fontWeight: FontWeight.bold,
                                   color: P_Settings.loginPagetheme,
                                 ),
@@ -182,7 +188,7 @@ class Bottomsheet {
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 15,
+                                  fontSize: 17,
                                   // fontWeight: FontWeight.bold,
                                   color: P_Settings.loginPagetheme,
                                 ),
@@ -201,7 +207,7 @@ class Bottomsheet {
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 15,
+                                  fontSize: 17,
                                   // fontWeight: FontWeight.bold,
                                   color: P_Settings.loginPagetheme,
                                 ),
@@ -212,7 +218,7 @@ class Bottomsheet {
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 15,
+                                  fontSize: 17,
                                   // fontWeight: FontWeight.bold,
                                   color: P_Settings.loginPagetheme,
                                 ),
@@ -221,7 +227,60 @@ class Bottomsheet {
                           ),
                         ),
                       ),
-
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10),
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Text(
+                                "Stock",
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 17,
+                                  // fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                '${stock.toString()}',
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 17,
+                                  // fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      value.qtyerror
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                child: Text(
+                                  "Quantity should be less than stock",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      // ValueListenableBuilder(
+                      //     valueListenable: visible,
+                      //     builder:
+                      //         (BuildContext context, bool v, Widget? child) {
+                      //       print("value===${visible.value}");
+                      //       return Visibility(
+                      //         visible: v,
+                      //         child: Text(
+                      //           "Incorrect Username or Password!!!",
+                      //           style: TextStyle(color: Colors.red),
+                      //         ),
+                      //       );
+                      //     }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -233,9 +292,42 @@ class Bottomsheet {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold)),
                               onPressed: () {
+                                 
                                 value.setApplyClicked(true, index);
-                                print("qtyudais------${value.qty[index].text}");
-                                Navigator.pop(context);
+                                double qty =
+                                    double.parse(value.qty[index].text);
+                                if (transval == -1) {
+                                  if (stock < qty) {
+                                    print("error");
+                                    // snackbar.showSnackbar(
+                                    //     context, "Quantity should be less than stock", "");
+                                    value.setqtyErrormsg(true);
+                                  } else {
+                                    value.setqtyErrormsg(false);
+                                   
+                                  }
+                                }
+                                // else{
+                                //   Provider.of<Controller>(context, listen: false)
+                                // .addTobag(
+                                //    itemId,
+                                //     srate1,
+                                //     srate2,
+                                //     double.parse(value.qty[index].text));
+                                // }
+
+                                if (value.qtyerror == false) {
+                                  Provider.of<Controller>(context,
+                                            listen: false)
+                                        .addTobag(
+                                            itemId,
+                                            srate1,
+                                            srate2,
+                                            double.parse(
+                                                value.qty[index].text));
+                                  Navigator.pop(context);
+                                 
+                                }
                                 // payment_mode = "-2";
                                 // showDialog(
                                 //   context: context,

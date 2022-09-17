@@ -1,4 +1,5 @@
 import 'package:mystock/model/registrationModel.dart';
+import 'package:mystock/model/settings_model.dart';
 import 'package:mystock/model/staffDetailsModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -30,11 +31,12 @@ class MystockDB {
 
     await db.execute('''
           CREATE TABLE companyRegistrationTable (
-            CREATE TABLE registrationTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cid TEXT NOT NULL,
             fp TEXT NOT NULL,
             os TEXT NOT NULL,
+            type TEXT,
+            app_type TEXT,
             cpre TEXT,
             ctype TEXT,
             cnme TEXT,
@@ -76,19 +78,57 @@ class MystockDB {
             area TEXT    
           )
           ''');
+    await db.execute('''
+          CREATE TABLE settingsTable (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            set_id INTEGER NOT NULL,
+            set_code TEXT,
+            set_value TEXT,
+            set_type INTEGER  
+          )
+          ''');
+    // await db.execute('''
+    //       CREATE TABLE bagTable (
+    //         id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //         itemName TEXT NOT NULL,
+    //         cartdate TEXT,
+    //         carttime TEXT,
+    //         srate1 REAL,
+    //         srate2 REAL,
+    //         cartrowno INTEGER,
+    //         batchcode TEXT,
+    //         img TEXT,
+    //         catid TEXT,
+    //         totalamount TEXT,  
+    //       )
+    //       ''');
   }
 
 /////////////////////////////////////////////////////////////////////////
   Future insertRegistrationDetails(RegistrationData data) async {
     final db = await database;
     var query1 =
-        'INSERT INTO registrationTable(cid, fp, os, cpre, ctype, cnme, ad1, ad2, ad3, pcode, land, mob, em, gst, ccode, scode, msg) VALUES("${data.cid}", "${data.fp}", "${data.os}","${data.c_d![0].cpre}", "${data.c_d![0].ctype}", "${data.c_d![0].cnme}", "${data.c_d![0].ad1}", "${data.c_d![0].ad2}", "${data.c_d![0].ad3}", "${data.c_d![0].pcode}", "${data.c_d![0].land}", "${data.c_d![0].mob}", "${data.c_d![0].em}", "${data.c_d![0].gst}", "${data.c_d![0].ccode}", "${data.c_d![0].scode}", "${data.msg}" )';
+        'INSERT INTO companyRegistrationTable(cid, fp, os, type, app_type, cpre, ctype, cnme, ad1, ad2, ad3, pcode, land, mob, em, gst, ccode, scode, msg) VALUES("${data.cid}", "${data.fp}", "${data.os}","${data.type}","${data.apptype}","${data.c_d![0].cpre}", "${data.c_d![0].ctype}", "${data.c_d![0].cnme}", "${data.c_d![0].ad1}", "${data.c_d![0].ad2}", "${data.c_d![0].ad3}", "${data.c_d![0].pcode}", "${data.c_d![0].land}", "${data.c_d![0].mob}", "${data.c_d![0].em}", "${data.c_d![0].gst}", "${data.c_d![0].ccode}", "${data.c_d![0].scode}", "${data.msg}" )';
     var res = await db.rawInsert(query1);
-    // print(query1);
+    print(query1);
+    print("registered ----$res");
+    return res;
+  }
+
+////////////////////////////////////////////////////////////////////////
+  Future insertsettingsTable(SettingsModel model) async {
+    final db = await database;
+    // deleteFromTableCommonQuery('menuTable', "");
+    var query1 =
+        'INSERT INTO settingsTable(set_id,set_code,set_value,set_type) VALUES(${model.setId},"${model.setCode}","${model.setValue}",${model.setType})';
+    var res = await db.rawInsert(query1);
+    // print("menu----${query1}");
+    print("settingzz---${query1}");
     // print(res);
     return res;
   }
-////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////
   Future insertStaffDetails(StaffDetails sdata) async {
     final db = await database;
     var query2 =
@@ -98,6 +138,52 @@ class MystockDB {
     // print(res);
     return res;
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Future insertBagTable(
+  //   String itemName,
+  //   String cartdate,
+  //   String carttime,
+  //   String os,
+  //   String customerid,
+  //   int cartrowno,
+  //   String code,
+  //   int qty,
+  //   String rate,
+  //   String totalamount,
+  //   int cstatus,
+  // ) async {
+  //   print("qty--$qty");
+  //   print("code...........$code");
+  //   final db = await database;
+  //   var res;
+  //   var query3;
+  //   var query2;
+  //   List<Map<String, dynamic>> res1 = await db.rawQuery(
+  //       'SELECT  * FROM bagTable WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
+  //   print("SELECT from ---$res1");
+  //   if (res1.length == 1) {
+  //     int qty1 = res1[0]["qty"];
+  //     int updatedQty = qty1 + qty;
+  //     double amount = double.parse(res1[0]["totalamount"]);
+  //     print("res1.length----${res1.length}");
+
+  //     print("upadted qty-----$updatedQty");
+  //     double amount1 = double.parse(totalamount);
+  //     double updatedAmount = amount + amount1;
+  //     var res = await db.rawUpdate(
+  //         'UPDATE orderBagTable SET qty=$updatedQty , totalamount="${updatedAmount}" WHERE customerid="${customerid}" AND os = "${os}" AND code="${code}"');
+  //     print("response-------$res");
+  //   } else {
+  //     query2 =
+  //         'INSERT INTO orderBagTable (itemName, cartdate, carttime , os, customerid, cartrowno, code, qty, rate, totalamount, cstatus) VALUES ("${itemName}","${cartdate}","${carttime}", "${os}", "${customerid}", $cartrowno, "${code}", $qty, "${rate}", "${totalamount}", $cstatus)';
+  //     var res = await db.rawInsert(query2);
+  //   }
+
+  //   print("insert query result $res");
+  //   print("insert-----$query2");
+  //   return res;
+  // }
 
 ////////////////////////////////////////////////////////////////////////////////
   deleteFromTableCommonQuery(String table, String? condition) async {

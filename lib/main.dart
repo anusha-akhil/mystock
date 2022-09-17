@@ -126,7 +126,8 @@ class _MyAppState extends State<MyApp> {
         //   ),
         // ),
       ),
-      home:LoginPage()
+      home:MainDashboard()
+
       
       //  AnimatedSplashScreen(
       //   backgroundColor: Colors.black,
