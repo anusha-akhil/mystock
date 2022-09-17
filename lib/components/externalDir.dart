@@ -6,13 +6,15 @@ import 'package:path_provider/path_provider.dart';
 class ExternalDir {
   String? tempFp;
   List<FileSystemEntity> _folders = [];
+
+
   fileRead() async {
     String path;
     Directory? extDir = await getExternalStorageDirectory();
     String dirPath = '${extDir!.path}/VgFp/';
     print("dirPath----$dirPath");
     dirPath =
-        dirPath.replaceAll("Android/data/com.example.orderapp/files/", "");
+        dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
     await Directory(dirPath).create(recursive: true);
     final File file = File('${dirPath}/fpCode.txt');
     print("file...$file");

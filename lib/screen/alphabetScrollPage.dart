@@ -16,16 +16,26 @@ class AlphabetScrollPage extends StatefulWidget {
 
 class _AlphabetScrollPageState extends State<AlphabetScrollPage> {
   List<_AZItem> items = [];
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   // Provider.of<Controller>(context, listen: false).getProductDetails("CO1003");
 
-    // List<Map<String,dynamic>> list=Provider.of<Controller>(context, listen: false).productList;
+  //   // List<Map<String,dynamic>> list=Provider.of<Controller>(context, listen: false).productList;
+
+  //   print("fjxdjfkxjd---cc--${widget.items}");
+  //   initList(widget.items);
+  // }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    print("fjxdjfkxjd---cc--${widget.items}");
     initList(widget.items);
   }
-
+////////////////////////////////////////////////////////
   void initList(List<Map<String, dynamic>> items) {
     print("cjncn----${items}");
     this.items = items

@@ -55,37 +55,44 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       if (image == null) return;
 
       // String path;
-      Directory? extDir = await getExternalStorageDirectory();
-      String dirPath = '${extDir!.path}/imageCropper/';
+      // Directory? extDir = await getExternalStorageDirectory();
+      // String dirPath = '${extDir!.path}/imageCropper/';
 
-      imageCache.clearLiveImages();
-      imageCache.clear();
+      // imageCache.clearLiveImages();
+      // imageCache.clear();
 
-      dirPath =
-          dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
+      // dirPath =
+      //     dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
 
-      await Directory(dirPath).create(recursive: true);
+      // await Directory(dirPath).create(recursive: true);
 
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
-      File copiedImage = await img!.copy('$dirPath/profile_picture.jpg');
-      File newImage = File(copiedImage.path);
+      // File copiedImage = await img!.copy('$dirPath/profile_picture.jpg');
+      // File newImage = File(copiedImage.path);
 
-      // Uint8List bytes = await img.readAsBytes();
-      // final resizedbytes =
-      //     await resizeImage(Uint8List.view(bytes.buffer), height: 200);
+      Uint8List bytes = await img!.readAsBytes(); //utint8list
+      // final byteData = bytes.buffer.asByteData(); //bytedata
+      final resizedbytes =
+          await resizeImage(Uint8List.view(bytes.buffer), height: 600);
+      // Uint8List byteDataff = resizedbytes!.buffer.asUint8List();
+      // File copiedImage = await img.copy('$dirPath/profile_picture.jpg');
+      // print("resized bytes-------$resizedbytes");
+      // File('$dirPath/profile_picture.jpg')
+      //     .writeAsBytes(byteDataff);
 
-      // if (resizedbytes != null) {
-      //   final testing = Image.memory(Uint8List.view(bytes.buffer));
-      //   // GallerySaver.saveImage(img.path,
-      //   //     toDcim: true, albumName: 'image cropper');
-      //   var result = await ImageGallerySaver.saveImage(
-      //     Uint8List.view(resizedbytes.buffer),
-      //     quality: 80,
-      //     name: "new_mage.jpg",
-      //   );
+      // File newImage = File(copiedImage.path);
 
-      // }
+      if (resizedbytes != null) {
+        final testing = Image.memory(Uint8List.view(bytes.buffer));
+        // GallerySaver.saveImage(img.path,
+        //     toDcim: true, albumName: 'image cropper');
+        var result = await ImageGallerySaver.saveImage(
+          Uint8List.view(resizedbytes.buffer),
+          quality: 80,
+          name: "new_mage.jpg",
+        );
+      }
 
       print("img----$img");
       setState(() {
@@ -104,7 +111,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage = await ImageCropper().cropImage(
       sourcePath: imageFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1.0),
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 2),
       // maxHeight: 100,
       // maxWidth: 100,
       // compressFormat: ,

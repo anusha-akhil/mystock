@@ -1,19 +1,31 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/components/radioButton.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/controller/registrationController.dart';
 import 'package:mystock/screen/clickPage.dart';
 import 'package:mystock/screen/companyRegistration.dart';
+import 'package:mystock/screen/confirmationPage.dart';
+import 'package:mystock/screen/dashboard/dashboard.dart';
+import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/image%20download/downloadscreen.dart';
+import 'package:mystock/screen/imageupload/image_upload.dart';
 import 'package:mystock/screen/itemCreation.dart';
 import 'package:mystock/screen/itemSelection.dart';
 import 'package:mystock/screen/localNotification.dart';
 import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/screen/notification/notificationButtonScreen.dart';
 import 'package:mystock/screen/set_photo_screen.dart';
+import 'package:mystock/screen/splashscreen.dart';
+import 'package:mystock/screen/stockapproval/stockApproval.dart';
+import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screen/image download/test.dart';
 
@@ -53,9 +65,29 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => Controller()),
+      ChangeNotifierProvider(create: (_) => RegistrationController()),
     ],
     child: MyApp(),
   ));
+
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+  // ..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatefulWidget {
@@ -69,6 +101,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
@@ -93,7 +126,15 @@ class _MyAppState extends State<MyApp> {
         //   ),
         // ),
       ),
-      home: SetPhotoScreen(),
+      home:LoginPage()
+      
+      //  AnimatedSplashScreen(
+      //   backgroundColor: Colors.black,
+      //   splash: Image.asset("asset/logo_black_bg.png"),
+      //   nextScreen: SplashScreen(),
+      //   splashTransition: SplashTransition.fadeTransition,
+      //   duration: 1000,
+      // ),
     );
   }
 }

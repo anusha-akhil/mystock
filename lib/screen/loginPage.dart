@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/dashboard/dashboard.dart';
 import 'package:mystock/screen/itemCreation.dart';
 import 'package:mystock/screen/itemSelection.dart';
+import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
+import 'package:mystock/services/dbHelper.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,8 +19,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  ValueNotifier<bool> visible = ValueNotifier(false);
+
   ValueNotifier<bool> _isObscure = ValueNotifier(true);
-  bool isLoading = false;
+  // bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController controller1 = TextEditingController();
@@ -37,33 +44,45 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                       SizedBox(
+                      SizedBox(
                         height: size.height * 0.1,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 18.0, top: 40),
                         child: Container(
                           height: size.height * 0.15,
-                          child: Image.asset(
-                            'asset/login.png',
+                          child: Lottie.asset(
+                            'asset/male.json',
                             // height: size.height*0.3,
                             // width: size.height*0.3,
                           ),
+
+                          // Image.asset(
+                          //   'asset/login.png',
+                          //   // height: size.height*0.3,
+                          //   // width: size.height*0.3,
+                          // ),
                         ),
                       ),
                       Text(
                         "Login",
-                        style: TextStyle(
-                            fontSize: 23, color: P_Settings.buttonColor),
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: P_Settings.buttonColor,
+                        ),
                       ),
                       SizedBox(
                         height: size.height * 0.007,
                       ),
                       Text(
                         "Login to your account",
-                        style: TextStyle(
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
                           color: P_Settings.buttonColor,
-                          fontSize: 14,
                         ),
                       ),
                       SizedBox(
@@ -76,31 +95,55 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 14),
                         child: Container(
-                         width: size.width * 0.4,
+                          width: size.width * 0.4,
                           height: size.height * 0.055,
                           child: Directionality(
                             textDirection: TextDirection.rtl,
                             child: ElevatedButton.icon(
-                              onPressed: () {
+                              onPressed: () async {
+                                var result;
+                                List<Map<String, dynamic>> list =
+                                    await Provider.of<Controller>(context,
+                                            listen: false)
+                                        .getProductDetails("CO1003");
+                                print("fkjdfjdjfnzskfn;lg------${list}");
+
                                 Provider.of<Controller>(context, listen: false)
-                                    .getProductDetails("CO1003");
+                                    .setfilter(false);
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ItemSelection(
+                                      builder: (context) => StockTransfer(
                                             list: value.productList,
                                           )),
                                 );
+
                                 if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-          
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) => ItemCreation()),
-                                  // );
+                                  result = await MystockDB.instance.selectStaff(
+                                      controller1.text, controller2.text);
+
+                                  if (result.length == 0) {
+                                    visible.value = true;
+                                    print("visible===${visible.value}");
+                                  } else if (result[0] == "success" &&
+                                      result[1] != null) {
+                                    visible.value = false;
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+                                    await prefs.setString('sid', result[1]);
+                                    await prefs.setString(
+                                        'st_username', controller1.text);
+                                    await prefs.setString(
+                                        'st_pwd', controller2.text);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DashboardPage()),
+                                    );
+                                  }
                                 }
                               },
                               label: Text(
@@ -113,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: P_Settings.loginPagetheme,
                                 ),
                               ),
-                              icon: isLoading
+                              icon: value.isLoading
                                   ? Container(
                                       width: 24,
                                       height: 24,
@@ -137,7 +180,20 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      ValueListenableBuilder(
+                          valueListenable: visible,
+                          builder:
+                              (BuildContext context, bool v, Widget? child) {
+                            print("value===${visible.value}");
+                            return Visibility(
+                              visible: v,
+                              child: Text(
+                                "Incorrect Username or Password!!!",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            );
+                          })
                     ],
                   ),
                 );
@@ -203,6 +259,19 @@ class _LoginPageState extends State<LoginPage> {
                       width: 2.0,
                     ),
                   ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.red,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red,
+                      )),
                   hintStyle: TextStyle(
                     fontSize: 15,
                     color: P_Settings.buttonColor,
@@ -220,4 +289,63 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  // Widget customTextField(String hinttext, TextEditingController controllerValue,
+  //     String type, BuildContext context) {
+  //   double topInsets = MediaQuery.of(context).viewInsets.top;
+  //   Size size = MediaQuery.of(context).size;
+  //   return Container(
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(16.0),
+  //       child: ValueListenableBuilder(
+  //         valueListenable: _isObscure,
+  //         builder: (context, value, child) {
+  //           return TextFormField(
+
+  //             // textCapitalization: TextCapitalization.characters,
+  //             obscureText: type == "password" ? _isObscure.value : false,
+  //             scrollPadding:
+  //                 EdgeInsets.only(bottom: topInsets + size.height * 0.34),
+  //             controller: controllerValue,
+  //             decoration: InputDecoration(
+  //                 prefixIcon: type == "password"
+  //                     ? Icon(Icons.password,color: P_Settings.buttonColor,)
+  //                     : Icon(Icons.person,color: P_Settings.buttonColor,),
+  //                 suffixIcon: type == "password"
+  //                     ? IconButton(
+  //                         icon: Icon(
+  //                           _isObscure.value
+  //                               ? Icons.visibility_off
+  //                               : Icons.visibility,
+  //                         ),
+  //                         onPressed: () {
+  //                           _isObscure.value = !_isObscure.value;
+  //                           print("_isObscure $_isObscure");
+  //                         },
+  //                       )
+  //                     : null,
+  //                 border: OutlineInputBorder(
+  //                   borderRadius: BorderRadius.circular(20),
+  //                   borderSide: BorderSide(
+  //                     color:  Colors.white,
+  //                     width: 3,
+  //                   ),
+  //                 ),
+  //                 hintText: hinttext.toString(),
+  //                  hintStyle: TextStyle(
+  //                   fontSize: 15,
+  //                   color: P_Settings.buttonColor,
+  //                 ),),
+  //             validator: (text) {
+  //               if (text == null || text.isEmpty) {
+  //                 return 'Please Enter ${hinttext}';
+  //               }
+  //               return null;
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 }

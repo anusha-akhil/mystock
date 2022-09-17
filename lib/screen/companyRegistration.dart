@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 
 import 'package:mystock/components/externalDir.dart';
+import 'package:mystock/controller/registrationController.dart';
 import 'package:mystock/screen/loginPage.dart';
 
 import 'package:provider/provider.dart';
@@ -96,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           },
           child: SingleChildScrollView(
             reverse: true,
-            child: Consumer<Controller>(
+            child: Consumer<RegistrationController>(
               builder: (context, value, child) {
                 return Column(
                   children: [
@@ -107,7 +108,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 18.0),
                             child: Container(
-                              height: size.height * 0.6,
+                              height: size.height * 0.64,
                               child: Lottie.asset(
                                 'asset/companylot.json',
                                 // height: size.height*0.3,
@@ -142,90 +143,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           // SizedBox(
                           //   height: size.height * 0.12,
                           // ),
-                          Container(
-                            height: size.height * 0.08,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
-                              child: TextFormField(
-                                style: TextStyle(color: Colors.white),
-                                controller: codeController,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: P_Settings.buttonColor,
-                                        width: 1.0),
-                                    borderRadius: BorderRadius.circular(25.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: P_Settings.buttonColor,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.business,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                  hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                  hintText: 'Company Key',
-                                ),
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'Please Enter Company Key';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: size.height * 0.08,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
-                              child: TextFormField(
-                                style: TextStyle(color: Colors.white),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                controller: phoneController,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: P_Settings.buttonColor,
-                                        width: 1.0),
-                                    borderRadius: BorderRadius.circular(25.0),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.phone,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                  hintText: 'Mobile Number',
-                                  hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: P_Settings.buttonColor,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'Please Enter Mobile Number';
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ),
+
+                          customTextField("Company key", codeController,
+                              "company key", context),
+                          customTextField("Phone number", phoneController,
+                              "phone", context),
+
                           SizedBox(
                             height: size.height * 0.04,
                           ),
@@ -239,19 +162,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   String deviceInfo =
                                       "$manufacturer" + '' + "$model";
                                   print("device info-----$deviceInfo");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage()),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => LoginPage()),
+                                  // );
+
                                   // await OrderAppDB.instance
                                   //     .deleteFromTableCommonQuery('menuTable', "");
                                   FocusScope.of(context)
                                       .requestFocus(FocusNode());
                                   if (_formKey.currentState!.validate()) {
-                                    // textFile = await externalDir
-                                    //     .getPublicDirectoryPath();
-                                    // print("textfile........$textFile");
                                     String tempFp1 =
                                         await externalDir.fileRead();
                                     // String? tempFp1=externalDir.tempFp;
@@ -260,7 +181,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     //    tempFp="";
                                     // }
                                     print("tempFp---${tempFp1}");
-                                    Provider.of<Controller>(context,
+                                    // textFile = await externalDir
+                                    //     .getPublicDirectoryPath();
+                                    // print("textfile........$textFile");
+
+                                    Provider.of<RegistrationController>(context,
                                             listen: false)
                                         .postRegistration(
                                             codeController.text,
@@ -305,9 +230,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
 
-                          SizedBox(
-                            height: size.height * 0.09,
-                          ),
+                          // SizedBox(
+                          //   height: size.height * 0.09,
+                          // ),
 
                           // Consumer<Controller>(
                           //   builder: (context, value, child) {
@@ -334,6 +259,71 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget customTextField(String hinttext, TextEditingController controllerValue,
+      String type, BuildContext context) {
+    double topInsets = MediaQuery.of(context).viewInsets.top;
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.09,
+      child: Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+          child: TextFormField(
+            keyboardType: type == "phone" ? TextInputType.number : null,
+            style: TextStyle(color: P_Settings.buttonColor),
+            // scrollPadding:
+            //     EdgeInsets.only(bottom: topInsets + size.height * 0.34),
+            controller: controllerValue,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                prefixIcon: type == "company key"
+                    ? Icon(
+                        Icons.business,
+                        color: P_Settings.buttonColor,
+                      )
+                    : Icon(
+                        Icons.phone,
+                        color: P_Settings.buttonColor,
+                      ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: P_Settings.buttonColor, width: 1.0),
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide(
+                    color: P_Settings.buttonColor,
+                    width: 2.0,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.red,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.red,
+                    )),
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  color: P_Settings.buttonColor,
+                ),
+                hintText: hinttext.toString()),
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return 'Please Enter ${hinttext}';
+              }
+              return null;
+            },
+          )),
     );
   }
 }
