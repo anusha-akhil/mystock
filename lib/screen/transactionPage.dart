@@ -51,7 +51,9 @@ class _TransactionPageState extends State<TransactionPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double topInsets = MediaQuery.of(context).viewInsets.top;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
           actions: [
             IconButton(
@@ -73,118 +75,172 @@ class _TransactionPageState extends State<TransactionPage> {
           backgroundColor: P_Settings.loginPagetheme),
       body: Consumer<Controller>(
         builder: (context, value, child) {
-          return Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: size.height * 0.2,
-              ),
-              dropDownCustom(size, "transaction"),
-              value.stocktransferselected
-                  ? dropDownbranch(size, "branch")
-                  : Container(),
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-              ValueListenableBuilder(
-                  valueListenable: visible,
-                  builder: (BuildContext context, bool v, Widget? child) {
-                    print("value===${visible.value}");
-                    return Visibility(
-                      visible: v,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 18.0),
-                        child: Text(
-                          "Please choose TransactionType",
-                          style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: Colors.red),
+          return SingleChildScrollView(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: size.height * 0.2,
+                ),
+                dropDownCustom(size, "transaction"),
+                value.stocktransferselected
+                    ? dropDownbranch(size, "branch")
+                    : Container(),
+                // SizedBox(
+                //   height: size.height * 0.08,
+                // ),
+                Container(
+                  width: size.height * 0.4,
+                  child: TextFormField(
+                    scrollPadding:
+                        EdgeInsets.only(bottom: topInsets + size.height * 0.34),
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.note_add,
+                          color: Colors.grey,
                         ),
-                      ),
-                    );
-                  }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: size.height * 0.05,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: P_Settings.loginPagetheme,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2), // <-- Radius
+                        contentPadding: EdgeInsets.zero,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
-                      ),
-                      onPressed: () async {
-                        print("selectedtransaction----$selectedtransaction");
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        // focusedErrorBorder: OutlineInputBorder(
+                        //   borderRadius: BorderRadius.all(Radius.circular(25)),
+                        //   borderSide: BorderSide(
+                        //     width: 1,
+                        //     color: Colors.red,
+                        //   ),
+                        // ),
+                        // errorBorder: OutlineInputBorder(
+                        //     borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                        //     borderSide: BorderSide(
+                        //       width: 1,
+                        //       color: Colors.red,
+                        //     )),
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[700],
+                        ),
+                        hintText: "Enter remark"),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+                ValueListenableBuilder(
+                    valueListenable: visible,
+                    builder: (BuildContext context, bool v, Widget? child) {
+                      print("value===${visible.value}");
+                      return Visibility(
+                        visible: v,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: Text(
+                            "Please choose TransactionType",
+                            style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ),
+                      );
+                    }),
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.height * 0.05,
+                      width: size.width * 0.2,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: P_Settings.loginPagetheme,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(2), // <-- Radius
+                          ),
+                        ),
+                        onPressed: () async {
+                          print("selectedtransaction----$selectedtransaction");
 
-                        if (selectedtransaction != null) {
-                          visible.value = false;
-                          Provider.of<Controller>(context, listen: false)
-                              .getItemCategory(context);
-                          List<Map<String, dynamic>> list =
-                              await Provider.of<Controller>(context,
-                                      listen: false)
-                                  .getProductDetails();
+                          if (selectedtransaction != null) {
+                            visible.value = false;
+                            Provider.of<Controller>(context, listen: false)
+                                .getItemCategory(context);
+                            List<Map<String, dynamic>> list =
+                                await Provider.of<Controller>(context,
+                                        listen: false)
+                                    .getProductDetails();
 
-                          print("fkjdfjdjfnzskfn;lg------${list}");
-                          if (list.length > 0) {
-                            // setState(() {
-                            //   isLoad=true;
-                            // });
-                            Navigator.of(context).push(
-                              PageRouteBuilder(
-                                  opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => StockTransfer(
-                                        list: list,
-                                        transVal: int.parse(
-                                          splitted[3],
-                                        ),
-                                        transType: splitted[2],
-                                      )
-                                  // OrderForm(widget.areaname,"return"),
-                                  ),
-                            );
+                            print("fkjdfjdjfnzskfn;lg------${list}");
+                            if (list.length > 0) {
+                              // setState(() {
+                              //   isLoad=true;
+                              // });
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                    opaque: false, // set to false
+                                    pageBuilder: (_, __, ___) => StockTransfer(
+                                          list: list,
+                                          transVal: int.parse(
+                                            splitted[3],
+                                          ),
+                                          transType: splitted[2],
+                                        )
+                                    // OrderForm(widget.areaname,"return"),
+                                    ),
+                              );
+                            }
+                          } else {
+                            visible.value = true;
                           }
-                        } else {
-                          visible.value = true;
-                        }
 
-                        // return await showDialog(
-                        //     context: context,
-                        //     barrierDismissible: false, // user must tap button!
-                        //     builder: (BuildContext context) {
-                        //       return WillPopScope(
-                        //         onWillPop: () async => false,
-                        //         child: buildPopupDialog("content", context, size),
-                        //       );
-                        //     });
-                      },
-                      child: Text(
-                        'Confirmation',
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.buttonColor,
+                          // return await showDialog(
+                          //     context: context,
+                          //     barrierDismissible: false, // user must tap button!
+                          //     builder: (BuildContext context) {
+                          //       return WillPopScope(
+                          //         onWillPop: () async => false,
+                          //         child: buildPopupDialog("content", context, size),
+                          //       );
+                          //     });
+                        },
+                        child: Text(
+                          'Next',
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              value.isProdLoading
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 35.0),
-                      child: SpinKitFadingCircle(
-                        color: P_Settings.loginPagetheme,
-                      ),
-                    )
-                  : Container()
-            ],
+                  ],
+                ),
+                value.isProdLoading
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: SpinKitFadingCircle(
+                          color: P_Settings.loginPagetheme,
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
           );
         },
       ),
