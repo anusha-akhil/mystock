@@ -101,41 +101,40 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: EasyLoading.init(),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'Roboto Mono sample',
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        // fontFamily: 'OpenSans',
-        primaryColor: P_Settings.loginPagetheme,
-        // colorScheme: ColorScheme.fromSwatch(
-        //   primarySwatch: Colors.indigo,
-        // ),
-        textTheme: GoogleFonts.latoTextTheme(
-          Theme.of(context).textTheme,
+        builder: EasyLoading.init(),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          fontFamily: 'Roboto Mono sample',
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          // fontFamily: 'OpenSans',
+          primaryColor: P_Settings.loginPagetheme,
+          // colorScheme: ColorScheme.fromSwatch(
+          //   primarySwatch: Colors.indigo,
+          // ),
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          // scaffoldBackgroundColor: P_Settings.bodycolor,
+          // textTheme: const TextTheme(
+          //   headline1: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          //   headline6: TextStyle(
+          //     fontSize: 25.0,
+          //   ),
+          //   bodyText2: TextStyle(
+          //     fontSize: 14.0,
+          //   ),
+          // ),
         ),
-        // scaffoldBackgroundColor: P_Settings.bodycolor,
-        // textTheme: const TextTheme(
-        //   headline1: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        //   headline6: TextStyle(
-        //     fontSize: 25.0,
-        //   ),
-        //   bodyText2: TextStyle(
-        //     fontSize: 14.0,
-        //   ),
-        // ),
-      ),
-      home:SplashScreen()
+        home: SplashScreen()
 
-      
-      //  AnimatedSplashScreen(
-      //   backgroundColor: Colors.black,
-      //   splash: Image.asset("asset/logo_black_bg.png"),
-      //   nextScreen: SplashScreen(),
-      //   splashTransition: SplashTransition.fadeTransition,
-      //   duration: 1000,
-      // ),
-    );
+        //  AnimatedSplashScreen(
+        //   backgroundColor: Colors.black,
+        //   splash: Image.asset("asset/logo_black_bg.png"),
+        //   nextScreen: SplashScreen(),
+        //   splashTransition: SplashTransition.fadeTransition,
+        //   duration: 1000,
+        // ),
+        );
   }
 }
