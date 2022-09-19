@@ -1,4 +1,30 @@
 class ProductListModel {
+  String? cartCount;
+  List<ProductList>? productList;
+
+  ProductListModel({this.cartCount, this.productList});
+
+  ProductListModel.fromJson(Map<String, dynamic> json) {
+    cartCount = json['cart_count'];
+    if (json['product_list'] != null) {
+      productList = <ProductList>[];
+      json['product_list'].forEach((v) {
+        productList!.add(new ProductList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['cart_count'] = this.cartCount;
+    if (this.productList != null) {
+      data['product_list'] = this.productList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ProductList {
   String? itemId;
   String? catId;
   String? itemName;
@@ -7,8 +33,9 @@ class ProductListModel {
   String? sRate1;
   String? sRate2;
   String? stock;
+  String? qty;
 
-  ProductListModel(
+  ProductList(
       {this.itemId,
       this.catId,
       this.itemName,
@@ -16,9 +43,10 @@ class ProductListModel {
       this.itemImg,
       this.sRate1,
       this.sRate2,
-      this.stock});
+      this.stock,
+      this.qty});
 
-  ProductListModel.fromJson(Map<String, dynamic> json) {
+  ProductList.fromJson(Map<String, dynamic> json) {
     itemId = json['item_id'];
     catId = json['cat_id'];
     itemName = json['item_name'];
@@ -27,6 +55,7 @@ class ProductListModel {
     sRate1 = json['s_rate_1'];
     sRate2 = json['s_rate_2'];
     stock = json['stock'];
+    qty = json['qty'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +68,7 @@ class ProductListModel {
     data['s_rate_1'] = this.sRate1;
     data['s_rate_2'] = this.sRate2;
     data['stock'] = this.stock;
+    data['qty'] = this.qty;
     return data;
   }
 }

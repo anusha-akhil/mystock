@@ -1,4 +1,5 @@
 import 'package:azlistview/azlistview.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,23 +87,55 @@ class _ItemSelectionState extends State<ItemSelection> {
           backgroundColor: P_Settings.loginPagetheme,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 18.0),
-              child: GestureDetector(
-                onTap: () {
-                   Provider.of<Controller>(context, listen: false).getbagData(context);
-                  Navigator.push(
+              padding: const EdgeInsets.all(8.0),
+              child: Badge(
+                animationType: BadgeAnimationType.scale,
+                toAnimate: true,
+                badgeColor: Colors.white,
+                badgeContent: Consumer<Controller>(
+                  builder: (context, value, child) {
+                    if (value.cartCount == null) {
+                      return SpinKitChasingDots(
+                          color: P_Settings.buttonColor, size: 9);
+                    } else {
+                      return Text(
+                        "${value.cartCount}",
+                        style:
+                            TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      );
+                    }
+                  },
+                ),
+                position: const BadgePosition(start: 33, bottom: 25),
+                child: IconButton(
+                  onPressed: () async {
+                         Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => BagPage()),
                   );
-                },
-                child: Image.asset(
-                  "asset/shopping-cart.png",
-                  height: size.height * 0.05,
-                  width: size.width * 0.07,
-                
+                  },
+                  icon: const Icon(Icons.shopping_cart),
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 18.0),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Provider.of<Controller>(context, listen: false)
+            //           .getbagData(context);
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => BagPage()),
+            //       );
+            //     },
+            //     child: Image.asset(
+            //       "asset/shopping-cart.png",
+            //       height: size.height * 0.05,
+            //       width: size.width * 0.07,
+            //     ),
+            //   ),
+            // ),
 
             // IconButton(
             //   onPressed: () {
@@ -286,7 +319,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                           child: Text(
                             value.qty[index].text,
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
                           ),
                         )
                       : IconButton(
@@ -357,7 +392,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                         },
                         child: Icon(
                           Icons.info,
-                          size: 17,
+                          size: 19,
                         ),
                       )
                     ],

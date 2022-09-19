@@ -128,7 +128,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               await Provider.of<Controller>(context,
                                       listen: false)
                                   .getProductDetails();
-                          
+
                           print("fkjdfjdjfnzskfn;lg------${list}");
                           if (list.length > 0) {
                             Navigator.of(context).push(
