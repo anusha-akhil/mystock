@@ -114,7 +114,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BagPage(transVal: widget.transVal,)),
+                      MaterialPageRoute(
+                          builder: (context) => BagPage(
+                                transVal: widget.transVal,
+                              )),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart),
@@ -359,6 +362,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                             size: 20,
                           )),
                   title: Text(item.itemName!,
+                   overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.aBeeZee(
                         textStyle: Theme.of(context).textTheme.bodyText2,
                         fontSize: 16,
@@ -382,9 +386,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                           Provider.of<Controller>(context, listen: false)
                               .getinfoList(context, item.itemId!);
                           infoshowsheet.showInfoSheet(
-                            context,
-                          value.infoList,value.stockList
-                          );
+                              context, value.infoList, value.stockList);
                         },
                         child: Icon(
                           Icons.info,
