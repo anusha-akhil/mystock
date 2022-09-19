@@ -116,7 +116,7 @@ class Controller extends ChangeNotifier {
           );
 
           // print("body ${body}");
-          List map = jsonDecode(response.body);
+          var map = jsonDecode(response.body);
           branchist.clear();
           // productbar.clear();
           for (var item in map) {
@@ -294,11 +294,12 @@ class Controller extends ChangeNotifier {
           print("cart bag body-----$body");
           // isDownloaded = true;
           isLoading = true;
-          // notifyListeners();
+          notifyListeners();
 
           http.Response response = await http.post(
             url,
             body: body,
+            // headers: {"Content-Type": "application/json"},
           );
           var map = jsonDecode(response.body);
           print("cart bag response-----------------$map");

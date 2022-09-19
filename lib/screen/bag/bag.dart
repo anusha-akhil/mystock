@@ -32,7 +32,7 @@ class _BagPageState extends State<BagPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   
+
     EasyLoading.addStatusCallback((status) {
       print('EasyLoading Status $status');
       if (status == EasyLoadingStatus.dismiss) {
@@ -52,6 +52,7 @@ class _BagPageState extends State<BagPage> {
         children: [
           Expanded(
             child: ListView.builder(
+              itemExtent: 170,
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return listItemFunction(
@@ -303,7 +304,7 @@ class _BagPageState extends State<BagPage> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "Rate :",
+                                      "Rate 1:",
                                       style: TextStyle(fontSize: 13),
                                     ),
                                     SizedBox(
@@ -397,6 +398,40 @@ class _BagPageState extends State<BagPage> {
                                         color: P_Settings.loginPagetheme,
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5, top: 0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Rate 2 :",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.02,
+                                    ),
+                                    Container(child: Text(qty.toString())),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5, top: 0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Rate 3 :",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.02,
+                                    ),
+                                    Container(child: Text(qty.toString())),
                                   ],
                                 ),
                               ),
