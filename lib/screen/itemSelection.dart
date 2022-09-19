@@ -383,16 +383,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                               .getinfoList(context, item.itemId!);
                           infoshowsheet.showInfoSheet(
                             context,
-                            index,
-                            item.itemId!,
-                            item.catId!,
-                            item.batchCode!,
-                            item.itemName!,
-                            item.itemImg!,
-                            double.parse(item.sRate1!),
-                            double.parse(item.sRate2!),
-                            double.parse(item.stock!),
-                            widget.transVal,
+                          value.infoList,value.stockList
                           );
                         },
                         child: Icon(

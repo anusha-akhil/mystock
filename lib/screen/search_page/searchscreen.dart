@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/controller/controller.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -28,12 +30,12 @@ class _SearchScreenState extends State<SearchScreen> {
               child: TextField(
                 controller: searchcontroll,
                 onChanged: (value) {
-                  // Provider.of<Controller>(context, listen: false)
-                  //     .setisVisible(true);
                   value = searchcontroll.text;
+                  Provider.of<Controller>(context, listen: false)
+                      .searchItem(context, value);
                 },
                 decoration: InputDecoration(
-                  hintText: "Search ",
+                  hintText: "Search Item here",
                   prefixIcon: Icon(
                     Icons.search,
                     color: P_Settings.loginPagetheme,
@@ -50,13 +52,17 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          Expanded(
-              child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return ListTile();
+          Consumer<Controller>(
+            builder: (context, value, child) {
+              return Expanded(
+                  child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return ListTile();
+                },
+              ));
             },
-          )),
+          ),
         ],
       ),
     );

@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
   String? fromDate;
+  bool isVisible = false;
+
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
   bool isLoading = false;
@@ -28,6 +30,11 @@ class Controller extends ChangeNotifier {
 
   String? menu_index;
   List<Map<String, dynamic>> menuList = [];
+  List<Map<String, dynamic>> searchList = [];
+
+  List<Map<String, dynamic>> infoList = [];
+  List<Map<String, dynamic>> stockList = [];
+
   // String urlgolabl = Globaldata.apiglobal;
   bool filter = false;
   double? totalPrice;
@@ -402,16 +409,62 @@ class Controller extends ChangeNotifier {
           var map = jsonDecode(response.body);
           print("item_search_stock bag response-----------------$map");
 
+          // ProductListModel productListModel;
+          if (map != null) {
+            infoList.clear();
+            for (var item in map["item_info"]) {
+              infoList.add(item);
+            }
+            stockList.clear();
+            for (var item in map["Stock_info"]) {
+              stockList.add(item);
+            }
+          }
+
+          print("infoList---$infoList----$stockList");
           isLoading = false;
           notifyListeners();
-          // ProductListModel productListModel;
-          // if (map != null) {
-          //   for (var item in map) {
-          //     // productListModel = ProductListModel.fromJson(item);
-          //     bagList.add(item);
-          //   }
-          // }
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+  //////////////////////////////////////////////////////////////////////
+  searchItem(BuildContext context, String itemName) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          print("value-----$itemName");
+
+          Uri url = Uri.parse("$urlgolabl/search_products_list.php");
+          Map body = {
+            'item_name': itemName,
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("item_search_s------$map");
+          searchList.clear();
+          for (var item in map) {
+            searchList.add(item);
+          }
+          
+          isLoading = false;
           notifyListeners();
+
           /////////////// insert into local db /////////////////////
         } catch (e) {
           print(e);
