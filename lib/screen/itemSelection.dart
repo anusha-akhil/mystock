@@ -6,6 +6,7 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/modalBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/alphabetScrollPage.dart';
+import 'package:mystock/screen/bag/bag.dart';
 import 'package:provider/provider.dart';
 
 class ItemSelection extends StatefulWidget {
@@ -81,7 +82,39 @@ class _ItemSelectionState extends State<ItemSelection> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor:  P_Settings.loginPagetheme,),
+        appBar: AppBar(
+          backgroundColor: P_Settings.loginPagetheme,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 18.0),
+              child: GestureDetector(
+                onTap: () {
+                   Provider.of<Controller>(context, listen: false).getbagData(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BagPage()),
+                  );
+                },
+                child: Image.asset(
+                  "asset/shopping-cart.png",
+                  height: size.height * 0.05,
+                  width: size.width * 0.07,
+                
+                ),
+              ),
+            ),
+
+            // IconButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => BagPage()),
+            //     );
+            //   },
+            //   icon: Icon(Icons.shopping_cart),
+            // )
+          ],
+        ),
         // appBar: AppBar(
         //   leading: IconButton(
         //       onPressed: () {
@@ -93,145 +126,146 @@ class _ItemSelectionState extends State<ItemSelection> {
         //   backgroundColor: P_Settings.loginPagetheme,
         // ),
         body: Consumer<Controller>(
-      builder: (context, value, child) {
-        if (value.isLoading) {
-          return SpinKitFadingCircle(
-            color: P_Settings.loginPagetheme,
-          );
-        } else {
-          return Column(
-            children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Text(
-              //     "Select Item Category",
-              //     style: TextStyle(fontSize: 20),
-              //   ),
-              // ),
-              // Divider(),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              Container(
-                width: size.width * 0.9,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                      color: P_Settings.loginPagetheme,
-                      style: BorderStyle.solid,
-                      width: 0.3),
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: selected,
-                  // isDense: true,
-                  hint: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Select Item Category"),
+          builder: (context, value, child) {
+            if (value.isLoading) {
+              return SpinKitFadingCircle(
+                color: P_Settings.loginPagetheme,
+              );
+            } else {
+              return Column(
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     "Select Item Category",
+                  //     style: TextStyle(fontSize: 20),
+                  //   ),
+                  // ),
+                  // Divider(),
+                  SizedBox(
+                    height: size.height * 0.02,
                   ),
-                  // isExpanded: true,
-                  autofocus: false,
-                  underline: SizedBox(),
-                  elevation: 0,
-                  items: value.itemCategoryList
-                      .map((item) => DropdownMenuItem<String>(
-                          value: item.catId.toString(),
-                          child: Container(
-                            width: size.width * 0.9,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                item.catName.toString(),
-                                style: TextStyle(fontSize: 14),
-                              ),
+                  Container(
+                    width: size.width * 0.9,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          color: P_Settings.loginPagetheme,
+                          style: BorderStyle.solid,
+                          width: 0.3),
+                    ),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: selected,
+                      // isDense: true,
+                      hint: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Select Item Category"),
+                      ),
+                      // isExpanded: true,
+                      autofocus: false,
+                      underline: SizedBox(),
+                      elevation: 0,
+                      items: value.itemCategoryList
+                          .map((item) => DropdownMenuItem<String>(
+                              value: item.catId.toString(),
+                              child: Container(
+                                width: size.width * 0.9,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    item.catName.toString(),
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                              )))
+                          .toList(),
+                      onChanged: (item) {
+                        print("clicked");
+                        if (item != null) {
+                          setState(() {
+                            Provider.of<Controller>(context, listen: false)
+                                .setfilter(true);
+                            selected = item;
+                          });
+
+                          Provider.of<Controller>(context, listen: false)
+                              .filterProduct(selected!);
+
+                          initList(value.filteredproductList);
+
+                          Provider.of<Controller>(context, listen: false)
+                              .setbardata();
+                          print("se;ected---$item");
+                        }
+                      },
+                    ),
+                  ),
+                  Divider(),
+                  Expanded(child: Consumer<Controller>(
+                    builder: (context, value, child) {
+                      print("value------${value.filter}");
+                      return AzListView(
+                        data: items,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final item = items[index];
+                          print("itemmmm------$item");
+                          return buildListitem(item, size, index);
+                        },
+                        indexHintBuilder: (context, tag) {
+                          return Container(
+                            alignment: Alignment.center,
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.blue, shape: BoxShape.circle),
+                            child: Text(
+                              tag,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 50),
                             ),
-                          )))
-                      .toList(),
-                  onChanged: (item) {
-                    print("clicked");
-                    if (item != null) {
-                      setState(() {
-                        Provider.of<Controller>(context, listen: false)
-                            .setfilter(true);
-                        selected = item;
-                      });
-
-                      Provider.of<Controller>(context, listen: false)
-                          .filterProduct(selected!);
-
-                      initList(value.filteredproductList);
-
-                      Provider.of<Controller>(context, listen: false)
-                          .setbardata();
-                      print("se;ected---$item");
-                    }
-                  },
-                ),
-              ),
-              Divider(),
-              Expanded(child: Consumer<Controller>(
-                builder: (context, value, child) {
-                  print("value------${value.filter}");
-                  return AzListView(
-                    data: items,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      print("itemmmm------$item");
-                      return buildListitem(item, size, index);
-                    },
-                    indexHintBuilder: (context, tag) {
-                      return Container(
-                        alignment: Alignment.center,
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            color: Colors.blue, shape: BoxShape.circle),
-                        child: Text(
-                          tag,
-                          style: TextStyle(color: Colors.white, fontSize: 50),
+                          );
+                        },
+                        indexBarMargin: EdgeInsets.all(10),
+                        indexBarAlignment: Alignment.centerLeft,
+                        indexBarItemHeight: 30,
+                        indexBarData: value.filter
+                            ? value.filtereduniquelist
+                            : value.uniquelist,
+                        indexBarOptions: IndexBarOptions(
+                          needRebuild: true,
+                          selectTextStyle: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                          selectItemDecoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.blue),
+                          indexHintAlignment: Alignment.centerRight,
+                          indexHintOffset: Offset(-20, 0),
                         ),
                       );
                     },
-                    indexBarMargin: EdgeInsets.all(10),
-                    indexBarAlignment: Alignment.centerLeft,
-                    indexBarItemHeight: 30,
-                    indexBarData: value.filter
-                        ? value.filtereduniquelist
-                        : value.uniquelist,
-                    indexBarOptions: IndexBarOptions(
-                      needRebuild: true,
-                      selectTextStyle: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                      selectItemDecoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blue),
-                      indexHintAlignment: Alignment.centerRight,
-                      indexHintOffset: Offset(-20, 0),
-                    ),
-                  );
-                },
-              ))
-              // Expanded(
-              //   child: AlphabetScrollPage(
-              //       onClickedItem: (item) {
-              //         final snackbar = SnackBar(
-              //             content: Text(
-              //           "Clicked Item  $item",
-              //           style: TextStyle(fontSize: 20),
-              //         ));
-              //         ScaffoldMessenger.of(context)
-              //           ..removeCurrentSnackBar()
-              //           ..showSnackBar(snackbar);
-              //       },
-              //       items: value.filter
-              //           ? value.filteredproductList
-              //           : widget.list),
-              // ),
-            ],
-          );
-        }
-      },
-    ));
+                  ))
+                  // Expanded(
+                  //   child: AlphabetScrollPage(
+                  //       onClickedItem: (item) {
+                  //         final snackbar = SnackBar(
+                  //             content: Text(
+                  //           "Clicked Item  $item",
+                  //           style: TextStyle(fontSize: 20),
+                  //         ));
+                  //         ScaffoldMessenger.of(context)
+                  //           ..removeCurrentSnackBar()
+                  //           ..showSnackBar(snackbar);
+                  //       },
+                  //       items: value.filter
+                  //           ? value.filteredproductList
+                  //           : widget.list),
+                  // ),
+                ],
+              );
+            }
+          },
+        ));
   }
 
   Widget buildListitem(_AZItem item, Size size, int index) {
