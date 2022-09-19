@@ -27,7 +27,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   List<String> uniqueList = [];
   Bottomsheet showsheet = Bottomsheet();
   InfoBottomsheet infoshowsheet = InfoBottomsheet();
-
+  String? staff_id;
   var itemstest = [
     'kg',
     'pcs',
@@ -109,11 +109,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                 position: const BadgePosition(start: 33, bottom: 25),
                 child: IconButton(
                   onPressed: () async {
-                    Provider.of<Controller>(context, listen: false)
-                        .getbagData(context);
+                    Provider.of<Controller>(context, listen: false).getbagData1(
+                      context,
+                    );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BagPage()),
+                      MaterialPageRoute(builder: (context) => BagPage(transVal: widget.transVal,)),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart),
@@ -378,8 +379,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                           child: Text("Stock:${item.stock}")),
                       GestureDetector(
                         onTap: () {
-
-                          Provider.of<Controller>(context, listen: false).getinfoList(context, item.itemId!);
+                          Provider.of<Controller>(context, listen: false)
+                              .getinfoList(context, item.itemId!);
                           infoshowsheet.showInfoSheet(
                             context,
                             index,

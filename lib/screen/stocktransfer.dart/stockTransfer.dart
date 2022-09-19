@@ -37,7 +37,7 @@ class _StockTransferState extends State<StockTransfer> {
                 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BagPage()),
+                  MaterialPageRoute(builder: (context) => BagPage(transVal: widget.transVal,)),
                 );
               },
               child: Image.asset(
