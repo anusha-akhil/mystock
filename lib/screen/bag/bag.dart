@@ -32,6 +32,7 @@ class _BagPageState extends State<BagPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+   
     EasyLoading.addStatusCallback((status) {
       print('EasyLoading Status $status');
       if (status == EasyLoadingStatus.dismiss) {
@@ -54,30 +55,29 @@ class _BagPageState extends State<BagPage> {
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return listItemFunction(
-                    1, "fjidxjfijdx", 100, 200,"800", 2, size, index, 
-                    // value.bagList[index][""],
-                    // value.bagList[index]["item_name"],
-                    // value.bagList[index]["s_rate_1"],
-                    // value.bagList[index]["s_rate_2"],
+                  1, "fjidxjfijdx", 100, 200, "800", 2, size, index,
+                  // value.bagList[index][""],
+                  // value.bagList[index]["item_name"],
+                  // value.bagList[index]["s_rate_1"],
+                  // value.bagList[index]["s_rate_2"],
 
-                    // // value.bagList[index]["totalamount"],
-                    // // value.bagList[index]["qty"],
-                    // // size,
-                    // // value.controller[index],
-                    // index,
-                    // value.bagList[index]["code"]
-                    );
+                  // // value.bagList[index]["totalamount"],
+                  // // value.bagList[index]["qty"],
+                  // // size,
+                  // // value.controller[index],
+                  // index,
+                  // value.bagList[index]["code"]
+                );
               },
             ),
           ),
-        
         ],
       ),
     );
   }
 
-  Widget listItemFunction(int cartrowno, String itemName, double srate1, double srate2,
-      String totalamount, int qty, Size size, int index) {
+  Widget listItemFunction(int cartrowno, String itemName, double srate1,
+      double srate2, String totalamount, int qty, Size size, int index) {
     // print("qty-------$qty");
     // _controller.text = qty.toString();
 

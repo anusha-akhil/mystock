@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/search_page/searchscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
 import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +118,16 @@ class _MainDashboardState extends State<MainDashboard> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     child: ListTile(
+                      onTap: () {
+                        Provider.of<Controller>(context, listen: false)
+                            .getTransactionList(context);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchScreen()),
+                        );
+                      },
                       leading: CircleAvatar(
                           radius: 20, child: Image.asset("asset/search.png")),
                       trailing: Icon(Icons.arrow_forward),

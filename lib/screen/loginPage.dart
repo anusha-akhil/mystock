@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ? Container(
                                       width: 24,
                                       height: 24,
-                                      padding: EdgeInsets.all(2.0),
+                                      padding: const EdgeInsets.all(2.0),
                                       child: CircularProgressIndicator(
                                         color: P_Settings.loginPagetheme,
                                         strokeWidth: 3,

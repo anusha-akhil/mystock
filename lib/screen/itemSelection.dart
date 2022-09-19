@@ -7,6 +7,7 @@ import 'package:mystock/components/infoBottomSheet.dart';
 import 'package:mystock/components/modalBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/alphabetScrollPage.dart';
+import 'package:mystock/screen/bag/bag.dart';
 import 'package:provider/provider.dart';
 
 class ItemSelection extends StatefulWidget {
@@ -83,6 +84,36 @@ class _ItemSelectionState extends State<ItemSelection> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: P_Settings.loginPagetheme,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 18.0),
+              child: GestureDetector(
+                onTap: () {
+                   Provider.of<Controller>(context, listen: false).getbagData(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BagPage()),
+                  );
+                },
+                child: Image.asset(
+                  "asset/shopping-cart.png",
+                  height: size.height * 0.05,
+                  width: size.width * 0.07,
+                
+                ),
+              ),
+            ),
+
+            // IconButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => BagPage()),
+            //     );
+            //   },
+            //   icon: Icon(Icons.shopping_cart),
+            // )
+          ],
         ),
         // appBar: AppBar(
         //   leading: IconButton(

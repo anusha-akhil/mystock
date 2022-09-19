@@ -286,12 +286,12 @@ class Controller extends ChangeNotifier {
           branch_id = prefs.getString("branch_id");
           user_id = prefs.getString("user_id");
           print("kjn---------------$branch_id----$user_id-");
-          Uri url = Uri.parse("$urlgolabl/products_list.php");
+          Uri url = Uri.parse("$urlgolabl/cart_list.php.php");
           Map body = {
             'staff_id': user_id,
             'branch_id': branch_id,
           };
-          print("body-----$body");
+          print("cart bag body-----$body");
           // isDownloaded = true;
           isLoading = true;
           // notifyListeners();
@@ -301,7 +301,7 @@ class Controller extends ChangeNotifier {
             body: body,
           );
           var map = jsonDecode(response.body);
-          print("response-----------------$map");
+          print("cart bag response-----------------$map");
 
           isLoading = false;
           notifyListeners();

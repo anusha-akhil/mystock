@@ -34,6 +34,7 @@ class _StockTransferState extends State<StockTransfer> {
             padding: const EdgeInsets.only(right: 18.0),
             child: GestureDetector(
               onTap: () {
+                
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BagPage()),
@@ -43,6 +44,7 @@ class _StockTransferState extends State<StockTransfer> {
                 "asset/shopping-cart.png",
                 height: size.height * 0.05,
                 width: size.width * 0.07,
+           
               ),
             ),
           ),
