@@ -7,6 +7,7 @@ import 'package:mystock/components/globalData.dart';
 import 'package:mystock/components/network_connectivity.dart';
 import 'package:mystock/model/branchModel.dart';
 import 'package:mystock/model/itemcategroy.dart';
+import 'package:mystock/model/productListModel.dart';
 import 'package:mystock/model/registrationModel.dart';
 import 'package:mystock/model/transactionModel.dart';
 import 'package:mystock/screen/loginPage.dart';
@@ -35,6 +36,8 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> qty = [];
 
   List<Map<String, dynamic>> productList = [];
+  List<Map<String, dynamic>> bagList = [];
+
   List<BranchModel> branchist = [];
   List<TransactionTypeModel> transactionist = [];
 
@@ -54,160 +57,225 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////////////////////
 
-  getItemCategory() async {
-    try {
-      Uri url = Uri.parse("$urlgolabl/category_list.php");
+  getItemCategory(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          Uri url = Uri.parse("$urlgolabl/category_list.php");
 
-      // isDownloaded = true;
-      isLoading = true;
-      // notifyListeners();
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
 
-      http.Response response = await http.post(
-        url,
-      );
+          http.Response response = await http.post(
+            url,
+          );
 
-      // print("body ${body}");
-      ItemCategoryModel itemCategory;
-      List map = jsonDecode(response.body);
-      productList.clear();
-      productbar.clear();
-      for (var item in map) {
-        itemCategory = ItemCategoryModel.fromJson(item);
-        itemCategoryList.add(itemCategory);
+          // print("body ${body}");
+          ItemCategoryModel itemCategory;
+          List map = jsonDecode(response.body);
+          productList.clear();
+          productbar.clear();
+          itemCategoryList.clear();
+          for (var item in map) {
+            itemCategory = ItemCategoryModel.fromJson(item);
+            itemCategoryList.add(itemCategory);
+          }
+
+          isLoading = false;
+          notifyListeners();
+          return itemCategoryList;
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
       }
-
-      isLoading = false;
-      notifyListeners();
-      return itemCategoryList;
-      /////////////// insert into local db /////////////////////
-    } catch (e) {
-      print(e);
-      // return null;
-      return [];
-    }
+    });
   }
 
 /////////////////////////////////////////////////////////////////////////
-  getBranchList() async {
-    // print("cid...............${cid}");
-    try {
-      BranchModel brnachModel = BranchModel();
-      Uri url = Uri.parse("$urlgolabl/branch_list.php");
-      // Map body = {
-      //   'cid': cid,
-      // };
-      // print("compny----${cid}");
-      // isDownloaded = true;
-      isLoading = true;
-      // notifyListeners();
+  getBranchList(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          BranchModel brnachModel = BranchModel();
+          Uri url = Uri.parse("$urlgolabl/branch_list.php");
+          // Map body = {
+          //   'cid': cid,
+          // };
+          // print("compny----${cid}");
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
 
-      http.Response response = await http.post(
-        url,
-        // body: body,
-      );
+          http.Response response = await http.post(
+            url,
+            // body: body,
+          );
 
-      // print("body ${body}");
-      List map = jsonDecode(response.body);
-      branchist.clear();
-      // productbar.clear();
-      for (var item in map) {
-        brnachModel = BranchModel.fromJson(item);
-        branchist.add(brnachModel);
+          // print("body ${body}");
+          List map = jsonDecode(response.body);
+          branchist.clear();
+          // productbar.clear();
+          for (var item in map) {
+            brnachModel = BranchModel.fromJson(item);
+            branchist.add(brnachModel);
+          }
+
+          isLoading = false;
+          notifyListeners();
+          return branchist;
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
       }
-
-      isLoading = false;
-      notifyListeners();
-      return branchist;
-      /////////////// insert into local db /////////////////////
-    } catch (e) {
-      print(e);
-      // return null;
-      return [];
-    }
+    });
   }
 
 /////////////////////////////////////////////////////////////////////////
-  getTransactionList() async {
-    // print("cid...............${cid}");
-    try {
-      BranchModel brnachModel = BranchModel();
-      Uri url = Uri.parse("$urlgolabl/transaction_type.php");
-      // Map body = {
-      //   'cid': cid,
-      // };
+  getTransactionList(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          BranchModel brnachModel = BranchModel();
+          Uri url = Uri.parse("$urlgolabl/transaction_type.php");
+          // Map body = {
+          //   'cid': cid,
+          // };
 
-      // isDownloaded = true;
-      isLoading = true;
-      // notifyListeners();
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
 
-      http.Response response = await http.post(
-        url,
-        // body: body,
-      );
-      var map = jsonDecode(response.body);
-      print("transaction map----$map");
-      TransactionTypeModel transactionTypeModel;
-      transactionist.clear();
+          http.Response response = await http.post(
+            url,
+            // body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("transaction map----$map");
+          TransactionTypeModel transactionTypeModel;
+          transactionist.clear();
 
-      for (var item in map) {
-        transactionTypeModel = TransactionTypeModel.fromJson(item);
-        transactionist.add(transactionTypeModel);
+          for (var item in map) {
+            transactionTypeModel = TransactionTypeModel.fromJson(item);
+            transactionist.add(transactionTypeModel);
+          }
+
+          isLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
       }
-
-      isLoading = false;
-      notifyListeners();
-
-      /////////////// insert into local db /////////////////////
-    } catch (e) {
-      print(e);
-      // return null;
-      return [];
-    }
+    });
   }
 
   //////////////////////////////////////////////////////////////////////
-  addTobag(
-    String itemId,
-    double srate1,
-    double srate2,
-    double qty
-  ) async {
-    // print("cid...............${cid}");
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      branch_id = prefs.getString("branch_id");
-      user_id = prefs.getString("user_id");
-      print("kjn---------------$branch_id----$user_id-");
-      Uri url = Uri.parse("$urlgolabl/products_list.php");
-      Map body = {
-        'staff_id': user_id,
-        'branch_id': branch_id,
-        'item_id': itemId,
-        'srate1': srate1,
-        'srate2': srate2,
-        'qty':qty
-      };
-     print("body-----$body");
-      // isDownloaded = true;
-      isLoading = true;
-      // notifyListeners();
+  addTobag(String itemId, double srate1, double srate2, double qty,String cartId,int event,
+      BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          user_id = prefs.getString("user_id");
+          print("kjn---------------$branch_id----$user_id-");
+          Uri url = Uri.parse("$urlgolabl/save_cart.php");
 
-      http.Response response = await http.post(
-        url,
-        body: body,
-      );
-      var map = jsonDecode(response.body);
-      print("response-----------------$map");
+          // Map map = {
+          //   '0': compny_code,
+          //   "1": fp,
+          // };
 
-      isLoading = false;
-      notifyListeners();
+          // List list = [];
+          // list.add(map);
+          // var jsonen = jsonEncode(list);
+          Map body = {
+            'staff_id': user_id,
+            'branch_id': branch_id,
+            'item_id': itemId,
+            'qty': qty,
+            'cart_id':cartId,
+            'event':event
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          notifyListeners();
 
-      /////////////// insert into local db /////////////////////
-    } catch (e) {
-      print(e);
-      // return null;
-      return [];
-    }
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("response-----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+  //////////////////////////////////////////////////////////////////////
+  getbagData(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          user_id = prefs.getString("user_id");
+          print("kjn---------------$branch_id----$user_id-");
+          Uri url = Uri.parse("$urlgolabl/products_list.php");
+          Map body = {
+            'staff_id': user_id,
+            'branch_id': branch_id,
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("response-----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+          // ProductListModel productListModel;
+          if (map != null) {
+            for (var item in map) {
+              // productListModel = ProductListModel.fromJson(item);
+              bagList.add(item);
+            }
+          }
+          notifyListeners();
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
   }
 
 /////////////////////////////////////////////////////////////////////////
@@ -222,8 +290,9 @@ class Controller extends ChangeNotifier {
       user_id = prefs.getString("user_id");
       print("kjn---------------$branch_id----$user_id-");
       Uri url = Uri.parse("$urlgolabl/products_list.php");
+      
       Map body = {'staff_id': user_id, 'branch_id': branch_id};
-      // print("compny----${cid}");
+      print("body----${body}");
       // isDownloaded = true;
       isLoading = true;
       notifyListeners();

@@ -89,7 +89,7 @@ class _MainDashboardState extends State<MainDashboard> {
                     child: ListTile(
                       onTap: () {
                         Provider.of<Controller>(context, listen: false)
-                            .getTransactionList();
+                            .getTransactionList(context);
 
                         Navigator.push(
                           context,

@@ -153,25 +153,35 @@ class RegistrationController extends ChangeNotifier {
       var map = jsonDecode(response.body);
       print("login map ${map}");
       LoginModel loginModel;
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (map != null) {
+        prefs.setString("st_uname", userName);
+        prefs.setString("st_pwd", password);
 
-      for (var item in map) {
-        loginModel = LoginModel.fromJson(item);
-        prefs.setString("user_id", loginModel.userId!);
-        prefs.setString("branch_id", loginModel.branchId!);
-        prefs.setString("staff_name", loginModel.staffName!);
-        prefs.setString("branch_name", loginModel.branchName!);
-        prefs.setString("branch_prefix", loginModel.branchPrefix!);
+        for (var item in map) {
+          loginModel = LoginModel.fromJson(item);
+          prefs.setString("user_id", loginModel.userId!);
+          prefs.setString("branch_id", loginModel.branchId!);
+          prefs.setString("staff_name", loginModel.staffName!);
+          prefs.setString("branch_name", loginModel.branchName!);
+          prefs.setString("branch_prefix", loginModel.branchPrefix!);
+        }
+
+        isLoading = false;
+        notifyListeners();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainDashboard()),
+        );
+      } else {
+        CustomSnackbar snackbar = CustomSnackbar();
+        snackbar.showSnackbar(context, "Incorrect Username or Password", "");
       }
+
       // print("stafff-------${loginModel.staffName}");
-
-      isLoading = false;
       notifyListeners();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MainDashboard()),
-      );
-
       return staffModel;
     } catch (e) {
       print(e);

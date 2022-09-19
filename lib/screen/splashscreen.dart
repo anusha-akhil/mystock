@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'companyRegistration.dart';
+import 'dashboard/mainDashboard.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 if (cid != null) {
                   // return DashboardPage();
                   if (st_uname != null && st_pwd != null) {
-                    return DashboardPage();
+                    return MainDashboard();
                   } else {
                     return LoginPage();
                   }

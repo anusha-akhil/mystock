@@ -5,6 +5,7 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/controller/registrationController.dart';
 import 'package:mystock/screen/dashboard/dashboard.dart';
+import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/itemCreation.dart';
 import 'package:mystock/screen/itemSelection.dart';
 import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
@@ -121,13 +122,10 @@ class _LoginPageState extends State<LoginPage> {
                                 // );
 
                                 if (_formKey.currentState!.validate()) {
-
-                                   Provider.of<RegistrationController>(context,
-                                            listen: false)
-                                        .getLogin(
-                                            controller1.text,
-                                            controller2.text,context
-                                            );
+                                  Provider.of<RegistrationController>(context,
+                                          listen: false)
+                                      .getLogin(controller1.text,
+                                          controller2.text, context);
                                   // result = await MystockDB.instance.selectStaff(
                                   //     controller1.text, controller2.text);
 
@@ -145,12 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                                   //   await prefs.setString(
                                   //       'st_pwd', controller2.text);
 
-                                  //   Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             DashboardPage()),
-                                  //   );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => MainDashboard()),
+                                  // );
                                   // }
                                 }
                               },
