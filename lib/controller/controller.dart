@@ -35,6 +35,8 @@ class Controller extends ChangeNotifier {
   List<bool> applyClicked = [];
   List<TextEditingController> qty = [];
 
+  String? cartCount ;
+
   List<Map<String, dynamic>> productList = [];
   List<Map<String, dynamic>> bagList = [];
 
@@ -348,11 +350,18 @@ class Controller extends ChangeNotifier {
         body: body,
       );
 
-      // print("body ${body}");
-      List map = jsonDecode(response.body);
+      print("body ${body}");
+      var map = jsonDecode(response.body);
+
+      print("nmnmkzd-------$map");
       productList.clear();
       productbar.clear();
-      for (var pro in map) {
+
+      cartCount = map["cart_count"].toString();
+      notifyListeners();
+
+      for (var pro in map["product_list"]) {
+        print("pro------$pro");
         productbar.add(pro["item_name"][0]);
         productList.add(pro);
       }
@@ -363,7 +372,8 @@ class Controller extends ChangeNotifier {
       print("qty------$qty");
 
       for (int i = 0; i < productList.length; i++) {
-        qty[i].text = "1";
+        print("qty------${productList[i]["qty"]}");
+        qty[i].text = productList[i]["qty"].toString();
       }
       notifyListeners();
       var seen = Set<String>();
