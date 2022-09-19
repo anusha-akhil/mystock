@@ -180,7 +180,51 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  addTobag(String itemId, double srate1, double srate2, double qty,String cartId,int event,
+  addTobag(String itemId, String srate1, String srate2, String qty,
+      BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          user_id = prefs.getString("user_id");
+          print("kjn---------------$branch_id----$user_id-");
+          Uri url = Uri.parse("$urlgolabl/save_cart.php");
+          Map body = {
+            'staff_id': user_id,
+            'branch_id': branch_id,
+            'item_id': itemId,
+            'qty': qty,
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          // var encodedBody=jsonEncode(body);
+          isLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+
+          var map = jsonDecode(response.body);
+          print("response-----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+  //////////////////////////////////////////////////////////////////////
+  deleteFromBag(String itemId, double srate1, double srate2, double qty,
       BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
@@ -206,13 +250,15 @@ class Controller extends ChangeNotifier {
             'qty': qty,
           };
           print("body-----$body");
-          // isDownloaded = true;
+          // var jsonBody=jsonEncode(body);
+          // print("jsonBody----$jsonBody");
           isLoading = true;
           notifyListeners();
 
           http.Response response = await http.post(
             url,
-            body: jsonEncode(body),
+            body: body,
+            headers: {"Content-Type": "application/json"},
           );
 
           var map = jsonDecode(response.body);

@@ -406,8 +406,7 @@ class Bottomsheet {
       double srate2,
       double stock,
       int transval,
-      String cartId,
-      int event) {
+) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -710,8 +709,8 @@ class Bottomsheet {
                                       .setApplyClicked(true, index);
                                   Provider.of<Controller>(context,
                                           listen: false)
-                                      .addTobag(itemId, srate1, srate2,
-                                          double.parse(value.qty[index].text,),"1",0,context);
+                                      .addTobag(itemId, srate1.toString(), srate2.toString(),
+                                         value.qty[index].text,context);
                                   Navigator.pop(context);
                                 }
                                 // payment_mode = "-2";
