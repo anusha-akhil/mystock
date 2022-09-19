@@ -100,8 +100,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                     } else {
                       return Text(
                         "${value.cartCount}",
-                        style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
                       );
                     }
                   },
@@ -109,10 +109,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                 position: const BadgePosition(start: 33, bottom: 25),
                 child: IconButton(
                   onPressed: () async {
-                         Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BagPage()),
-                  );
+                    Provider.of<Controller>(context, listen: false)
+                        .getbagData(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BagPage()),
+                    );
                   },
                   icon: const Icon(Icons.shopping_cart),
                 ),

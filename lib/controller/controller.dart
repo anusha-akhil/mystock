@@ -35,7 +35,7 @@ class Controller extends ChangeNotifier {
   List<bool> applyClicked = [];
   List<TextEditingController> qty = [];
 
-  String? cartCount ;
+  String? cartCount;
 
   List<Map<String, dynamic>> productList = [];
   List<Map<String, dynamic>> bagList = [];
@@ -287,7 +287,7 @@ class Controller extends ChangeNotifier {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           branch_id = prefs.getString("branch_id");
           user_id = prefs.getString("user_id");
-          print("kjn---------------$branch_id----$user_id-");
+          print("cart kjn---------------$branch_id----$user_id-");
           Uri url = Uri.parse("$urlgolabl/cart_list.php.php");
           Map body = {
             'staff_id': user_id,
@@ -300,18 +300,18 @@ class Controller extends ChangeNotifier {
 
           http.Response response = await http.post(
             url,
-            body: body,
+            body:body,
             // headers: {"Content-Type": "application/json"},
           );
-          var map = jsonDecode(response.body);
+          var map = json.decode(json.encode(response.body));  
           print("cart bag response-----------------$map");
 
           isLoading = false;
           notifyListeners();
-          // ProductListModel productListModel;
+          ProductListModel productListModel;
           if (map != null) {
             for (var item in map) {
-              // productListModel = ProductListModel.fromJson(item);
+              productListModel = ProductListModel.fromJson(item);
               bagList.add(item);
             }
           }
