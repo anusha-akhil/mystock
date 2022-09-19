@@ -324,6 +324,50 @@ class Controller extends ChangeNotifier {
       }
     });
   }
+////////////////////////////////////////////////////////////////////////
+getinfoList(BuildContext context,String itemId) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+  
+          Uri url = Uri.parse("$urlgolabl/item_search_stock.php");
+          Map body = {
+            'item_id': itemId,
+            'branch_id': branch_id,
+          };
+          print("cart bag body-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          // notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("item_search_stock bag response-----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+          // ProductListModel productListModel;
+          // if (map != null) {
+          //   for (var item in map) {
+          //     // productListModel = ProductListModel.fromJson(item);
+          //     bagList.add(item);
+          //   }
+          // }
+          notifyListeners();
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
 
 /////////////////////////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>> getProductDetails() async {
