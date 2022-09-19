@@ -154,7 +154,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(true);
                     Provider.of<Controller>(context, listen: false)
-                        .getBranchList();
+                        .getBranchList(context);
                   }
                 }
               },

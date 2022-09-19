@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class StockTransfer extends StatefulWidget {
   List<Map<String, dynamic>> list;
   int transVal;
-  StockTransfer({required this.list,required this.transVal});
+  StockTransfer({required this.list, required this.transVal});
 
   @override
   State<StockTransfer> createState() => _StockTransferState();
@@ -20,8 +20,9 @@ class _StockTransferState extends State<StockTransfer> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("transVal----${widget.transVal}");
+    print("listdd----${widget.list}");
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,8 +65,14 @@ class _StockTransferState extends State<StockTransfer> {
               color: P_Settings.loginPagetheme,
             );
           } else {
-            // return Container();
-            return ItemSelection(list: widget.list,transVal: widget.transVal,);
+            if (widget.list.length > 0) {
+              return ItemSelection(
+                list: widget.list,
+                transVal: widget.transVal,
+              );
+            }else{
+              return Container();
+            }
           }
         },
       ),

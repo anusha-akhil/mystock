@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/historyPage.dart';
+import 'package:mystock/screen/itemSelection.dart';
 import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +19,7 @@ class TransactionPage extends StatefulWidget {
 
 class _TransactionPageState extends State<TransactionPage> {
   List<String> splitted = [];
+  ValueNotifier<bool> visible = ValueNotifier(false);
 
   @override
   void initState() {
@@ -82,64 +86,94 @@ class _TransactionPageState extends State<TransactionPage> {
               SizedBox(
                 height: size.height * 0.08,
               ),
+              ValueListenableBuilder(
+                  valueListenable: visible,
+                  builder: (BuildContext context, bool v, Widget? child) {
+                    print("value===${visible.value}");
+                    return Visibility(
+                      visible: v,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 18.0),
+                        child: Text(
+                          "Please choose TransactionType",
+                          style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      ),
+                    );
+                  }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: size.height * 0.05,
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: P_Settings.loginPagetheme,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(2), // <-- Radius
-                          ),
+                      style: ElevatedButton.styleFrom(
+                        primary: P_Settings.loginPagetheme,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2), // <-- Radius
                         ),
-                        onPressed: () async {
+                      ),
+                      onPressed: () async {
+                        print("selectedtransaction----$selectedtransaction");
+
+                        if (selectedtransaction != null) {
+                          visible.value = false;
                           Provider.of<Controller>(context, listen: false)
-                              .getItemCategory();
+                              .getItemCategory(context);
                           List<Map<String, dynamic>> list =
                               await Provider.of<Controller>(context,
                                       listen: false)
                                   .getProductDetails();
+                          
                           print("fkjdfjdjfnzskfn;lg------${list}");
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                                opaque: false, // set to false
-                                pageBuilder: (_, __, ___) => StockTransfer(
-                                      list: list,
-                                      transVal: int.parse(splitted[3]),
-                                    )
-                                // OrderForm(widget.areaname,"return"),
-                                ),
-                          );
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => StockTransfer(
-                          //             list: list,
-                          //             transVal: int.parse(splitted[3]),
-                          //           )),
-                          // );
-                          // return await showDialog(
-                          //     context: context,
-                          //     barrierDismissible: false, // user must tap button!
-                          //     builder: (BuildContext context) {
-                          //       return WillPopScope(
-                          //         onWillPop: () async => false,
-                          //         child: buildPopupDialog("content", context, size),
-                          //       );
-                          //     });
-                        },
-                        child: Text(
-                          'Confirmation',
-                          style: GoogleFonts.aBeeZee(
-                            textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: P_Settings.buttonColor,
-                          ),
-                        )),
+                          if (list.length > 0) {
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                  opaque: false, // set to false
+                                  pageBuilder: (_, __, ___) => ItemSelection(
+                                        list: list,
+                                        transVal: int.parse(splitted[3]),
+                                      )
+                                  // OrderForm(widget.areaname,"return"),
+                                  ),
+                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => StockTransfer(
+                            //             list: list,
+                            //             transVal: int.parse(splitted[3]),
+                            //           )),
+                            // );
+                          }
+                        } else {
+                          visible.value = true;
+                        }
+
+                        // return await showDialog(
+                        //     context: context,
+                        //     barrierDismissible: false, // user must tap button!
+                        //     builder: (BuildContext context) {
+                        //       return WillPopScope(
+                        //         onWillPop: () async => false,
+                        //         child: buildPopupDialog("content", context, size),
+                        //       );
+                        //     });
+                      },
+                      child: Text(
+                        'Confirmation',
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: P_Settings.buttonColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -200,6 +234,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 print("clicked");
                 if (item != null) {
                   setState(() {
+                    visible.value = false;
                     selectedtransaction = item;
                   });
                   print("selectedtransaction-----${selectedtransaction}");
@@ -211,7 +246,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(true);
                     Provider.of<Controller>(context, listen: false)
-                        .getBranchList();
+                        .getBranchList(context);
                   } else {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);

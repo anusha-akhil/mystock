@@ -54,14 +54,16 @@ class _BagPageState extends State<BagPage> {
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return listItemFunction(
-                    1, "fjidxjfijdx", 100, "800", 2, size, index, "hjhsjd"
-                    // value.bagList[index]["cartrowno"],
-                    // value.bagList[index]["itemName"],
-                    // value.bagList[index]["rate"],
-                    // value.bagList[index]["totalamount"],
-                    // value.bagList[index]["qty"],
-                    // size,
-                    // value.controller[index],
+                    1, "fjidxjfijdx", 100, 200,"800", 2, size, index, 
+                    // value.bagList[index][""],
+                    // value.bagList[index]["item_name"],
+                    // value.bagList[index]["s_rate_1"],
+                    // value.bagList[index]["s_rate_2"],
+
+                    // // value.bagList[index]["totalamount"],
+                    // // value.bagList[index]["qty"],
+                    // // size,
+                    // // value.controller[index],
                     // index,
                     // value.bagList[index]["code"]
                     );
@@ -74,8 +76,8 @@ class _BagPageState extends State<BagPage> {
     );
   }
 
-  Widget listItemFunction(int cartrowno, String itemName, double rate,
-      String totalamount, int qty, Size size, int index, String code) {
+  Widget listItemFunction(int cartrowno, String itemName, double srate1, double srate2,
+      String totalamount, int qty, Size size, int index) {
     // print("qty-------$qty");
     // _controller.text = qty.toString();
 
@@ -135,7 +137,7 @@ class _BagPageState extends State<BagPage> {
                                           onPressed: () {
                                             if (value.qtyinc! > 1) {
                                               value.qtyDecrement();
-                                              value.totalCalculation(rate);
+                                              value.totalCalculation(srate1);
                                             }
                                           }),
                                       Padding(
@@ -151,7 +153,7 @@ class _BagPageState extends State<BagPage> {
                                           child: Icon(Icons.add),
                                           onPressed: () {
                                             value.qtyIncrement();
-                                            value.totalCalculation(rate);
+                                            value.totalCalculation(srate1);
                                           }),
                                     ],
                                   ),
@@ -283,16 +285,16 @@ class _BagPageState extends State<BagPage> {
                                         color: P_Settings.bagText),
                                   ),
                                 ),
-                                Flexible(
-                                  flex: 3,
-                                  child: Text(
-                                    " (${code})",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Colors.grey),
-                                  ),
-                                ),
+                                // Flexible(
+                                //   flex: 3,
+                                //   child: Text(
+                                //     " (${code})",
+                                //     style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 14,
+                                //         color: Colors.grey),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Flexible(
@@ -308,7 +310,7 @@ class _BagPageState extends State<BagPage> {
                                       width: size.width * 0.02,
                                     ),
                                     Text(
-                                      "\u{20B9}${rate.toStringAsFixed(2)}",
+                                      "\u{20B9}${srate1.toStringAsFixed(2)}",
                                       style: TextStyle(
                                           color: P_Settings.bagText,
                                           fontWeight: FontWeight.bold,
@@ -324,7 +326,7 @@ class _BagPageState extends State<BagPage> {
                                             context: context,
                                             builder: (ctx) => AlertDialog(
                                               content: Text(
-                                                  "Do you want to delete ($code) ???"),
+                                                  "Do you want to delete ($itemName) ???"),
                                               actions: <Widget>[
                                                 Row(
                                                   mainAxisAlignment:

@@ -43,15 +43,18 @@ class _ItemSelectionState extends State<ItemSelection> {
     this.items = items
         .map(
           (item) => _AZItem(
-              tag: item["item_name"][0].toUpperCase(),
-              itemId: item["item_id"],
-              catId: item["cat_id"],
-              itemName: item["item_name"].toUpperCase(),
-              batchCode: item["batch_code"],
-              itemImg: item["item_img"],
-              sRate1: item["s_rate_1"],
-              sRate2: item["s_rate_2"],
-              stock: item["stock"]),
+            tag: item["item_name"][0].toUpperCase(),
+            itemId: item["item_id"],
+            catId: item["cat_id"],
+            itemName: item["item_name"].toUpperCase(),
+            batchCode: item["batch_code"],
+            itemImg: item["item_img"],
+            sRate1: item["s_rate_1"],
+            sRate2: item["s_rate_2"],
+            stock: item["stock"],
+            cartId: "1",
+            event: "0",
+          ),
         )
         .toList();
     SuspensionUtil.sortListBySuspensionTag(this.items);
@@ -78,6 +81,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(backgroundColor:  P_Settings.loginPagetheme,),
         // appBar: AppBar(
         //   leading: IconButton(
         //       onPressed: () {
@@ -253,24 +257,32 @@ class _ItemSelectionState extends State<ItemSelection> {
                         )
                       : IconButton(
                           onPressed: () {
-                            Provider.of<Controller>(context, listen: false)
-                                .addTobag(
-                                    item.itemId!,
-                                    double.parse(item.sRate1!),
-                                    double.parse(item.sRate2!),
-                                    double.parse(value.qty[index].text));
-                            // showsheet.showSheet(
-                            //     context,
-                            //     index,
-                            //     item.itemId!,
-                            //     item.catId!,
-                            //     item.batchCode!,
-                            //     item.itemName!,
-                            //     item.itemImg!,
-                            //     double.parse(item.sRate1!),
-                            //     double.parse(item.sRate2!),
-                            //     double.parse(item.stock!),
-                            //     widget.transVal);
+                            // Provider.of<Controller>(context, listen: false)
+                            //     .addTobag(
+                            //         item.itemId!,
+                            //         double.parse(item.sRate1!),
+                            //         double.parse(item.sRate2!),
+                            //         double.parse(
+                            //           value.qty[index].text,
+                            //         ),
+                            //         item.cartId!,
+                            //         int.parse(item.event!),
+                            //         context);
+                            showsheet.showSheet(
+                              context,
+                              index,
+                              item.itemId!,
+                              item.catId!,
+                              item.batchCode!,
+                              item.itemName!,
+                              item.itemImg!,
+                              double.parse(item.sRate1!),
+                              double.parse(item.sRate2!),
+                              double.parse(item.stock!),
+                              widget.transVal,
+                              item.cartId!,
+                              int.parse(item.event!),
+                            );
                           },
                           icon: Icon(
                             Icons.add,
@@ -294,17 +306,20 @@ class _ItemSelectionState extends State<ItemSelection> {
                   onTap: () {
                     // print("c--------------------${item.title.toString()}----${item.index.toString()}");
                     showsheet.showSheet(
-                        context,
-                        index,
-                        item.itemId!,
-                        item.catId!,
-                        item.batchCode!,
-                        item.itemName!,
-                        item.itemImg!,
-                        double.parse(item.sRate1!),
-                        double.parse(item.sRate2!),
-                        double.parse(item.stock!),
-                        widget.transVal);
+                      context,
+                      index,
+                      item.itemId!,
+                      item.catId!,
+                      item.batchCode!,
+                      item.itemName!,
+                      item.itemImg!,
+                      double.parse(item.sRate1!),
+                      double.parse(item.sRate2!),
+                      double.parse(item.stock!),
+                      widget.transVal,
+                      item.cartId!,
+                      int.parse(item.event!),
+                    );
                   }
                   // widget.onClickedItem(item.title!),
                   ),
@@ -341,6 +356,8 @@ class _AZItem extends ISuspensionBean {
   String? sRate1;
   String? sRate2;
   String? stock;
+  String? cartId;
+  String? event;
 
   _AZItem(
       {this.tag,
@@ -351,7 +368,9 @@ class _AZItem extends ISuspensionBean {
       this.itemImg,
       this.sRate1,
       this.sRate2,
-      this.stock});
+      this.stock,
+      this.cartId,
+      this.event});
 
   @override
   String getSuspensionTag() => tag!;
