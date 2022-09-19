@@ -705,9 +705,14 @@ class Bottomsheet {
                                 //   //           double.parse(
                                 //   //               value.qty[index].text));
                                 if (value.qtyerror == false) {
-                                Provider.of<Controller>(context, listen: false)
-                                    .setApplyClicked(true, index);
-                                Navigator.pop(context);
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .setApplyClicked(true, index);
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .addTobag(itemId, srate1, srate2,
+                                          double.parse(value.qty[index].text,),"1",0,context);
+                                  Navigator.pop(context);
                                 }
                                 // payment_mode = "-2";
                                 // showDialog(

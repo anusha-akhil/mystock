@@ -214,8 +214,9 @@ class Controller extends ChangeNotifier {
 
           http.Response response = await http.post(
             url,
-            body: body,
+            body: jsonEncode(body),
           );
+
           var map = jsonDecode(response.body);
           print("response-----------------$map");
 
@@ -290,7 +291,7 @@ class Controller extends ChangeNotifier {
       user_id = prefs.getString("user_id");
       print("kjn---------------$branch_id----$user_id-");
       Uri url = Uri.parse("$urlgolabl/products_list.php");
-      
+
       Map body = {'staff_id': user_id, 'branch_id': branch_id};
       print("body----${body}");
       // isDownloaded = true;
