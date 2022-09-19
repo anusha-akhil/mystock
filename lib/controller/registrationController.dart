@@ -166,12 +166,12 @@ class RegistrationController extends ChangeNotifier {
       // print("stafff-------${loginModel.staffName}");
 
       isLoading = false;
-      notifyListeners();
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MainDashboard()),
       );
-
+      notifyListeners();
       return staffModel;
     } catch (e) {
       print(e);

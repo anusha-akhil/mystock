@@ -103,14 +103,24 @@ class _TransactionPageState extends State<TransactionPage> {
                                       listen: false)
                                   .getProductDetails();
                           print("fkjdfjdjfnzskfn;lg------${list}");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StockTransfer(
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                                opaque: false, // set to false
+                                pageBuilder: (_, __, ___) => StockTransfer(
                                       list: list,
                                       transVal: int.parse(splitted[3]),
-                                    )),
+                                    )
+                                // OrderForm(widget.areaname,"return"),
+                                ),
                           );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => StockTransfer(
+                          //             list: list,
+                          //             transVal: int.parse(splitted[3]),
+                          //           )),
+                          // );
                           // return await showDialog(
                           //     context: context,
                           //     barrierDismissible: false, // user must tap button!
@@ -157,7 +167,6 @@ class _TransactionPageState extends State<TransactionPage> {
             child: DropdownButton<String>(
               isExpanded: true,
               value: selectedtransaction,
-
               // isDense: true,
               hint: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -172,13 +181,16 @@ class _TransactionPageState extends State<TransactionPage> {
                       value:
                           "${item.transId},${item.transPrefix},${item.transType},${item.transVal},${item.branch_selection}",
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               item.transType.toString(),
-                              style: TextStyle(fontSize: 14),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                         ],
@@ -200,8 +212,8 @@ class _TransactionPageState extends State<TransactionPage> {
                         .setstockTranserselected(true);
                     Provider.of<Controller>(context, listen: false)
                         .getBranchList();
-                  }else{
-                     Provider.of<Controller>(context, listen: false)
+                  } else {
+                    Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }
                 }
@@ -246,7 +258,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   .map((item) => DropdownMenuItem<String>(
                       value: item.uID.toString(),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),

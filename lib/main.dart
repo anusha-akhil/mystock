@@ -126,7 +126,7 @@ class _MyAppState extends State<MyApp> {
         //   ),
         // ),
       ),
-      home:MainDashboard()
+      home:SplashScreen()
 
       
       //  AnimatedSplashScreen(
