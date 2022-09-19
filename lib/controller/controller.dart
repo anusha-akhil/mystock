@@ -214,8 +214,9 @@ class Controller extends ChangeNotifier {
 
           http.Response response = await http.post(
             url,
-            body: body,
+            body: jsonEncode(body),
           );
+
           var map = jsonDecode(response.body);
           print("response-----------------$map");
 
