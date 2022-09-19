@@ -204,8 +204,6 @@ class Controller extends ChangeNotifier {
             'branch_id': branch_id,
             'item_id': itemId,
             'qty': qty,
-            'cart_id':cartId,
-            'event':event
           };
           print("body-----$body");
           // isDownloaded = true;

@@ -52,8 +52,7 @@ class _ItemSelectionState extends State<ItemSelection> {
             sRate1: item["s_rate_1"],
             sRate2: item["s_rate_2"],
             stock: item["stock"],
-            cartId: "1",
-            event: "0",
+            
           ),
         )
         .toList();
@@ -252,7 +251,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                           child: Text(
                             value.qty[index].text,
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                                fontSize: 17, fontWeight: FontWeight.bold),
                           ),
                         )
                       : IconButton(
@@ -280,8 +279,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                              item.cartId!,
-                              int.parse(item.event!),
+                              "0",
+                              0,
                             );
                           },
                           icon: Icon(
@@ -317,8 +316,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                       double.parse(item.sRate2!),
                       double.parse(item.stock!),
                       widget.transVal,
-                      item.cartId!,
-                      int.parse(item.event!),
+                      "0",
+                      0,
                     );
                   }
                   // widget.onClickedItem(item.title!),
@@ -356,8 +355,7 @@ class _AZItem extends ISuspensionBean {
   String? sRate1;
   String? sRate2;
   String? stock;
-  String? cartId;
-  String? event;
+  
 
   _AZItem(
       {this.tag,
@@ -369,8 +367,8 @@ class _AZItem extends ISuspensionBean {
       this.sRate1,
       this.sRate2,
       this.stock,
-      this.cartId,
-      this.event});
+     
+      });
 
   @override
   String getSuspensionTag() => tag!;
