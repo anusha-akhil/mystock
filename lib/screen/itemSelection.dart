@@ -14,8 +14,10 @@ import 'package:provider/provider.dart';
 class ItemSelection extends StatefulWidget {
   List<Map<String, dynamic>> list;
   int transVal;
+  String transType;
 
-  ItemSelection({required this.list, required this.transVal});
+  ItemSelection(
+      {required this.list, required this.transVal, required this.transType});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -38,6 +40,7 @@ class _ItemSelectionState extends State<ItemSelection> {
     // TODO: implement initState
     super.initState();
     print("dgjxfkjgkg-----${widget.list}");
+   
     initList(widget.list);
   }
 
@@ -83,77 +86,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: P_Settings.loginPagetheme,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Badge(
-                animationType: BadgeAnimationType.scale,
-                toAnimate: true,
-                badgeColor: Colors.white,
-                badgeContent: Consumer<Controller>(
-                  builder: (context, value, child) {
-                    if (value.cartCount == null) {
-                      return SpinKitChasingDots(
-                          color: P_Settings.buttonColor, size: 9);
-                    } else {
-                      return Text(
-                        "${value.cartCount}",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      );
-                    }
-                  },
-                ),
-                position: const BadgePosition(start: 33, bottom: 25),
-                child: IconButton(
-                  onPressed: () async {
-                    Provider.of<Controller>(context, listen: false).getbagData1(
-                      context,
-                    );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BagPage(
-                                transVal: widget.transVal,
-                              )),
-                    );
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                ),
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 18.0),
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       Provider.of<Controller>(context, listen: false)
-            //           .getbagData(context);
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => BagPage()),
-            //       );
-            //     },
-            //     child: Image.asset(
-            //       "asset/shopping-cart.png",
-            //       height: size.height * 0.05,
-            //       width: size.width * 0.07,
-            //     ),
-            //   ),
-            // ),
-
-            // IconButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => BagPage()),
-            //     );
-            //   },
-            //   icon: Icon(Icons.shopping_cart),
-            // )
-          ],
-        ),
+        
         // appBar: AppBar(
         //   leading: IconButton(
         //       onPressed: () {
@@ -386,7 +319,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                           Provider.of<Controller>(context, listen: false)
                               .getinfoList(context, item.itemId!);
                           infoshowsheet.showInfoSheet(
-                              context, value.infoList, value.stockList);
+                            context,
+                          );
                         },
                         child: Icon(
                           Icons.info,

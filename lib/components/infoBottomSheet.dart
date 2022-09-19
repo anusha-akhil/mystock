@@ -7,7 +7,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class InfoBottomsheet {
-  showInfoSheet(BuildContext context, List itemInfo, List stockInfo) {
+  showInfoSheet(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -212,10 +212,10 @@ class InfoBottomsheet {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top:8.0),
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: ListTile(
                             visualDensity:
-                                  VisualDensity(horizontal: 0, vertical: -4),
+                                VisualDensity(horizontal: 0, vertical: -4),
                             title: Row(
                               children: [
                                 Text(
@@ -243,122 +243,50 @@ class InfoBottomsheet {
                             ),
                           ),
                         ),
-                        Divider(indent: 10,endIndent: 20,),
+                        Divider(
+                          indent: 10,
+                          endIndent: 20,
+                        ),
                         Container(
-                          height: size.height * 0.2,
+                          height: value.stockList.length == 2
+                              ? size.height * 0.1
+                              : size.height * 0.2,
                           child: ListView.builder(
                             itemCount: value.stockList.length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                visualDensity:
-                                VisualDensity(horizontal: 0, vertical: -4),
+                                  visualDensity: VisualDensity(
+                                      horizontal: 0, vertical: -4),
                                   title: Row(
-                                children: [
-                                  Text(
-                                    value.stockList[index]["BranchName"],
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    value.stockList[index]["stock"],
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
-                              ));
+                                    children: [
+                                      Text(
+                                        value.stockList[index]["BranchName"],
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 17,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        value.stockList[index]["stock"],
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 17,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ));
                             },
                           ),
                         ),
-
-                        // DataTable(
-                        //   columns: <DataColumn>[
-                        //     DataColumn(
-                        //       label: Text(
-                        //         "Branch Name",
-                        //         style: GoogleFonts.aBeeZee(
-                        //           textStyle:
-                        //               Theme.of(context).textTheme.bodyText2,
-                        //           fontSize: 17,
-                        //           // fontWeight: FontWeight.bold,
-                        //           color: Colors.grey[900],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     DataColumn(
-                        //       label: Text(
-                        //         "Stock",
-                        //         style: GoogleFonts.aBeeZee(
-                        //           textStyle:
-                        //               Theme.of(context).textTheme.bodyText2,
-                        //           fontSize: 17,
-                        //           // fontWeight: FontWeight.bold,
-                        //           color: Colors.grey[900],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        //   rows: <DataRow>[
-                        //     DataRow(
-                        //       cells: <DataCell>[
-                        //         DataCell(Text(
-                        //           "${value.stockList[0]["BranchName"].toString()}",
-                        //           style: GoogleFonts.aBeeZee(
-                        //             textStyle:
-                        //                 Theme.of(context).textTheme.bodyText2,
-                        //             fontSize: 17,
-                        //             // fontWeight: FontWeight.bold,
-                        //             color: Colors.grey[700],
-                        //           ),
-                        //         )),
-                        //         DataCell(Text(
-                        //           '${value.stockList[0]["stock"].toString()}',
-                        //           style: GoogleFonts.aBeeZee(
-                        //             textStyle:
-                        //                 Theme.of(context).textTheme.bodyText2,
-                        //             fontSize: 17,
-                        //             // fontWeight: FontWeight.bold,
-                        //             color: Colors.grey[700],
-                        //           ),
-                        //         )),
-                        //       ],
-                        //     ),
-                        //     DataRow(
-                        //       cells: <DataCell>[
-                        //         DataCell(Text(
-                        //           '${value.stockList[1]["BranchName"].toString()}',
-                        //           style: GoogleFonts.aBeeZee(
-                        //             textStyle:
-                        //                 Theme.of(context).textTheme.bodyText2,
-                        //             fontSize: 17,
-                        //             // fontWeight: FontWeight.bold,
-                        //             color: Colors.grey[700],
-                        //           ),
-                        //         )),
-                        //         DataCell(Text(
-                        //           '${value.stockList[1]["stock"].toString()}',
-                        //           style: GoogleFonts.aBeeZee(
-                        //             textStyle:
-                        //                 Theme.of(context).textTheme.bodyText2,
-                        //             fontSize: 17,
-                        //             // fontWeight: FontWeight.bold,
-                        //             color: Colors.grey[700],
-                        //           ),
-                        //         )),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),

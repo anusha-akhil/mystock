@@ -12,7 +12,7 @@ import 'package:mystock/screen/confirmationPage.dart';
 import 'package:provider/provider.dart';
 
 class BagPage extends StatefulWidget {
-    int transVal;
+  int transVal;
   BagPage({required this.transVal}) ;
 
   @override
