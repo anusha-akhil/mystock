@@ -121,11 +121,11 @@ class _MainDashboardState extends State<MainDashboard> {
                       onTap: () {
                         Provider.of<Controller>(context, listen: false)
                             .getTransactionList(context);
-
+                   Provider.of<Controller>(context, listen: false).setIssearch(false);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SearchScreen()),
+                              builder: (context) => SearchScreen(type:"start")),
                         );
                       },
                       leading: CircleAvatar(

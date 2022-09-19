@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
@@ -131,24 +132,22 @@ class _TransactionPageState extends State<TransactionPage> {
 
                           print("fkjdfjdjfnzskfn;lg------${list}");
                           if (list.length > 0) {
+                            // setState(() {
+                            //   isLoad=true;
+                            // });
                             Navigator.of(context).push(
                               PageRouteBuilder(
                                   opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => ItemSelection(
+                                  pageBuilder: (_, __, ___) => StockTransfer(
                                         list: list,
-                                        transVal: int.parse(splitted[3]),
+                                        transVal: int.parse(
+                                          splitted[3],
+                                        ),
+                                        transType: splitted[2],
                                       )
                                   // OrderForm(widget.areaname,"return"),
                                   ),
                             );
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => StockTransfer(
-                            //             list: list,
-                            //             transVal: int.parse(splitted[3]),
-                            //           )),
-                            // );
                           }
                         } else {
                           visible.value = true;
@@ -177,6 +176,14 @@ class _TransactionPageState extends State<TransactionPage> {
                   ),
                 ],
               ),
+              value.isProdLoading
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 35.0),
+                      child: SpinKitFadingCircle(
+                        color: P_Settings.loginPagetheme,
+                      ),
+                    )
+                  : Container()
             ],
           );
         },

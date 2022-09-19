@@ -16,10 +16,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Controller extends ChangeNotifier {
   String? fromDate;
   bool isVisible = false;
-
+  bool isProdLoading=false;
+  bool isSearch = false;
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
   bool isLoading = false;
+  bool isListLoading = false;
+
   bool qtyerror = false;
   bool stocktransferselected = false;
   String? branch_id;
@@ -347,8 +350,8 @@ class Controller extends ChangeNotifier {
           };
           print("cart bag body-----$body");
           // isDownloaded = true;
-          isLoading = true;
-          // notifyListeners();
+          isListLoading = true;
+          notifyListeners();
 
           http.Response response = await http.post(
             url,
@@ -370,7 +373,7 @@ class Controller extends ChangeNotifier {
           }
 
           print("infoList---$infoList----$stockList");
-          isLoading = false;
+          isListLoading = false;
           notifyListeners();
 
           /////////////// insert into local db /////////////////////
@@ -409,7 +412,7 @@ class Controller extends ChangeNotifier {
           for (var item in map) {
             searchList.add(item);
           }
-          
+
           isLoading = false;
           notifyListeners();
 
@@ -439,13 +442,16 @@ class Controller extends ChangeNotifier {
       Map body = {'staff_id': user_id, 'branch_id': branch_id};
       print("body----${body}");
       // isDownloaded = true;
-      isLoading = true;
+      isProdLoading = true;
       notifyListeners();
 
       http.Response response = await http.post(
         url,
         body: body,
       );
+
+      isProdLoading = false;
+      notifyListeners();
 
       print("body ${body}");
       var map = jsonDecode(response.body);
@@ -479,8 +485,7 @@ class Controller extends ChangeNotifier {
       uniquelist.sort();
       print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
-      isLoading = false;
-      notifyListeners();
+
       return productList;
       /////////////// insert into local db /////////////////////
     } catch (e) {
@@ -653,6 +658,11 @@ class Controller extends ChangeNotifier {
     fromDate = date1;
     todate = date2;
     print("gtyy----$fromDate----$todate");
+    notifyListeners();
+  }
+
+  setIssearch(bool isSrach) {
+    isSearch = isSrach;
     notifyListeners();
   }
 }
