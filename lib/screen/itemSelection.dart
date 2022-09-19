@@ -378,6 +378,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                           child: Text("Stock:${item.stock}")),
                       GestureDetector(
                         onTap: () {
+
+                          Provider.of<Controller>(context, listen: false).getinfoList(context, item.itemId!);
                           infoshowsheet.showInfoSheet(
                             context,
                             index,
