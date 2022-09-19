@@ -128,7 +128,7 @@ class Controller extends ChangeNotifier {
           );
 
           // print("body ${body}");
-          List map = jsonDecode(response.body);
+          var map = jsonDecode(response.body);
           branchist.clear();
           // productbar.clear();
           for (var item in map) {
@@ -290,7 +290,7 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  getbagData(BuildContext context) async {
+  getbagData1(BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -298,42 +298,94 @@ class Controller extends ChangeNotifier {
           branch_id = prefs.getString("branch_id");
           user_id = prefs.getString("user_id");
           print("kjn---------------$branch_id----$user_id-");
-          Uri url = Uri.parse("$urlgolabl/cart_list.php.php");
+          Uri url = Uri.parse("$urlgolabl/cart_list.php");
           Map body = {
             'staff_id': user_id,
             'branch_id': branch_id,
           };
-          print("cart bag body-----$body");
-          // isDownloaded = true;
+          print("cart body-----$body");
+
           isLoading = true;
-          // notifyListeners();
+          notifyListeners();
 
           http.Response response = await http.post(
             url,
             body: body,
           );
-          var map = jsonDecode(response.body);
-          print("cart bag response-----------------$map");
 
+          var map = jsonDecode(response.body);
+          print("cart response-----------------$map");
           isLoading = false;
           notifyListeners();
-          // ProductListModel productListModel;
+          ProductListModel productListModel;
+          bagList.clear();
           if (map != null) {
             for (var item in map) {
-              // productListModel = ProductListModel.fromJson(item);
+              productListModel = ProductListModel.fromJson(item);
               bagList.add(item);
             }
           }
+          print("bag list data........$bagList");
+          // isLoading = false;
           notifyListeners();
+
           /////////////// insert into local db /////////////////////
         } catch (e) {
-          print(e);
+          print("error...$e");
           // return null;
           return [];
         }
       }
     });
   }
+
+// //////////////////////////////////////////////
+//   getbagData(BuildContext context) async {
+//     NetConnection.networkConnection(context).then((value) async {
+//       if (value == true) {
+//         try {
+//           SharedPreferences prefs = await SharedPreferences.getInstance();
+//           branch_id = prefs.getString("branch_id");
+//           user_id = prefs.getString("user_id");
+//           print("cart kjn---------------$branch_id----$user_id-");
+//           Uri url = Uri.parse("$urlgolabl/cart_list.php");
+
+//           Map body = {
+//             'staff_id': user_id,
+//             'branch_id': branch_id,
+//           };
+//           print("cart bag body-----$body");
+//           // isDownloaded = true;
+//           isLoading = true;
+//           notifyListeners();
+
+//           http.Response response = await http.post(
+//             url,
+//             headers: {"Content-Type": "application/json"},
+//             body: body,
+//           );
+//           var map = json.decode(response.body);
+//           print("cart bag response-----------------$map");
+
+//           // isLoading = false;
+//           // notifyListeners();
+//           // ProductListModel productListModel;
+//           // if (map != null) {
+//           //   for (var item in map) {
+//           //     productListModel = ProductListModel.fromJson(item);
+//           //     bagList.add(item);
+//           //   }
+//           // }
+//           notifyListeners();
+//           /////////////// insert into local db /////////////////////
+//         } catch (e) {
+//           print("error..$e");
+//           // return null;
+//           return [];
+//         }
+//       }
+//     });
+//   }
 
 ////////////////////////////////////////////////////////////////////////
   getinfoList(BuildContext context, String itemId) async {

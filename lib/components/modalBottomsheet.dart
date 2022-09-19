@@ -395,22 +395,22 @@ import 'package:provider/provider.dart';
 
 class Bottomsheet {
   showSheet(
-      BuildContext context,
-      int index,
-      String itemId,
-      String catId,
-      String batchocde,
-      String itemName,
-      String itemImg,
-      double srate1,
-      double srate2,
-      double stock,
-      int transval,
-) {
+    BuildContext context,
+    int index,
+    String itemId,
+    String catId,
+    String batchocde,
+    String itemName,
+    String itemImg,
+    double srate1,
+    double srate2,
+    double stock,
+    int transval,
+  ) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
-
+    print("bottom sheet value----$itemName----------$srate1----$srate2-----");
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
       isScrollControlled: true,
@@ -709,8 +709,18 @@ class Bottomsheet {
                                       .setApplyClicked(true, index);
                                   Provider.of<Controller>(context,
                                           listen: false)
-                                      .addTobag(itemId, srate1.toString(), srate2.toString(),
-                                         value.qty[index].text,context);
+                                      .getbagData1(
+                                    context,
+                                  );
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .addTobag(
+                                          itemId,
+                                          srate1.toString(),
+                                          srate2.toString(),
+                                          value.qty[index].text,
+                                          context);
+
                                   Navigator.pop(context);
                                 }
                                 // payment_mode = "-2";

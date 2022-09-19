@@ -29,7 +29,7 @@ class _ItemSelectionState extends State<ItemSelection> {
   List<String> uniqueList = [];
   Bottomsheet showsheet = Bottomsheet();
   InfoBottomsheet infoshowsheet = InfoBottomsheet();
-
+  String? staff_id;
   var itemstest = [
     'kg',
     'pcs',
@@ -317,7 +317,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                         onTap: () {
                           Provider.of<Controller>(context, listen: false)
                               .getinfoList(context, item.itemId!);
-
                           infoshowsheet.showInfoSheet(
                             context,
                           );

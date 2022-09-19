@@ -66,7 +66,10 @@ class _StockTransferState extends State<StockTransfer> {
                 onPressed: () async {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => BagPage()),
+                    MaterialPageRoute(
+                        builder: (context) => BagPage(
+                              transVal: widget.transVal,
+                            )),
                   );
                 },
                 icon: const Icon(Icons.shopping_cart),
