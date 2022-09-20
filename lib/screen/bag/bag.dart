@@ -36,7 +36,9 @@ class _BagPageState extends State<BagPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Provider.of<Controller>(context, listen: false).getbagData1(
+      context,
+    );
     EasyLoading.addStatusCallback((status) {
       print('EasyLoading Status $status');
       if (status == EasyLoadingStatus.dismiss) {
@@ -131,7 +133,7 @@ class _BagPageState extends State<BagPage> {
       String? batch_code,
       double stock,
       String cat_id) {
-    print("qty-----$itemName----------$srate1----$srate2-----$qty");
+    print("qty number-----$itemName----------$srate1----$srate2-----$qty");
     // _controller.text = qty.toString();
 
     return Container(
