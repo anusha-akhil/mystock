@@ -160,6 +160,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 page: "history",
                                                 remrk: value.historyList[index]
                                                     ['remarks'],
+                                                branch: value.historyList[index]
+                                                    ['remarks'],
                                                 translist: splitted),
                                       ));
                                 }),
