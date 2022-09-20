@@ -159,7 +159,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                    // fontWeight: FontWeight.bold,
                                     color: P_Settings.buttonColor,
                                   ),
                                 )),
@@ -181,7 +181,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                    // fontWeight: FontWeight.bold,
                                     color: P_Settings.buttonColor,
                                   ),
                                 )),
