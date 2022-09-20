@@ -22,7 +22,7 @@ class BagPage extends StatefulWidget {
       {required this.transVal,
       required this.transType,
       required this.transId,
-       this.branchId,
+      this.branchId,
       this.remark});
 
   @override
@@ -61,17 +61,14 @@ class _BagPageState extends State<BagPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading:
-          IconButton(
-            onPressed: () {
-              Provider.of<Controller>(context, listen: false)
-                  .getProductDetails();
+        leading: IconButton(
+          onPressed: () {
+            Provider.of<Controller>(context, listen: false).getProductDetails();
 
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
-        
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: Text(
           widget.transType.toString(),
           style: GoogleFonts.aBeeZee(
@@ -85,6 +82,52 @@ class _BagPageState extends State<BagPage> {
       ),
       body: Consumer<Controller>(
         builder: (context, value, child) {
+          if (value.bagList.length == 0) {
+          //  return  Text("knkjzsnjkzdn");
+          return Container(
+           child:  Image.asset(
+                      "asset/empty.png",
+                      height: 80,
+                      color: P_Settings.loginPagetheme,
+                      width: 100,
+                    ),
+          );
+            // return Container(
+            //   height: size.height * 0.3,
+            //   child: Center(
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Image.asset(
+            //           "asset/empty.png",
+            //           height: 80,
+            //           color: P_Settings.loginPagetheme,
+            //           width: 100,
+            //         ),
+            //         SizedBox(
+            //           height: size.height * 0.02,
+            //         ),
+            //         Text(
+            //           "Your cart is empty !!!",
+            //           style: TextStyle(fontSize: 17),
+            //         ),
+            //         SizedBox(
+            //           height: size.height * 0.02,
+            //         ),
+            //         ElevatedButton(
+            //             style: ElevatedButton.styleFrom(
+            //                 primary: P_Settings.loginPagetheme,
+            //                 textStyle: TextStyle(
+            //                     fontSize: 15, fontWeight: FontWeight.bold)),
+            //             onPressed: () {
+            //               Navigator.pop(context);
+            //             },
+            //             child: Text("View products"))
+            //       ],
+            //     ),
+            //   ),
+            // );
+          }
           if (value.isLoading) {
             return SpinKitFadingCircle(
               color: P_Settings.loginPagetheme,
@@ -177,20 +220,8 @@ class _BagPageState extends State<BagPage> {
               //     .text = rate;
               print("quantity in cart..........$qty");
               Provider.of<Controller>(context, listen: false).setQty(qty);
-              showsheet.showSheet(
-                context,
-                index,
-                item_id,
-                cart_id,
-                batch_code!,
-                itemName,
-                "",
-                srate1,
-                srate2,
-                stock,
-                0,
-                qty.toString()
-              );
+              showsheet.showSheet(context, index, item_id, cart_id, batch_code!,
+                  itemName, "", srate1, srate2, stock, 0, qty.toString());
               // Provider.of<Controller>(context, listen: false)
               //     .setAmt(totalamount);
               // showModalBottomSheet<void>(
