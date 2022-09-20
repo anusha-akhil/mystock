@@ -12,11 +12,16 @@ class StockTransfer extends StatefulWidget {
   List<Map<String, dynamic>> list;
   int transVal;
   String transType;
-    String transId;
-  String branchId;
+  String transId;
+  String? branchId;
   String? remark;
   StockTransfer(
-      {required this.list, required this.transVal, required this.transType,required this.transId,required this.branchId,this.remark});
+      {required this.list,
+      required this.transVal,
+      required this.transType,
+      required this.transId,
+      this.branchId,
+      this.remark});
 
   @override
   State<StockTransfer> createState() => _StockTransferState();
@@ -86,7 +91,8 @@ class _StockTransferState extends State<StockTransfer> {
                               transVal: widget.transVal,
                               transType: widget.transType,
                               transId: widget.transId,
-                              branchId: widget.branchId,remark: widget.remark,
+                              branchId: widget.branchId!,
+                              remark: widget.remark,
                             )),
                   );
                 },
