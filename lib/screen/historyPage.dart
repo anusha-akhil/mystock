@@ -157,10 +157,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) =>
                                             TransactionPage(
-                                                page: "history",
-                                                remrk: value.historyList[index]
-                                                    ['remarks'],
-                                                translist: splitted),
+                                          page: "history",
+                                          remrk: value.historyList[index]
+                                              ['remarks'],
+                                          branch: value.historyList[index]
+                                              ['to_branch_id'],
+                                          translist: splitted,
+                                        ),
                                       ));
                                 }),
                             IconButton(
