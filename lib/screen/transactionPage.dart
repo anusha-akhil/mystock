@@ -12,7 +12,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TransactionPage extends StatefulWidget {
-  const TransactionPage({Key? key}) : super(key: key);
+  String? remrk;
+  String? page;
+  String? transType;
+  String? branch;
+
+  TransactionPage({this.remrk, this.page, this.transType, this.branch});
 
   @override
   State<TransactionPage> createState() => _TransactionPageState();
@@ -23,13 +28,22 @@ class _TransactionPageState extends State<TransactionPage> {
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
 
-  TextEditingController remrk=TextEditingController();
+  TextEditingController remrk = TextEditingController();
+  String? hint;
+  String? hintbra;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     shared();
+    print("-----------${widget.page}");
+    if (widget.page == "history") {
+      remrk.text = widget.remrk.toString();
+      hint = widget.transType.toString();
+      hintbra = widget.branch.toString();
+    }
+    print("transType-----${widget.transType}");
   }
 
   String? branch_id;
@@ -66,7 +80,9 @@ class _TransactionPageState extends State<TransactionPage> {
                     MaterialPageRoute(builder: (context) => HistoryPage()),
                   );
                 },
-                icon: Icon(Icons.history))
+                icon: Container(
+                  height: size.height*0.03,
+                  child: Image.asset("asset/history.png")))
           ],
           leading: IconButton(
               onPressed: () {
@@ -275,7 +291,9 @@ class _TransactionPageState extends State<TransactionPage> {
               // isDense: true,
               hint: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Select Transaction"),
+                child: Text(widget.transType == null
+                    ? "Select Transaction"
+                    : hint.toString()),
               ),
               // isExpanded: true,
               autofocus: false,
@@ -301,29 +319,31 @@ class _TransactionPageState extends State<TransactionPage> {
                         ],
                       )))
                   .toList(),
-              onChanged: (item) {
-                print("clicked");
-                if (item != null) {
-                  setState(() {
-                    visible.value = false;
-                    selectedtransaction = item;
-                  });
-                  print("selectedtransaction-----${selectedtransaction}");
+              onChanged: widget.page == "history"
+                  ? null
+                  : (item) {
+                      print("clicked");
+                      if (item != null) {
+                        setState(() {
+                          visible.value = false;
+                          selectedtransaction = item;
+                        });
+                        print("selectedtransaction-----${selectedtransaction}");
 
-                  splitted = selectedtransaction!.split(',');
+                        splitted = selectedtransaction!.split(',');
 
-                  print("splitted-----${splitted}");
-                  if (splitted[4] == "1") {
-                    Provider.of<Controller>(context, listen: false)
-                        .setstockTranserselected(true);
-                    Provider.of<Controller>(context, listen: false)
-                        .getBranchList(context);
-                  } else {
-                    Provider.of<Controller>(context, listen: false)
-                        .setstockTranserselected(false);
-                  }
-                }
-              },
+                        print("splitted-----${splitted}");
+                        if (splitted[4] == "1") {
+                          Provider.of<Controller>(context, listen: false)
+                              .setstockTranserselected(true);
+                          Provider.of<Controller>(context, listen: false)
+                              .getBranchList(context);
+                        } else {
+                          Provider.of<Controller>(context, listen: false)
+                              .setstockTranserselected(false);
+                        }
+                      }
+                    },
             ),
           ),
         );
@@ -352,9 +372,9 @@ class _TransactionPageState extends State<TransactionPage> {
               // isDense: true,
               hint: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(type == "transaction"
-                    ? "Select Transaction"
-                    : "Select Branch"),
+                child: Text(widget.branch == null
+                    ? "Select Branch"
+                    : hintbra.toString()),
               ),
               // isExpanded: true,
               autofocus: false,
@@ -376,14 +396,16 @@ class _TransactionPageState extends State<TransactionPage> {
                         ],
                       )))
                   .toList(),
-              onChanged: (item) {
-                print("clicked");
-                if (item != null) {
-                  setState(() {
-                    selectedbranch = item;
-                  });
-                }
-              },
+              onChanged: widget.page == "history"
+                  ? null
+                  : (item) {
+                      print("clicked");
+                      if (item != null) {
+                        setState(() {
+                          selectedbranch = item;
+                        });
+                      }
+                    },
             ),
           ),
         );

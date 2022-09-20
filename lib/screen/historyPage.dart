@@ -21,6 +21,7 @@ class _HistoryPageState extends State<HistoryPage> {
   String? date;
   List<String> s = [];
   List<String> splitted = [];
+  ValueNotifier<bool> visible = ValueNotifier(false);
 
   String? selectedtransaction;
   List<String> heading = ["Series", "Remarks", "Date", "", ""];
@@ -91,6 +92,26 @@ class _HistoryPageState extends State<HistoryPage> {
                 // dropDownCustom(size,""),
               ),
               dropDownCustom(size, ""),
+
+              ValueListenableBuilder(
+                  valueListenable: visible,
+                  builder: (BuildContext context, bool v, Widget? child) {
+                    print("value===${visible.value}");
+                    return Visibility(
+                      visible: v,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 18.0),
+                        child: Text(
+                          "Please choose TransactionType",
+                          style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      ),
+                    );
+                  }),
               Divider(),
 
               // Container(
@@ -125,10 +146,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            TransactionPage()),
+                                      builder: (context) => TransactionPage(
+                                          page: "history",
+                                          remrk: "hayyyy",
+                                          transType: splitted[2]),
+                                    ),
                                   );
-                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
                                 },
                                 child: Text(
                                   "Edit",
@@ -346,8 +370,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   if (splitted[4] == "1") {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(true);
+                    // Provider.of<Controller>(context, listen: false)
+                    //     .getBranchList(context);
+                  }else{
                     Provider.of<Controller>(context, listen: false)
-                        .getBranchList(context);
+                        .setstockTranserselected(false);
                   }
                 }
               },
