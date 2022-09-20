@@ -42,6 +42,8 @@ class _TransactionPageState extends State<TransactionPage> {
       remrk.text = widget.remrk.toString();
       hint = widget.transType.toString();
       hintbra = widget.branch.toString();
+      // selectedtransaction=widget.transType.toString();
+      visible.value = false;
     }
     print("transType-----${widget.transType}");
   }
@@ -81,8 +83,8 @@ class _TransactionPageState extends State<TransactionPage> {
                   );
                 },
                 icon: Container(
-                  height: size.height*0.03,
-                  child: Image.asset("asset/history.png")))
+                    height: size.height * 0.03,
+                    child: Image.asset("asset/history.png")))
           ],
           leading: IconButton(
               onPressed: () {
@@ -227,6 +229,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                     ),
                               );
                             }
+                          } else if (widget.page == "history") {
+                            visible.value = false;
                           } else {
                             visible.value = true;
                           }
