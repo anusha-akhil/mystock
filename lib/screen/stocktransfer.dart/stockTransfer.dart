@@ -73,12 +73,14 @@ class _StockTransferState extends State<StockTransfer> {
               position: const BadgePosition(start: 33, bottom: 25),
               child: IconButton(
                 onPressed: () async {
-                  Provider.of<Controller>(context, listen: false).getbagData1(context);
+                  Provider.of<Controller>(context, listen: false)
+                      .getbagData1(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => BagPage(
-                              transVal: widget.transVal,transType: widget.transType,
+                              transVal: widget.transVal,
+                              transType: widget.transType,
                             )),
                   );
                 },

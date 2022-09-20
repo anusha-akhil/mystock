@@ -516,11 +516,23 @@ class Bottomsheet {
                                 width: size.width * 0.2,
                                 child: TextField(
                                   onTap: () {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .addTobag(
+                                            itemId,
+                                            srate1.toString(),
+                                            srate2.toString(),
+                                            value.qty[index].text,
+                                            context);
+
+                                    print(
+                                        "quantity......${value.qty[index].value.text}");
                                     value.qty[index].selection = TextSelection(
                                         baseOffset: 0,
                                         extentOffset:
                                             value.qty[index].value.text.length);
                                   },
+
                                   // autofocus: true,
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
