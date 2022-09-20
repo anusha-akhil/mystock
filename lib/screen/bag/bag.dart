@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/commonPopup.dart';
 import 'package:mystock/components/globalData.dart';
@@ -82,6 +83,53 @@ class _BagPageState extends State<BagPage> {
       ),
       body: Consumer<Controller>(
         builder: (context, value, child) {
+          if (value.bagList.length == 0) {
+            //  return  Text("knkjzsnjkzdn");
+            return Center(
+              child: Container(
+                  height: size.height * 0.2,
+                  child: Lottie.asset(
+                    'asset/emptycart.json',
+                    // height: size.height*0.3,
+                    // width: size.height*0.3,
+                  )),
+            );
+            // return Container(
+            //   height: size.height * 0.3,
+            //   child: Center(
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Image.asset(
+            //           "asset/empty.png",
+            //           height: 80,
+            //           color: P_Settings.loginPagetheme,
+            //           width: 100,
+            //         ),
+            //         SizedBox(
+            //           height: size.height * 0.02,
+            //         ),
+            //         Text(
+            //           "Your cart is empty !!!",
+            //           style: TextStyle(fontSize: 17),
+            //         ),
+            //         SizedBox(
+            //           height: size.height * 0.02,
+            //         ),
+            //         ElevatedButton(
+            //             style: ElevatedButton.styleFrom(
+            //                 primary: P_Settings.loginPagetheme,
+            //                 textStyle: TextStyle(
+            //                     fontSize: 15, fontWeight: FontWeight.bold)),
+            //             onPressed: () {
+            //               Navigator.pop(context);
+            //             },
+            //             child: Text("View products"))
+            //       ],
+            //     ),
+            //   ),
+            // );
+          }
           if (value.isLoading) {
             return SpinKitFadingCircle(
               color: P_Settings.loginPagetheme,
@@ -447,9 +495,10 @@ class _BagPageState extends State<BagPage> {
                                                             primary: P_Settings
                                                                 .loginPagetheme),
                                                     onPressed: () async {
-                                                      Provider.of<Controller>(
-                                                              context,
-                                                              listen: false)
+                                                      var response = await Provider
+                                                              .of<Controller>(
+                                                                  context,
+                                                                  listen: false)
                                                           .addDeletebagItem(
                                                               item_id,
                                                               srate1.toString(),
@@ -458,11 +507,11 @@ class _BagPageState extends State<BagPage> {
                                                               "2",
                                                               cart_id,
                                                               context);
-
-                                                      Provider.of<Controller>(
-                                                              context,
-                                                              listen: false)
-                                                          .getbagData1(context);
+                                                      
+                                                      // Provider.of<Controller>(
+                                                      //         context,
+                                                      //         listen: false)
+                                                      //     .getbagData1(context);
 
                                                       // Provider.of<Controller>(
                                                       //         context,

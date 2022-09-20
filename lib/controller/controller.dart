@@ -11,6 +11,7 @@ import 'package:mystock/model/productListModel.dart';
 import 'package:mystock/model/registrationModel.dart';
 import 'package:mystock/model/transactionModel.dart';
 import 'package:mystock/screen/loginPage.dart';
+import 'package:mystock/screen/transactionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
@@ -194,7 +195,7 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  addDeletebagItem(String itemId, String srate1, String srate2, String qty,
+  Future addDeletebagItem(String itemId, String srate1, String srate2, String qty,
       String event, String cart_id, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
@@ -222,11 +223,16 @@ class Controller extends ChangeNotifier {
           );
 
           var map = jsonDecode(response.body);
-          print("delete response-----------------$map");
-
+          // print("delete response-----------------$map");
+           
           isLoading = false;
           notifyListeners();
-
+          print("delete response-----------------${map["msg"]}");
+          var res=map["msg"];
+          if(res=="Bag deleted Successfully"){
+            getbagData1(context);
+          }
+          return res;
           /////////////// insert into local db /////////////////////
         } catch (e) {
           print(e);
@@ -357,7 +363,7 @@ class Controller extends ChangeNotifier {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         print("bagList-----$bagList");
-        Uri url = Uri.parse("$urlgolabl/cart_list.php");
+        Uri url = Uri.parse("$urlgolabl/save_transaction.php");
         for (var item in bagList) {
           itemmap["item_id"] = item["item_id"];
           itemmap["qty"] = item["qty"];
@@ -373,16 +379,37 @@ class Controller extends ChangeNotifier {
           "branch_id": branch_id,
           "details": jsonResult
         };
-        // resultmmap["master"] = masterMap;
-        // resultmmap["details"] = jsonResult;
+        // var jsonBody = jsonEncode(masterMap);
+        print("resultmap----$masterMap");
+        // var body = {'json_data': masterMap};
+        // print("body-----$body");
 
-        var jsonBody = jsonEncode(masterMap);
-        print("resultmap----$jsonBody");
+        var jsonEnc = jsonEncode(masterMap);
 
+        print("jsonEnc-----$jsonEnc");
+        isLoading = true;
+        notifyListeners();
         http.Response response = await http.post(
           url,
-          // body: {'om': jsonBody},
+          body: {'json_data': jsonEnc},
         );
+
+        var map = jsonDecode(response.body);
+        isLoading = false;
+        notifyListeners();
+        print("json cart------$map");
+
+        if (map["msg"] != "Stock Transfer  Inserted Successfully") {
+          CustomSnackbar snackbar = CustomSnackbar();
+          snackbar.showSnackbar(context, "Cart Save failed !!!", "");
+        } else {
+          Navigator.pushReplacement<void, void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => TransactionPage(),
+            ),
+          );
+        }
       }
     });
   }
