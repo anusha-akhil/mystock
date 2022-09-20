@@ -157,7 +157,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                           TransactionPage(
                                               page: "history",
                                               remrk: "hayyyy",
-                                              transType: splitted[2]),
+                                              translist: splitted),
                                     ),
                                   );
                                   // Navigator.push(

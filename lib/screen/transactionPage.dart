@@ -15,10 +15,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TransactionPage extends StatefulWidget {
   String? remrk;
   String? page;
-  String? transType;
+  List<String>? translist;
   String? branch;
 
-  TransactionPage({this.remrk, this.page, this.transType, this.branch});
+  TransactionPage({this.remrk, this.page, this.translist, this.branch});
 
   @override
   State<TransactionPage> createState() => _TransactionPageState();
@@ -28,7 +28,7 @@ class _TransactionPageState extends State<TransactionPage> {
   FocusNode _node = new FocusNode();
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
-
+  List<Map<String, dynamic>> list = [];
   TextEditingController remrk = TextEditingController();
   String? hint;
   String? hintbra;
@@ -41,12 +41,12 @@ class _TransactionPageState extends State<TransactionPage> {
     print("-----------${widget.page}");
     if (widget.page == "history") {
       remrk.text = widget.remrk.toString();
-      hint = widget.transType.toString();
+      hint = widget.translist![2].toString();
       hintbra = widget.branch.toString();
       // selectedtransaction=widget.transType.toString();
       visible.value = false;
     }
-    print("transType-----${widget.transType}");
+    // print("transType-----${widget.transType}");
   }
 
   String? branch_id;
@@ -208,10 +208,9 @@ class _TransactionPageState extends State<TransactionPage> {
                             visible.value = false;
                             Provider.of<Controller>(context, listen: false)
                                 .getItemCategory(context);
-                            List<Map<String, dynamic>> list =
-                                await Provider.of<Controller>(context,
-                                        listen: false)
-                                    .getProductDetails();
+                            list = await Provider.of<Controller>(context,
+                                    listen: false)
+                                .getProductDetails();
 
                             print("fkjdfjdjfnzskfn;lg------${list}");
                             if (list.length > 0) {
@@ -228,7 +227,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                           ),
                                           transType: splitted[2],
                                           transId: splitted[0],
-                                          branchId: selectedbranch!,
+                                          branchId: selectedbranch.toString(),
                                           remark: remrk.text,
                                         )
                                     // OrderForm(widget.areaname,"return"),
@@ -237,6 +236,21 @@ class _TransactionPageState extends State<TransactionPage> {
                             }
                           } else if (widget.page == "history") {
                             visible.value = false;
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                  opaque: false, // set to false
+                                  pageBuilder: (_, __, ___) => StockTransfer(
+                                        list: list,
+                                        transVal:
+                                            int.parse(widget.translist![3]),
+                                        transType: widget.translist![2],
+                                        transId: widget.translist![0],
+                                        branchId: widget.translist![4],
+                                        remark: remrk.text,
+                                      )
+                                  // OrderForm(widget.areaname,"return"),
+                                  ),
+                            );
                           } else {
                             visible.value = true;
                           }
@@ -301,7 +315,7 @@ class _TransactionPageState extends State<TransactionPage> {
               // isDense: true,
               hint: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(widget.transType == null
+                child: Text(widget.translist == null
                     ? "Select Transaction"
                     : hint.toString()),
               ),
