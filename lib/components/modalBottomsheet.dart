@@ -467,14 +467,17 @@ class Bottomsheet {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // Text("Product Name"),Spacer(),
-                                Text(
-                                  itemName.toString(),
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 17,
-                                    // fontWeight: FontWeight.bold,
-                                    color: P_Settings.loginPagetheme,
+                                Flexible(
+                                  child: Text(
+                                    itemName.toString(),
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
                                   ),
                                 ),
                               ],

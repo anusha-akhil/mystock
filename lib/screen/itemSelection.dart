@@ -294,6 +294,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                             size: 20,
                           )),
                   title: Text(item.itemName!,
+                   overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.aBeeZee(
                         textStyle: Theme.of(context).textTheme.bodyText2,
                         fontSize: 16,
