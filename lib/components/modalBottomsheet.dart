@@ -129,7 +129,6 @@ class Bottomsheet {
                                 width: size.width * 0.2,
                                 child: TextField(
                                   onTap: () {
-<<<<<<< HEAD
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .addDeletebagItem(
@@ -141,8 +140,6 @@ class Bottomsheet {
                                             "0",
                                             context);
 
-=======
->>>>>>> 806aa6a640e923dc369eefab7bbbf0ff78983a51
                                     print(
                                         "quantity......${value.qty[index].value.text}");
                                     value.qty[index].selection = TextSelection(
@@ -176,11 +173,13 @@ class Bottomsheet {
                                     );
                                     Provider.of<Controller>(context,
                                             listen: false)
-                                        .addTobag(
+                                        .addDeletebagItem(
                                             itemId,
                                             srate1.toString(),
                                             srate2.toString(),
                                             value.qty[index].text,
+                                            "0",
+                                            "0",
                                             context);
                                     print("values----$values");
                                     double valueqty = 0.0;
