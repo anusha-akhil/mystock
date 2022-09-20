@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/historyPage.dart';
 import 'package:mystock/screen/itemSelection.dart';
 import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
@@ -90,6 +91,11 @@ class _TransactionPageState extends State<TransactionPage> {
               onPressed: () {
                 Provider.of<Controller>(context, listen: false)
                     .setstockTranserselected(false);
+                Navigator.pushReplacement<void, void>(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => MainDashboard()),
+                );
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back)),

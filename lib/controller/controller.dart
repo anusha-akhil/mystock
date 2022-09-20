@@ -319,12 +319,13 @@ class Controller extends ChangeNotifier {
           "to_branch_id": to_branch_id,
           "remark": remark,
           "staff_id": user_id,
-          "branch_id": branch_id
+          "branch_id": branch_id,
+          "details" : jsonResult
         };
-        resultmmap["master"] = masterMap;
-        resultmmap["details"] = jsonResult;
+        // resultmmap["master"] = masterMap;
+        // resultmmap["details"] = jsonResult;
 
-        var jsonBody = jsonEncode(resultmmap);
+        var jsonBody = jsonEncode(masterMap);
         print("resultmap----$jsonBody");
 
         http.Response response = await http.post(
