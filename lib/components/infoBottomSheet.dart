@@ -20,7 +20,7 @@ class InfoBottomsheet {
         return Consumer<Controller>(
           builder: (context, value, child) {
             // value.qty[index].text=qty.toString();
-            if (value.isLoading) {
+            if (value.isListLoading) {
               return Container(
                   height: 200,
                   child: SpinKitFadingCircle(

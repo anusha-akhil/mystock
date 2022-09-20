@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class BagPage extends StatefulWidget {
   int transVal;
-  BagPage({required this.transVal}) ;
+  String transType;
+  BagPage({required this.transVal, required this.transType});
 
   @override
   State<BagPage> createState() => _BagPageState();
@@ -49,6 +50,15 @@ class _BagPageState extends State<BagPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          widget.transType.toString(),
+          style: GoogleFonts.aBeeZee(
+            textStyle: Theme.of(context).textTheme.bodyText2,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: P_Settings.buttonColor,
+          ),
+        ),
         backgroundColor: P_Settings.loginPagetheme,
       ),
       body: Consumer<Controller>(
@@ -81,6 +91,27 @@ class _BagPageState extends State<BagPage> {
                     },
                   ),
                 ),
+                Container(
+                    height: size.height * 0.05,
+                    width: size.width * 0.3,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: P_Settings.loginPagetheme,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(2), // <-- Radius
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          "Save",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
+                        ))),
               ],
             );
           }

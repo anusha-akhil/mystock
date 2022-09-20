@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -43,179 +45,182 @@ class _MainDashboardState extends State<MainDashboard> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(backgroundColor: P_Settings.loginPagetheme),
-      body: Container(
-        height: double.infinity,
-        // color: P_Settings.loginPagetheme,
-        child: Consumer<Controller>(
-          builder: (context, value, child) {
-            return Column(
-              children: [
-                Container(
-                  height: size.height * 0.1,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Image.asset("asset/login.png"),
-                    ),
-                    title: Text(
-                      value.staff_name.toString(),
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold,
-                        color: P_Settings.buttonColor,
-                      ),
-                    ),
-                    subtitle: Text(
-                      value.branch_name.toString(),
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 14,
-                        // fontWeight: FontWeight.bold,
-                        color: P_Settings.buttonColor,
-                      ),
-                    ),
-                  ),
-                  color: P_Settings.loginPagetheme,
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
+    return WillPopScope(
+       onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        appBar: AppBar(backgroundColor: P_Settings.loginPagetheme),
+        body: Container(
+          height: double.infinity,
+          // color: P_Settings.loginPagetheme,
+          child: Consumer<Controller>(
+            builder: (context, value, child) {
+              return Column(
+                children: [
+                  Container(
+                    height: size.height * 0.1,
                     child: ListTile(
-                      onTap: () {
-                        Provider.of<Controller>(context, listen: false)
-                            .getTransactionList(context);
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TransactionPage()),
-                        );
-                      },
                       leading: CircleAvatar(
-                          radius: 20,
-                          child: Image.asset("asset/exchanging.png")),
-                      trailing: Icon(Icons.arrow_forward),
+                        radius: 30,
+                        child: Image.asset("asset/login.png"),
+                      ),
                       title: Text(
-                        "Transaction",
+                        value.staff_name.toString(),
                         style: GoogleFonts.aBeeZee(
                           textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
+                          fontSize: 23,
                           fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme,
+                          color: P_Settings.buttonColor,
+                        ),
+                      ),
+                      subtitle: Text(
+                        value.branch_name.toString(),
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 14,
+                          // fontWeight: FontWeight.bold,
+                          color: P_Settings.buttonColor,
                         ),
                       ),
                     ),
+                    color: P_Settings.loginPagetheme,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: ListTile(
-                      onTap: () {
-                        Provider.of<Controller>(context, listen: false)
-                            .getTransactionList(context);
-                   Provider.of<Controller>(context, listen: false).setIssearch(false);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SearchScreen(type:"start")),
-                        );
-                      },
-                      leading: CircleAvatar(
-                          radius: 20, child: Image.asset("asset/search.png")),
-                      trailing: Icon(Icons.arrow_forward),
-                      title: Text(
-                        "Search",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme,
-                        ),
-                      ),
-                    ),
+                  SizedBox(
+                    height: size.height * 0.02,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Text(
-                      "Stock Approval",
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: P_Settings.loginPagetheme,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => StockApprovalPage()),
-                            );
-                          },
-                          trailing: Icon(Icons.arrow_forward),
-                          title: Text(
-                            "Branch",
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: P_Settings.loginPagetheme,
-                            ),
+    
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        onTap: () {
+                          Provider.of<Controller>(context, listen: false)
+                              .getTransactionList(context);
+    
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TransactionPage()),
+                          );
+                        },
+                        leading: CircleAvatar(
+                            radius: 20,
+                            child: Image.asset("asset/exchanging.png")),
+                        trailing: Icon(Icons.arrow_forward),
+                        title: Text(
+                          "Transaction",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.loginPagetheme,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ))
-                // Positioned(
-                //   left: 10,
-                //   right: 10,
-                //   top: 100,
-                //   // bottom: 200,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       customCard(size, "Stock", 12),
-                //       customCard(size, "Transfer", 23),
-                //     ],
-                //   ),
-                // ),
-                // Positioned(
-                //   left: 10,
-                //   right: 10,
-                //   top: 280,
-                //   // bottom: 200,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       customCard(size, "Stock", 12),
-                //       customCard(size, "Transfer", 23),
-                //     ],
-                //   ),
-                // )
-              ],
-            );
-          },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        onTap: () {
+                          Provider.of<Controller>(context, listen: false)
+                              .getTransactionList(context);
+                     Provider.of<Controller>(context, listen: false).setIssearch(false);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchScreen(type:"start")),
+                          );
+                        },
+                        leading: CircleAvatar(
+                            radius: 20, child: Image.asset("asset/search.png")),
+                        trailing: Icon(Icons.arrow_forward),
+                        title: Text(
+                          "Search",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.loginPagetheme,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(
+                        "Stock Approval",
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: P_Settings.loginPagetheme,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StockApprovalPage()),
+                              );
+                            },
+                            trailing: Icon(Icons.arrow_forward),
+                            title: Text(
+                              "Branch",
+                              style: GoogleFonts.aBeeZee(
+                                textStyle: Theme.of(context).textTheme.bodyText2,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ))
+                  // Positioned(
+                  //   left: 10,
+                  //   right: 10,
+                  //   top: 100,
+                  //   // bottom: 200,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     children: [
+                  //       customCard(size, "Stock", 12),
+                  //       customCard(size, "Transfer", 23),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Positioned(
+                  //   left: 10,
+                  //   right: 10,
+                  //   top: 280,
+                  //   // bottom: 200,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     children: [
+                  //       customCard(size, "Stock", 12),
+                  //       customCard(size, "Transfer", 23),
+                  //     ],
+                  //   ),
+                  // )
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -291,4 +296,37 @@ class _MainDashboardState extends State<MainDashboard> {
       ),
     );
   }
+}
+Future<bool> _onBackPressed(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // title: const Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: ListBody(
+            children: const <Widget>[
+              Text('Do you want to exit from this app'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              exit(0);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

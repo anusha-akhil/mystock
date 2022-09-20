@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/bag/bag.dart';
@@ -38,7 +39,15 @@ class _StockTransferState extends State<StockTransfer> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.transType.toString()),
+        title: Text(
+          widget.transType.toString(),
+          style: GoogleFonts.aBeeZee(
+            textStyle: Theme.of(context).textTheme.bodyText2,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: P_Settings.buttonColor,
+          ),
+        ),
         backgroundColor: P_Settings.loginPagetheme,
         actions: [
           Padding(
@@ -69,7 +78,7 @@ class _StockTransferState extends State<StockTransfer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => BagPage(
-                              transVal: widget.transVal,
+                              transVal: widget.transVal,transType: widget.transType,
                             )),
                   );
                 },
