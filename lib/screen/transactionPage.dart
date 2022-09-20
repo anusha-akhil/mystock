@@ -19,6 +19,7 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
+  FocusNode _node = new FocusNode();
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
 
@@ -262,6 +263,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   width: 0.4),
             ),
             child: DropdownButton<String>(
+              // dropdownColor: P_Settings.dropdown,
               isExpanded: true,
               value: selectedtransaction,
               // isDense: true,

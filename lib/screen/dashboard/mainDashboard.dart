@@ -46,7 +46,7 @@ class _MainDashboardState extends State<MainDashboard> {
     Size size = MediaQuery.of(context).size;
 
     return WillPopScope(
-       onWillPop: () => _onBackPressed(context),
+      onWillPop: () => _onBackPressed(context),
       child: Scaffold(
         appBar: AppBar(backgroundColor: P_Settings.loginPagetheme),
         body: Container(
@@ -87,7 +87,7 @@ class _MainDashboardState extends State<MainDashboard> {
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-    
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
@@ -95,7 +95,7 @@ class _MainDashboardState extends State<MainDashboard> {
                         onTap: () {
                           Provider.of<Controller>(context, listen: false)
                               .getTransactionList(context);
-    
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -125,11 +125,13 @@ class _MainDashboardState extends State<MainDashboard> {
                         onTap: () {
                           Provider.of<Controller>(context, listen: false)
                               .getTransactionList(context);
-                     Provider.of<Controller>(context, listen: false).setIssearch(false);
+                          Provider.of<Controller>(context, listen: false)
+                              .setIssearch(false);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchScreen(type:"start")),
+                                builder: (context) =>
+                                    SearchScreen(type: "start")),
                           );
                         },
                         leading: CircleAvatar(
@@ -180,7 +182,8 @@ class _MainDashboardState extends State<MainDashboard> {
                             title: Text(
                               "Branch",
                               style: GoogleFonts.aBeeZee(
-                                textStyle: Theme.of(context).textTheme.bodyText2,
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: P_Settings.loginPagetheme,
@@ -297,6 +300,7 @@ class _MainDashboardState extends State<MainDashboard> {
     );
   }
 }
+
 Future<bool> _onBackPressed(BuildContext context) async {
   return await showDialog(
     context: context,
@@ -305,7 +309,6 @@ Future<bool> _onBackPressed(BuildContext context) async {
       return AlertDialog(
         // title: const Text('AlertDialog Title'),
         content: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
           child: ListBody(
             children: const <Widget>[
               Text('Do you want to exit from this app'),
@@ -314,9 +317,9 @@ Future<bool> _onBackPressed(BuildContext context) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('cancel'),
+            child: const Text('Cancel'),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop(false);
             },
           ),
           TextButton(

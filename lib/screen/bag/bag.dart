@@ -151,7 +151,7 @@ class _BagPageState extends State<BagPage> {
               // Provider.of<Controller>(context, listen: false)
               //     .rateController[index]
               //     .text = rate;
-
+              print("quantity in cart..........$qty");
               Provider.of<Controller>(context, listen: false).setQty(qty);
               showsheet.showSheet(
                 context,
