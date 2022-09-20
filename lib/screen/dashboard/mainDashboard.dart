@@ -82,14 +82,10 @@ class _MainDashboardState extends State<MainDashboard> {
                           color: P_Settings.buttonColor,
                         ),
                       ),
-                      trailing: OutlinedButton.icon(
-                        label: Text('Logout',
-                            style: TextStyle(color: Colors.white)),
-                        icon: Icon(
-                          Icons.person,
-                          color: Colors.white,
+                      trailing: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.transparent, // background
                         ),
-                        
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.remove('st_username');
@@ -100,7 +96,40 @@ class _MainDashboardState extends State<MainDashboard> {
                                   builder: (context) => LoginPage()));
                           print('Pressed');
                         },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Logout'), // <-- Text
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              // <-- Icon
+                              Icons.person,
+                              size: 24.0,
+                            ),
+                          ],
+                        ),
                       ),
+                      //  OutlinedButton.icon(
+                      //   label: Text('Logout',
+                      //       style: TextStyle(color: Colors.white)),
+                      //   icon: Icon(
+                      //     Icons.person,
+                      //     color: Colors.white,
+                      //   ),
+
+                      //   onPressed: () async {
+                      //     final prefs = await SharedPreferences.getInstance();
+                      //     await prefs.remove('st_username');
+                      //     await prefs.remove('st_pwd');
+                      //     Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => LoginPage()));
+                      //     print('Pressed');
+                      //   },
+                      // ),
                       dense: false,
                     ),
                     color: P_Settings.loginPagetheme,
