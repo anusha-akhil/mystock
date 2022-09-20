@@ -514,8 +514,9 @@ class Controller extends ChangeNotifier {
       productbar.clear();
 
       cartCount = map["cart_count"].toString();
-      notifyListeners();
 
+      notifyListeners();
+      // print("map["product_list"]")
       for (var pro in map["product_list"]) {
         print("pro------$pro");
         productbar.add(pro["item_name"][0]);
