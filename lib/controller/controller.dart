@@ -129,6 +129,7 @@ class Controller extends ChangeNotifier {
 
           // print("body ${body}");
           var map = jsonDecode(response.body);
+          print("branchlist-----$map");
           branchist.clear();
           // productbar.clear();
           for (var item in map) {
@@ -192,8 +193,8 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  addTobag(String itemId, String srate1, String srate2, String qty,
-      BuildContext context) async {
+  addDeletebagItem(String itemId, String srate1, String srate2, String qty,
+      String event, String cart_id, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -207,10 +208,10 @@ class Controller extends ChangeNotifier {
             'branch_id': branch_id,
             'item_id': itemId,
             'qty': qty,
+            'event': event,
+            'cart_id': cart_id
           };
           print("body-----$body");
-          // isDownloaded = true;
-          // var encodedBody=jsonEncode(body);
           isLoading = true;
           notifyListeners();
 
@@ -220,61 +221,7 @@ class Controller extends ChangeNotifier {
           );
 
           var map = jsonDecode(response.body);
-          print("response-----------------$map");
-
-          isLoading = false;
-          notifyListeners();
-
-          /////////////// insert into local db /////////////////////
-        } catch (e) {
-          print(e);
-          // return null;
-          return [];
-        }
-      }
-    });
-  }
-
-  //////////////////////////////////////////////////////////////////////
-  deleteFromBag(String itemId, double srate1, double srate2, double qty,
-      BuildContext context) async {
-    NetConnection.networkConnection(context).then((value) async {
-      if (value == true) {
-        try {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          branch_id = prefs.getString("branch_id");
-          user_id = prefs.getString("user_id");
-          print("kjn---------------$branch_id----$user_id-");
-          Uri url = Uri.parse("$urlgolabl/save_cart.php");
-
-          // Map map = {
-          //   '0': compny_code,
-          //   "1": fp,
-          // };
-
-          // List list = [];
-          // list.add(map);
-          // var jsonen = jsonEncode(list);
-          Map body = {
-            'staff_id': user_id,
-            'branch_id': branch_id,
-            'item_id': itemId,
-            'qty': qty,
-          };
-          print("body-----$body");
-          // var jsonBody=jsonEncode(body);
-          // print("jsonBody----$jsonBody");
-          isLoading = true;
-          notifyListeners();
-
-          http.Response response = await http.post(
-            url,
-            body: body,
-            headers: {"Content-Type": "application/json"},
-          );
-
-          var map = jsonDecode(response.body);
-          print("response-----------------$map");
+          print("delete response-----------------$map");
 
           isLoading = false;
           notifyListeners();
@@ -314,7 +261,7 @@ class Controller extends ChangeNotifier {
           );
 
           var map = jsonDecode(response.body);
-          print("cart response-----------------$map");
+          print("cart response-----------------${map}");
           isLoading = false;
           notifyListeners();
           ProductListModel productListModel;
@@ -325,7 +272,7 @@ class Controller extends ChangeNotifier {
               bagList.add(item);
             }
           }
-          print("bag list data........$bagList");
+          print("bag list data........${bagList.length}");
           // isLoading = false;
           notifyListeners();
 
@@ -340,52 +287,53 @@ class Controller extends ChangeNotifier {
   }
 
 // //////////////////////////////////////////////
-//   getbagData(BuildContext context) async {
-//     NetConnection.networkConnection(context).then((value) async {
-//       if (value == true) {
-//         try {
-//           SharedPreferences prefs = await SharedPreferences.getInstance();
-//           branch_id = prefs.getString("branch_id");
-//           user_id = prefs.getString("user_id");
-//           print("cart kjn---------------$branch_id----$user_id-");
-//           Uri url = Uri.parse("$urlgolabl/cart_list.php");
+  saveCartDetails(
+    BuildContext context,
+    String transid,
+    String to_branch_id,
+    String remark,
+  ) async {
+    List<Map<String, dynamic>> jsonResult = [];
+    Map<String, dynamic> itemmap = {};
+    Map<String, dynamic> resultmmap = {};
 
-//           Map body = {
-//             'staff_id': user_id,
-//             'branch_id': branch_id,
-//           };
-//           print("cart bag body-----$body");
-//           // isDownloaded = true;
-//           isLoading = true;
-//           notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    branch_id = prefs.getString("branch_id");
+    user_id = prefs.getString("user_id");
 
-//           http.Response response = await http.post(
-//             url,
-//             headers: {"Content-Type": "application/json"},
-//             body: body,
-//           );
-//           var map = json.decode(response.body);
-//           print("cart bag response-----------------$map");
+    print(
+        "datas------$transid---$to_branch_id----$remark------$branch_id----$user_id");
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        print("bagList-----$bagList");
+        Uri url = Uri.parse("$urlgolabl/cart_list.php");
+        for (var item in bagList) {
+          itemmap["item_id"] = item["item_id"];
+          itemmap["qty"] = item["qty"];
+          itemmap["s_rate_1"] = item["s_rate_1"];
+          itemmap["s_rate_2"] = item["s_rate_2"];
+          jsonResult.add(itemmap);
+        }
+        Map masterMap = {
+          "trans_id": transid,
+          "to_branch_id": to_branch_id,
+          "remark": remark,
+          "staff_id": user_id,
+          "branch_id": branch_id
+        };
+        resultmmap["master"] = masterMap;
+        resultmmap["details"] = jsonResult;
 
-//           // isLoading = false;
-//           // notifyListeners();
-//           // ProductListModel productListModel;
-//           // if (map != null) {
-//           //   for (var item in map) {
-//           //     productListModel = ProductListModel.fromJson(item);
-//           //     bagList.add(item);
-//           //   }
-//           // }
-//           notifyListeners();
-//           /////////////// insert into local db /////////////////////
-//         } catch (e) {
-//           print("error..$e");
-//           // return null;
-//           return [];
-//         }
-//       }
-//     });
-//   }
+        var jsonBody = jsonEncode(resultmmap);
+        print("resultmap----$jsonBody");
+
+        http.Response response = await http.post(
+          url,
+          // body: {'om': jsonBody},
+        );
+      }
+    });
+  }
 
 ////////////////////////////////////////////////////////////////////////
   getinfoList(BuildContext context, String itemId) async {
@@ -514,7 +462,7 @@ class Controller extends ChangeNotifier {
       productbar.clear();
 
       cartCount = map["cart_count"].toString();
-      
+
       notifyListeners();
       // print("map["product_list"]")
       for (var pro in map["product_list"]) {

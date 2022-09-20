@@ -23,6 +23,8 @@ class _TransactionPageState extends State<TransactionPage> {
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
 
+  TextEditingController remrk=TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -94,6 +96,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 Container(
                   width: size.height * 0.4,
                   child: TextFormField(
+                    controller: remrk,
                     scrollPadding:
                         EdgeInsets.only(bottom: topInsets + size.height * 0.34),
                     decoration: InputDecoration(
@@ -200,6 +203,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                             splitted[3],
                                           ),
                                           transType: splitted[2],
+                                          transId: splitted[0],
+                                          branchId: selectedbranch!,
+                                          remark: remrk.text,
                                         )
                                     // OrderForm(widget.areaname,"return"),
                                     ),

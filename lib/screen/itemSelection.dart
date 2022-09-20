@@ -269,17 +269,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                         )
                       : IconButton(
                           onPressed: () {
-                            // Provider.of<Controller>(context, listen: false)
-                            //     .addTobag(
-                            //         item.itemId!,
-                            //         double.parse(item.sRate1!),
-                            //         double.parse(item.sRate2!),
-                            //         double.parse(
-                            //           value.qty[index].text,
-                            //         ),
-                            //         item.cartId!,
-                            //         int.parse(item.event!),
-                            //         context);
+                            value.qty[index].selection = TextSelection(
+                                baseOffset: 0,
+                                extentOffset:
+                                    value.qty[index].value.text.length);
                             showsheet.showSheet(
                               context,
                               index,
