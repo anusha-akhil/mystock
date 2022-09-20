@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Controller extends ChangeNotifier {
   String? fromDate;
   bool isVisible = false;
-  bool isProdLoading=false;
+  bool isProdLoading = false;
   bool isSearch = false;
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
@@ -412,6 +412,8 @@ class Controller extends ChangeNotifier {
           var map = jsonDecode(response.body);
           print("item_search_stock bag response-----------------$map");
 
+          isListLoading = false;
+          notifyListeners();
           // ProductListModel productListModel;
           if (map != null) {
             infoList.clear();
@@ -425,7 +427,6 @@ class Controller extends ChangeNotifier {
           }
 
           print("infoList---$infoList----$stockList");
-          isListLoading = false;
           notifyListeners();
 
           /////////////// insert into local db /////////////////////
