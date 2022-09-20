@@ -14,7 +14,16 @@ import 'package:provider/provider.dart';
 class BagPage extends StatefulWidget {
   int transVal;
   String transType;
-  BagPage({required this.transVal, required this.transType});
+  String transId;
+  String branchId;
+  String? remark;
+
+  BagPage(
+      {required this.transVal,
+      required this.transType,
+      required this.transId,
+      required this.branchId,
+      this.remark});
 
   @override
   State<BagPage> createState() => _BagPageState();
@@ -52,6 +61,17 @@ class _BagPageState extends State<BagPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading:
+          IconButton(
+            onPressed: () {
+              Provider.of<Controller>(context, listen: false)
+                  .getProductDetails();
+
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+        
         title: Text(
           widget.transType.toString(),
           style: GoogleFonts.aBeeZee(
@@ -104,7 +124,11 @@ class _BagPageState extends State<BagPage> {
                                 BorderRadius.circular(2), // <-- Radius
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          Provider.of<Controller>(context, listen: false)
+                              .saveCartDetails(context, widget.transId,
+                                  widget.branchId, widget.remark!);
+                        },
                         child: Text(
                           "Save",
                           style: GoogleFonts.aBeeZee(
@@ -132,7 +156,7 @@ class _BagPageState extends State<BagPage> {
       int index,
       String? batch_code,
       double stock,
-      String cat_id) {
+      String cart_id) {
     print("qty number-----$itemName----------$srate1----$srate2-----$qty");
     // _controller.text = qty.toString();
 
@@ -157,7 +181,7 @@ class _BagPageState extends State<BagPage> {
                 context,
                 index,
                 item_id,
-                cat_id,
+                cart_id,
                 batch_code!,
                 itemName,
                 "",
@@ -437,14 +461,23 @@ class _BagPageState extends State<BagPage> {
                                                             primary: P_Settings
                                                                 .loginPagetheme),
                                                     onPressed: () async {
-                                                      // Provider.of<Controller>(
-                                                      //         context,
-                                                      //         listen: false)
-                                                      //     .deleteFromOrderBagTable(
-                                                      //         cartrowno,
-                                                      //         widget
-                                                      //             .custmerId,
-                                                      //         index);
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .addDeletebagItem(
+                                                              item_id,
+                                                              srate1.toString(),
+                                                              srate2.toString(),
+                                                              qty.toString(),
+                                                              "2",
+                                                              cart_id,
+                                                              context);
+
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .getbagData1(context);
+
                                                       // Provider.of<Controller>(
                                                       //         context,
                                                       //         listen: false)

@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -132,11 +131,13 @@ class Bottomsheet {
                                   onTap: () {
                                     Provider.of<Controller>(context,
                                             listen: false)
-                                        .addTobag(
+                                        .addDeletebagItem(
                                             itemId,
                                             srate1.toString(),
                                             srate2.toString(),
                                             value.qty[index].text,
+                                            "0",
+                                            "0",
                                             context);
 
                                     print(
@@ -343,11 +344,13 @@ class Bottomsheet {
                                   );
                                   Provider.of<Controller>(context,
                                           listen: false)
-                                      .addTobag(
+                                      .addDeletebagItem(
                                           itemId,
                                           srate1.toString(),
                                           srate2.toString(),
                                           value.qty[index].text,
+                                          "0",
+                                          "0",
                                           context);
 
                                   Navigator.pop(context);
