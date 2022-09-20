@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mystock/components/commonColor.dart';
@@ -21,9 +22,7 @@ class _HistoryPageState extends State<HistoryPage> {
   List<String> s = [];
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
-
   String? selectedtransaction;
-  List<String> heading = ["Series", "Remarks", "Date", "", ""];
   String? todaydate;
   @override
   void initState() {
@@ -49,182 +48,165 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: Consumer<Controller>(
         builder: (context, value, child) {
-          return SingleChildScrollView(
-              child: Column(
-            children: [
-              Container(
-                height: size.height * 0.1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          dateFind.selectDateFind(context, "from date");
-                        },
-                        icon: Icon(
-                          Icons.calendar_month,
-                          color: P_Settings.loginPagetheme,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        value.fromDate == null
-                            ? todaydate.toString()
-                            : value.fromDate.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          dateFind.selectDateFind(context, "to date");
-                        },
-                        icon: Icon(Icons.calendar_month)),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        value.todate == null
-                            ? todaydate.toString()
-                            : value.todate.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // dropDownCustom(size,""),
-              ),
-              dropDownCustom(size, ""),
-
-              ValueListenableBuilder(
-                  valueListenable: visible,
-                  builder: (BuildContext context, bool v, Widget? child) {
-                    print("value===${visible.value}");
-                    return Visibility(
-                      visible: v,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 18.0),
+          if (value.isListLoading) {
+            return Container(
+                height: 200,
+                child: SpinKitFadingCircle(
+                  color: P_Settings.loginPagetheme,
+                ));
+          } else {
+            return SingleChildScrollView(
+                child: Column(
+              children: [
+                Container(
+                  height: size.height * 0.1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            dateFind.selectDateFind(context, "from date");
+                          },
+                          icon: Icon(
+                            Icons.calendar_month,
+                            color: P_Settings.loginPagetheme,
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
                         child: Text(
-                          "Please choose TransactionType",
-                          style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: Colors.red),
+                          value.fromDate == null
+                              ? todaydate.toString()
+                              : value.fromDate.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700],
+                          ),
                         ),
                       ),
-                    );
-                  }),
-              Divider(),
+                      IconButton(
+                          onPressed: () {
+                            dateFind.selectDateFind(context, "to date");
+                          },
+                          icon: Icon(Icons.calendar_month)),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Text(
+                          value.todate == null
+                              ? todaydate.toString()
+                              : value.todate.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // dropDownCustom(size,""),
+                ),
+                dropDownCustom(size, ""),
 
-              // Container(
-              //   width: size.width*0.5,
-              //   height: size.height * 0.2,
-              //   child: Lottie.asset(
-              //     'asset/filter.json',
-              //     // height: size.height*0.3,
-              //     // width: size.height*0.3,
-              //   )
-              // ),
-              Container(
-                height: size.height * 0.7,
-                child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      trailing: Wrap(
-                        spacing: 10,
-                        children: [
-                          Container(
-                            height: size.height * 0.03,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.editclr,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(2), // <-- Radius
-                                  ),
+                ValueListenableBuilder(
+                    valueListenable: visible,
+                    builder: (BuildContext context, bool v, Widget? child) {
+                      print("value===${visible.value}");
+                      return Visibility(
+                        visible: v,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: Text(
+                            "Please choose TransactionType",
+                            style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ),
+                      );
+                    }),
+                Divider(),
+
+                // Container(
+                //   width: size.width*0.5,
+                //   height: size.height * 0.2,
+                //   child: Lottie.asset(
+                //     'asset/filter.json',
+                //     // height: size.height*0.3,
+                //     // width: size.height*0.3,
+                //   )
+                // ),
+                Container(
+                  height: size.height * 0.7,
+                  child: ListView.builder(
+                    itemCount: value.historyList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        trailing: Wrap(
+                          spacing: 10,
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: P_Settings.editclr,
                                 ),
                                 onPressed: () {
                                   Navigator.pushReplacement<void, void>(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          TransactionPage(
-                                              page: "history",
-                                              remrk: "hayyyy",
-                                              translist: splitted),
-                                    ),
-                                  );
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => TransactionPage(
-                                  //         page: "history",
-                                  //         remrk: "hayyyy",
-                                  //         transType: splitted[2]),
-                                  //   ),
-                                  // );
-                                  // Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "Edit",
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 14,
-                                    // fontWeight: FontWeight.bold,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                )),
-                          ),
-                          Container(
-                            height: size.height * 0.03,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.delete,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(2), // <-- Radius
-                                  ),
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            TransactionPage(
+                                                page: "history",
+                                                remrk: value.historyList[index]
+                                                    ['remarks'],
+                                                translist: splitted),
+                                      ));
+                                }),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: P_Settings.delete,
                                 ),
-                                onPressed: () {},
-                                child: Text(
-                                  "Delete",
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 14,
-                                    // fontWeight: FontWeight.bold,
-                                    color: P_Settings.buttonColor,
-                                  ),
-                                )),
-                          )
-                        ],
-                      ),
-                      title: Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Heading",
+                                onPressed: () {}),
+                          ],
+                        ),
+                        title: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                "${value.historyList[index]['series']} ",
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.historyPageText,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.03,
+                            ),
+                            Text(
+                              "(${value.historyList[index]['entry_date']})",
                               style: GoogleFonts.aBeeZee(
                                 textStyle:
                                     Theme.of(context).textTheme.bodyText2,
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 color: P_Settings.historyPageText,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.05,
-                          ),
-                          Text(
-                            "12/12/2022",
+                            SizedBox(
+                              height: size.height * 0.03,
+                            ),
+                          ],
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            "${value.historyList[index]['remarks']}",
                             style: GoogleFonts.aBeeZee(
                               textStyle: Theme.of(context).textTheme.bodyText2,
                               fontSize: 16,
@@ -232,44 +214,29 @@ class _HistoryPageState extends State<HistoryPage> {
                               color: P_Settings.historyPageText,
                             ),
                           ),
-                          SizedBox(
-                            height: size.height * 0.03,
-                          ),
-                        ],
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          "remark",
-                          style: GoogleFonts.aBeeZee(
-                            textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 16,
-                            // fontWeight: FontWeight.bold,
-                            color: P_Settings.historyPageText,
-                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
 
-                // child: DataTable(
-                //   horizontalMargin: 0,
-                //   headingRowHeight: 25,
-                //   dataRowHeight: 30,
-                //   headingRowColor: MaterialStateColor.resolveWith(
-                //       (states) => Color.fromARGB(255, 240, 235, 235)),
-                //   columnSpacing: 0,
-                //   showCheckboxColumn: false,
-                //   dataRowColor:
-                //       MaterialStateColor.resolveWith((states) => Colors.white),
-                //   border: TableBorder.all(width: 1, color: Colors.grey),
-                //   columns: getColumns(heading),
-                //   rows: getRowss(value.historydataList),
-                // ),
-              )
-            ],
-          ));
+                  // child: DataTable(
+                  //   horizontalMargin: 0,
+                  //   headingRowHeight: 25,
+                  //   dataRowHeight: 30,
+                  //   headingRowColor: MaterialStateColor.resolveWith(
+                  //       (states) => Color.fromARGB(255, 240, 235, 235)),
+                  //   columnSpacing: 0,
+                  //   showCheckboxColumn: false,
+                  //   dataRowColor:
+                  //       MaterialStateColor.resolveWith((states) => Colors.white),
+                  //   border: TableBorder.all(width: 1, color: Colors.grey),
+                  //   columns: getColumns(heading),
+                  //   rows: getRowss(value.historydataList),
+                  // ),
+                )
+              ],
+            ));
+          }
         },
       ),
     );
@@ -398,12 +365,16 @@ class _HistoryPageState extends State<HistoryPage> {
                   if (splitted[4] == "1") {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(true);
+
                     // Provider.of<Controller>(context, listen: false)
                     //     .getBranchList(context);
                   } else {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }
+
+                  Provider.of<Controller>(context, listen: false)
+                      .historyData(context, splitted[0]);
                 }
               },
             ),

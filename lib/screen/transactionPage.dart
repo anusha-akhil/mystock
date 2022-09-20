@@ -43,6 +43,7 @@ class _TransactionPageState extends State<TransactionPage> {
       remrk.text = widget.remrk.toString();
       hint = widget.translist![2].toString();
       hintbra = widget.branch.toString();
+      print("sd-----------${hint}");
       // selectedtransaction=widget.transType.toString();
       visible.value = false;
     }

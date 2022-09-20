@@ -49,6 +49,7 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> productList = [];
   List<Map<String, dynamic>> bagList = [];
+  List<Map<String, dynamic>> historyList = [];
 
   List<BranchModel> branchist = [];
   List<TransactionTypeModel> transactionist = [];
@@ -286,6 +287,56 @@ class Controller extends ChangeNotifier {
     });
   }
 
+///////////////////////////////////////////////////
+  historyData(BuildContext context, String trans_id) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          user_id = prefs.getString("user_id");
+          print("history---------------$branch_id----$user_id------$trans_id");
+          Uri url = Uri.parse("$urlgolabl/transaction_list.php");
+          Map body = {
+            'staff_id': user_id,
+            'branch_id': branch_id,
+            'trans_id': trans_id
+          };
+          print("history body-----$body");
+
+          isLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+
+          var map = jsonDecode(response.body);
+          print("history response-----------------${map}");
+          isLoading = false;
+          notifyListeners();
+
+          historyList.clear();
+          if (map != null) {
+            for (var item in map) {
+              historyList.add(item);
+            }
+          }
+          print("history list data........${historyList}");
+          // isLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print("error...$e");
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
 // //////////////////////////////////////////////
   saveCartDetails(
     BuildContext context,
@@ -320,7 +371,7 @@ class Controller extends ChangeNotifier {
           "remark": remark,
           "staff_id": user_id,
           "branch_id": branch_id,
-          "details" : jsonResult
+          "details": jsonResult
         };
         // resultmmap["master"] = masterMap;
         // resultmmap["details"] = jsonResult;
