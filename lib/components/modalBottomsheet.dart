@@ -129,6 +129,7 @@ class Bottomsheet {
                                 width: size.width * 0.2,
                                 child: TextField(
                                   onTap: () {
+<<<<<<< HEAD
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .addDeletebagItem(
@@ -140,6 +141,8 @@ class Bottomsheet {
                                             "0",
                                             context);
 
+=======
+>>>>>>> 806aa6a640e923dc369eefab7bbbf0ff78983a51
                                     print(
                                         "quantity......${value.qty[index].value.text}");
                                     value.qty[index].selection = TextSelection(
@@ -166,6 +169,19 @@ class Bottomsheet {
                                   // minLines: 1,
                                   keyboardType: TextInputType.number,
                                   onSubmitted: (values) {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .getbagData1(
+                                      context,
+                                    );
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .addTobag(
+                                            itemId,
+                                            srate1.toString(),
+                                            srate2.toString(),
+                                            value.qty[index].text,
+                                            context);
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -337,11 +353,7 @@ class Bottomsheet {
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .setApplyClicked(true, index);
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .getbagData1(
-                                    context,
-                                  );
+
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .addDeletebagItem(
@@ -352,7 +364,13 @@ class Bottomsheet {
                                           "0",
                                           "0",
                                           context);
-
+                                  Provider.of<Controller>(context,
+                                          listen: false)
+                                      .getbagData1(
+                                    context,
+                                  );
+                                  print(
+                                      "quantityyyyyy.....${value.qty[index].text}........");
                                   Navigator.pop(context);
                                 }
                                 // payment_mode = "-2";
