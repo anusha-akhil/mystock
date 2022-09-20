@@ -194,7 +194,7 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  addDeletebagItem(String itemId, String srate1, String srate2, String qty,
+  Future addDeletebagItem(String itemId, String srate1, String srate2, String qty,
       String event, String cart_id, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
@@ -222,11 +222,16 @@ class Controller extends ChangeNotifier {
           );
 
           var map = jsonDecode(response.body);
-          print("delete response-----------------$map");
-
+          // print("delete response-----------------$map");
+           
           isLoading = false;
           notifyListeners();
-
+          print("delete response-----------------${map["msg"]}");
+          var res=map["msg"];
+          if(res=="Bag deleted Successfully"){
+            getbagData1(context);
+          }
+          return res;
           /////////////// insert into local db /////////////////////
         } catch (e) {
           print(e);
