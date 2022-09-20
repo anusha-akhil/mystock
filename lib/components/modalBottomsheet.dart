@@ -8,19 +8,18 @@ import 'package:provider/provider.dart';
 
 class Bottomsheet {
   showSheet(
-    BuildContext context,
-    int index,
-    String itemId,
-    String catId,
-    String batchocde,
-    String itemName,
-    String itemImg,
-    double srate1,
-    double srate2,
-    double stock,
-    int transval,
-    String qtyf
-  ) {
+      BuildContext context,
+      int index,
+      String itemId,
+      String catId,
+      String batchocde,
+      String itemName,
+      String itemImg,
+      double srate1,
+      double srate2,
+      double stock,
+      int transval,
+      String qtyf) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -167,16 +166,16 @@ class Bottomsheet {
                                   // minLines: 1,
                                   keyboardType: TextInputType.number,
                                   onSubmitted: (values) {
-                                    // Provider.of<Controller>(context,
-                                    //         listen: false)
-                                    //     .addDeletebagItem(
-                                    //         itemId,
-                                    //         srate1.toString(),
-                                    //         srate2.toString(),
-                                    //         value.qty[index].text,
-                                    //         "0",
-                                    //         "0",
-                                    //         context);
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .addDeletebagItem(
+                                            itemId,
+                                            srate1.toString(),
+                                            srate2.toString(),
+                                            value.qty[index].text,
+                                            "0",
+                                            "0",
+                                            context);
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -326,7 +325,7 @@ class Bottomsheet {
                                 if (transval == -1) {
                                   if (stock < qty) {
                                     print("error");
-                                    value.qty[index].text=qtyf;
+                                    value.qty[index].text = qtyf;
                                     value.seterrorClicked(true, index);
                                     value.setqtyErrormsg(true);
                                   } else {
