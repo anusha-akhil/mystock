@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/screen/search_page/searchscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
 import 'package:mystock/screen/transactionPage.dart';
@@ -59,31 +60,49 @@ class _MainDashboardState extends State<MainDashboard> {
                   Container(
                     height: size.height * 0.1,
                     child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Image.asset("asset/login.png"),
-                      ),
-                      title: Text(
-                        value.staff_name.toString(),
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.buttonColor,
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Image.asset("asset/login.png"),
                         ),
-                      ),
-                      subtitle: Text(
-                        value.branch_name.toString(),
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 14,
-                          // fontWeight: FontWeight.bold,
-                          color: P_Settings.buttonColor,
+                        title: Text(
+                          value.staff_name.toString(),
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
                         ),
-                      ),
-                    ),
+                        subtitle: Text(
+                          value.branch_name.toString(),
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 14,
+                            // fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
+                        ),
+                        trailing: OutlinedButton.icon(
+                          label: Text('Log out',
+                              style: TextStyle(color: Colors.white)),
+                          icon: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('st_username');
+                            await prefs.remove('st_pwd');
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                            print('Pressed');
+                          },
+                        )),
                     color: P_Settings.loginPagetheme,
                   ),
+
                   SizedBox(
                     height: size.height * 0.02,
                   ),

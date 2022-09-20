@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/dateFind.dart';
 import 'package:mystock/controller/controller.dart';
@@ -109,13 +108,13 @@ class _HistoryPageState extends State<HistoryPage> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       trailing: Wrap(
-                        spacing: 20,
+                        spacing: 10,
                         children: [
                           Container(
                             height: size.height * 0.03,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.loginPagetheme,
+                                  primary: P_Settings.editclr,
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(2), // <-- Radius
@@ -135,7 +134,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: P_Settings.buttonColor,
                                   ),
@@ -145,7 +144,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             height: size.height * 0.03,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.loginPagetheme,
+                                  primary: P_Settings.delete,
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(2), // <-- Radius
@@ -157,7 +156,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: P_Settings.buttonColor,
                                   ),
@@ -167,16 +166,21 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                       title: Row(
                         children: [
-                          Text(
-                            "Series : SR1TTT",
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: P_Settings.historyPageText,
+                          Flexible(
+                            child: Text(
+                              "Heading",
+                              style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.historyPageText,
+                              ),
                             ),
                           ),
-                          Spacer(),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
                           Text(
                             "12/12/2022",
                             style: GoogleFonts.aBeeZee(
@@ -185,16 +189,22 @@ class _HistoryPageState extends State<HistoryPage> {
                               // fontWeight: FontWeight.bold,
                               color: P_Settings.historyPageText,
                             ),
-                          )
+                          ),
+                          SizedBox(
+                            height: size.height * 0.03,
+                          ),
                         ],
                       ),
-                      subtitle: Text(
-                        "remarkssssssss",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: P_Settings.historyPageText,
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(
+                          "remark",
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            // fontWeight: FontWeight.bold,
+                            color: P_Settings.historyPageText,
+                          ),
                         ),
                       ),
                     );
