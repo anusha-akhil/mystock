@@ -22,4 +22,5 @@ class P_Settings {
   static Color get tileColor => Color.fromARGB(255, 247, 247, 247);
 
   static Color get homeappbarColor => Colors.purple;
+  static Color get dropdown => Color.fromARGB(255, 236, 235, 236);
 }

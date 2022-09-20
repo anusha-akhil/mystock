@@ -78,6 +78,7 @@ class _StockTransferState extends State<StockTransfer> {
                 onPressed: () async {
                   Provider.of<Controller>(context, listen: false)
                       .getbagData1(context);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
