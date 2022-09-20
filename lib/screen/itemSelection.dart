@@ -248,7 +248,12 @@ class _ItemSelectionState extends State<ItemSelection> {
         Consumer<Controller>(
           builder: (context, value, child) {
             return Container(
-              height: size.height * 0.07,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1, color: Colors.grey),
+                ),
+              ),
+              height: size.height * 0.08,
               margin: EdgeInsets.only(left: 40),
               child: ListTile(
                   trailing: value.qty[index].text != "0"
@@ -294,7 +299,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                             size: 20,
                           )),
                   title: Text(item.itemName!,
-                   overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.aBeeZee(
                         textStyle: Theme.of(context).textTheme.bodyText2,
                         fontSize: 16,

@@ -537,7 +537,7 @@ class Controller extends ChangeNotifier {
       uniquelist =
           productbar.where((productbar) => seen.add(productbar)).toList();
       uniquelist.sort();
-      print("productDetailsTable--map ${productList}");
+      print("productDetailsTable--map ${productList.length}");
       print("productbar--map ${uniquelist}");
 
       return productList;
