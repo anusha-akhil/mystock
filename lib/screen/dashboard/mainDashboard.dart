@@ -49,7 +49,10 @@ class _MainDashboardState extends State<MainDashboard> {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
-        appBar: AppBar(backgroundColor: P_Settings.loginPagetheme),
+        appBar: AppBar(
+          backgroundColor: P_Settings.loginPagetheme,
+          automaticallyImplyLeading: false,
+        ),
         body: Container(
           height: double.infinity,
           // color: P_Settings.loginPagetheme,

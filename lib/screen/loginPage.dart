@@ -378,7 +378,7 @@ Future<bool> _onBackPressed(BuildContext context) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('cancel'),
+            child: const Text('Cancel'),
             onPressed: () {
               Navigator.pop(context);
             },
