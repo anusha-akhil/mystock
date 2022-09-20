@@ -39,7 +39,15 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: P_Settings.loginPagetheme),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: P_Settings.loginPagetheme,
+      ),
       body: Consumer<Controller>(
         builder: (context, value, child) {
           return SingleChildScrollView(
@@ -143,15 +151,25 @@ class _HistoryPageState extends State<HistoryPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement<void, void>(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TransactionPage(
-                                          page: "history",
-                                          remrk: "hayyyy",
-                                          transType: splitted[2]),
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          TransactionPage(
+                                              page: "history",
+                                              remrk: "hayyyy",
+                                              transType: splitted[2]),
                                     ),
                                   );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => TransactionPage(
+                                  //         page: "history",
+                                  //         remrk: "hayyyy",
+                                  //         transType: splitted[2]),
+                                  //   ),
+                                  // );
                                   // Navigator.pop(context);
                                 },
                                 child: Text(
@@ -372,7 +390,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         .setstockTranserselected(true);
                     // Provider.of<Controller>(context, listen: false)
                     //     .getBranchList(context);
-                  }else{
+                  } else {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }

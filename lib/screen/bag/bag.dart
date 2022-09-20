@@ -15,14 +15,14 @@ class BagPage extends StatefulWidget {
   int transVal;
   String transType;
   String transId;
-  String branchId;
+  String? branchId;
   String? remark;
 
   BagPage(
       {required this.transVal,
       required this.transType,
       required this.transId,
-      required this.branchId,
+       this.branchId,
       this.remark});
 
   @override
@@ -127,7 +127,7 @@ class _BagPageState extends State<BagPage> {
                         onPressed: () async {
                           Provider.of<Controller>(context, listen: false)
                               .saveCartDetails(context, widget.transId,
-                                  widget.branchId, widget.remark!);
+                                  widget.branchId!, widget.remark!);
                         },
                         child: Text(
                           "Save",
