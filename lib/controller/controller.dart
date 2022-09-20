@@ -509,12 +509,12 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       var map = jsonDecode(response.body);
 
-      print("nmnmkzd-------$map");
+      print("nmnmkzd-------${map["product_list"].length}");
       productList.clear();
       productbar.clear();
 
       cartCount = map["cart_count"].toString();
-
+      
       notifyListeners();
       // print("map["product_list"]")
       for (var pro in map["product_list"]) {
