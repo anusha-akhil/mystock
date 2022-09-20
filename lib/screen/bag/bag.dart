@@ -22,7 +22,7 @@ class BagPage extends StatefulWidget {
       {required this.transVal,
       required this.transType,
       required this.transId,
-       this.branchId,
+      this.branchId,
       this.remark});
 
   @override
@@ -61,17 +61,14 @@ class _BagPageState extends State<BagPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading:
-          IconButton(
-            onPressed: () {
-              Provider.of<Controller>(context, listen: false)
-                  .getProductDetails();
+        leading: IconButton(
+          onPressed: () {
+            Provider.of<Controller>(context, listen: false).getProductDetails();
 
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
-        
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: Text(
           widget.transType.toString(),
           style: GoogleFonts.aBeeZee(
@@ -177,20 +174,8 @@ class _BagPageState extends State<BagPage> {
               //     .text = rate;
               print("quantity in cart..........$qty");
               Provider.of<Controller>(context, listen: false).setQty(qty);
-              showsheet.showSheet(
-                context,
-                index,
-                item_id,
-                cart_id,
-                batch_code!,
-                itemName,
-                "",
-                srate1,
-                srate2,
-                stock,
-                0,
-                qty.toString()
-              );
+              showsheet.showSheet(context, index, item_id, cart_id, batch_code!,
+                  itemName, "", srate1, srate2, stock, 0, qty.toString());
               // Provider.of<Controller>(context, listen: false)
               //     .setAmt(totalamount);
               // showModalBottomSheet<void>(
