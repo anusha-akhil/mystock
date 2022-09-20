@@ -91,12 +91,19 @@ class _TransactionPageState extends State<TransactionPage> {
               onPressed: () {
                 Provider.of<Controller>(context, listen: false)
                     .setstockTranserselected(false);
-                Navigator.pushReplacement<void, void>(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => MainDashboard()),
-                );
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) {
+                          return MainDashboard();
+                        }));
+                // Navigator.pushReplacement<void, void>(
+                //   context,
+                //   MaterialPageRoute<void>(
+                //       builder: (BuildContext context) => MainDashboard()),
+                // );
+                // Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back)),
           backgroundColor: P_Settings.loginPagetheme),
