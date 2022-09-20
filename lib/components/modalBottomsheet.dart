@@ -19,11 +19,12 @@ class Bottomsheet {
     double srate2,
     double stock,
     int transval,
+    String qtyf
   ) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
-    print("bottom sheet value----$itemName----------$srate1----$srate2-----");
+    print("bottom sheet value----$itemName----------$srate1----$qtyf-----");
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
       isScrollControlled: true,
@@ -166,21 +167,16 @@ class Bottomsheet {
                                   // minLines: 1,
                                   keyboardType: TextInputType.number,
                                   onSubmitted: (values) {
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .getbagData1(
-                                      context,
-                                    );
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .addDeletebagItem(
-                                            itemId,
-                                            srate1.toString(),
-                                            srate2.toString(),
-                                            value.qty[index].text,
-                                            "0",
-                                            "0",
-                                            context);
+                                    // Provider.of<Controller>(context,
+                                    //         listen: false)
+                                    //     .addDeletebagItem(
+                                    //         itemId,
+                                    //         srate1.toString(),
+                                    //         srate2.toString(),
+                                    //         value.qty[index].text,
+                                    //         "0",
+                                    //         "0",
+                                    //         context);
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -324,35 +320,22 @@ class Bottomsheet {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold)),
                               onPressed: () {
-                                value.setApplyClicked(true, index);
+                                // value.setApplyClicked(true, index);
                                 double qty =
                                     double.parse(value.qty[index].text);
                                 if (transval == -1) {
                                   if (stock < qty) {
                                     print("error");
-                                    // snackbar.showSnackbar(
-                                    //     context, "Quantity should be less than stock", "");
+                                    value.qty[index].text=qtyf;
+                                    value.seterrorClicked(true, index);
                                     value.setqtyErrormsg(true);
                                   } else {
                                     value.setqtyErrormsg(false);
                                   }
                                 }
-
                                 print("value.qtyerror ----${value.qtyerror}");
-                                // if (value.qtyerror == false) {
-                                //   // Provider.of<Controller>(context,
-                                //   //           listen: false)
-                                //   //       .addTobag(
-                                //   //           itemId,
-                                //   //           srate1,
-                                //   //           srate2,
-                                //   //           double.parse(
-                                //   //               value.qty[index].text));
-                                if (value.qtyerror == false) {
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .setApplyClicked(true, index);
 
+                                if (value.qtyerror == false) {
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .addDeletebagItem(
@@ -372,25 +355,7 @@ class Bottomsheet {
                                       "quantityyyyyy.....${value.qty[index].text}........");
                                   Navigator.pop(context);
                                 }
-                                // payment_mode = "-2";
-                                // showDialog(
-                                //   context: context,
-                                //   builder: (BuildContext context) =>
-                                //       salepopup.buildPopupDialog(
-                                //     "sales",
-                                //     context,
-                                //     "Confirm your sale?",
-                                //     areaId,
-                                //     areaName,
-                                //     cusid,
-                                //     Date,
-                                //     time,
-                                //     "",
-                                //     "",
-                                //     payment_mode!,
-                                //     baserate,
-                                //   ),
-                                // );
+
                                 print("payment mode...........$payment_mode");
                               }),
                           SizedBox(
@@ -398,22 +363,6 @@ class Bottomsheet {
                           ),
                         ],
                       ),
-                      // SizedBox(
-                      //   height: size.height * 0.03,
-                      // ),
-                      // ElevatedButton(
-                      //     child: const Text('Done'),
-                      //     style: ElevatedButton.styleFrom(
-                      //         primary: Colors.green,
-                      //         textStyle: TextStyle(
-                      //             fontSize: 15,
-                      //             fontWeight:
-                      //                 FontWeight.bold)),
-                      //     onPressed: () {
-                      //       print(
-                      //           "payment_mode...${payment_mode}");
-
-                      //     }),
                     ],
                   ),
                 ),

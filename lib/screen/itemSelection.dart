@@ -256,24 +256,14 @@ class _ItemSelectionState extends State<ItemSelection> {
               height: size.height * 0.08,
               margin: EdgeInsets.only(left: 40),
               child: ListTile(
-                  trailing: value.qty[index].text != "0"
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 18.0),
-                          child: Text(
-                            value.qty[index].text,
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ),
-                        )
-                      : IconButton(
-                          onPressed: () {
-                            value.qty[index].selection = TextSelection(
-                                baseOffset: 0,
-                                extentOffset:
-                                    value.qty[index].value.text.length);
-                            showsheet.showSheet(
+                trailing: value.qty[index].text == "0"
+                    ? IconButton(
+                        onPressed: () {
+                          value.setqtyErrormsg(false);
+                          value.qty[index].selection = TextSelection(
+                              baseOffset: 0,
+                              extentOffset: value.qty[index].value.text.length);
+                          showsheet.showSheet(
                               context,
                               index,
                               item.itemId!,
@@ -285,65 +275,76 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.add,
-                            size: 20,
-                          )),
-                  title: Text(item.itemName!,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: P_Settings.loginPagetheme,
-                      )),
-                  subtitle: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                          width: size.width * 0.2,
-                          child: Text("SR1:${item.sRate1}")),
-                      Container(
-                          width: size.width * 0.2,
-                          child: Text("SR2:${item.sRate1}")),
-                      Container(
-                          width: size.width * 0.2,
-                          child: Text("Stock:${item.stock}")),
-                      GestureDetector(
-                        onTap: () {
-                          Provider.of<Controller>(context, listen: false)
-                              .getinfoList(context, item.itemId!);
-                          infoshowsheet.showInfoSheet(
-                            context,
-                          );
+                              value.qty[index].text);
                         },
-                        child: Icon(
-                          Icons.info,
-                          size: 19,
+                        icon: Icon(
+                          Icons.add,
+                          size: 20,
+                        ))
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 18.0),
+                        child: Text(
+                          value.qty[index].text,
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
                         ),
-                      )
-                    ],
-                  ),
-                  onTap: () {
-                    // print("c--------------------${item.title.toString()}----${item.index.toString()}");
-                    showsheet.showSheet(
-                      context,
-                      index,
-                      item.itemId!,
-                      item.catId!,
-                      item.batchCode!,
-                      item.itemName!,
-                      item.itemImg!,
-                      double.parse(item.sRate1!),
-                      double.parse(item.sRate2!),
-                      double.parse(item.stock!),
-                      widget.transVal,
-                    );
-                  }
-                  // widget.onClickedItem(item.title!),
-                  ),
+                      ),
+                title: Text(item.itemName!,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.aBeeZee(
+                      textStyle: Theme.of(context).textTheme.bodyText2,
+                      fontSize: 16,
+                      // fontWeight: FontWeight.bold,
+                      color: P_Settings.loginPagetheme,
+                    )),
+                subtitle: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                        width: size.width * 0.2,
+                        child: Text("SR1:${item.sRate1}")),
+                    Container(
+                        width: size.width * 0.2,
+                        child: Text("SR2:${item.sRate1}")),
+                    Container(
+                        width: size.width * 0.2,
+                        child: Text("Stock:${item.stock}")),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<Controller>(context, listen: false)
+                            .getinfoList(context, item.itemId!);
+                        infoshowsheet.showInfoSheet(
+                          context,
+                        );
+                      },
+                      child: Icon(
+                        Icons.info,
+                        size: 19,
+                      ),
+                    )
+                  ],
+                ),
+                // onTap: () {
+                //   value.setqtyErrormsg(false);
+
+                //   showsheet.showSheet(
+                //       context,
+                //       index,
+                //       item.itemId!,
+                //       item.catId!,
+                //       item.batchCode!,
+                //       item.itemName!,
+                //       item.itemImg!,
+                //       double.parse(item.sRate1!),
+                //       double.parse(item.sRate2!),
+                //       double.parse(item.stock!),
+                //       widget.transVal,
+                //       value.qty[index].text);
+                // }
+                // widget.onClickedItem(item.title!),
+              ),
             );
           },
         ),

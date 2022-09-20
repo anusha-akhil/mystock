@@ -189,6 +189,7 @@ class _BagPageState extends State<BagPage> {
                 srate2,
                 stock,
                 0,
+                qty.toString()
               );
               // Provider.of<Controller>(context, listen: false)
               //     .setAmt(totalamount);

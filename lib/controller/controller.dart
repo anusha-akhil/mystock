@@ -42,7 +42,7 @@ class Controller extends ChangeNotifier {
   bool filter = false;
   double? totalPrice;
   String? priceval;
-  List<bool> applyClicked = [];
+  List<bool> errorClicked = [];
   List<TextEditingController> qty = [];
 
   String? cartCount;
@@ -472,7 +472,7 @@ class Controller extends ChangeNotifier {
       }
       qty =
           List.generate(productList.length, (index) => TextEditingController());
-      applyClicked = List.generate(productList.length, (index) => false);
+      errorClicked = List.generate(productList.length, (index) => false);
 
       print("qty------$qty");
 
@@ -592,8 +592,8 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
-  setApplyClicked(bool apply, int index) {
-    applyClicked[index] = apply;
+  seterrorClicked(bool apply, int index) {
+    errorClicked[index] = apply;
     notifyListeners();
   }
   /////////////////////////////////////////////////////////

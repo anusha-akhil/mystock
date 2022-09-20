@@ -15,6 +15,8 @@ class P_Settings {
   static Color get loginPagetheme => Colors.black;
 
   static Color get bagText => Color.fromARGB(255, 80, 77, 77);
+  static Color get historyPageText => Color.fromARGB(255, 102, 98, 98);
+
 
   static Color get buttonColor => Colors.white;
   static Color get tileColor => Color.fromARGB(255, 247, 247, 247);

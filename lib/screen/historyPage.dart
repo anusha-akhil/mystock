@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/dateFind.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class _HistoryPageState extends State<HistoryPage> {
   List<String> splitted = [];
 
   String? selectedtransaction;
-
+  List<String> heading = ["Series", "Remarks", "Date", "", ""];
   String? todaydate;
   @override
   void initState() {
@@ -42,7 +45,7 @@ class _HistoryPageState extends State<HistoryPage> {
               child: Column(
             children: [
               Container(
-                height: size.height * 0.15,
+                height: size.height * 0.1,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -88,6 +91,131 @@ class _HistoryPageState extends State<HistoryPage> {
                 // dropDownCustom(size,""),
               ),
               dropDownCustom(size, ""),
+              Divider(),
+
+              // Container(
+              //   width: size.width*0.5,
+              //   height: size.height * 0.2,
+              //   child: Lottie.asset(
+              //     'asset/filter.json',
+              //     // height: size.height*0.3,
+              //     // width: size.height*0.3,
+              //   )
+              // ),
+              Container(
+                height: size.height * 0.7,
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      trailing: Wrap(
+                        spacing: 20,
+                        children: [
+                          Container(
+                            height: size.height * 0.03,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: P_Settings.loginPagetheme,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(2), // <-- Radius
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransactionPage()),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Edit",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                )),
+                          ),
+                          Container(
+                            height: size.height * 0.03,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: P_Settings.loginPagetheme,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(2), // <-- Radius
+                                  ),
+                                ),
+                                onPressed: () {},
+                                child: Text(
+                                  "Delete",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: P_Settings.buttonColor,
+                                  ),
+                                )),
+                          )
+                        ],
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            "Series : SR1TTT",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: P_Settings.historyPageText,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "12/12/2022",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: P_Settings.historyPageText,
+                            ),
+                          )
+                        ],
+                      ),
+                      subtitle: Text(
+                        "remarkssssssss",
+                        style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: P_Settings.historyPageText,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // child: DataTable(
+                //   horizontalMargin: 0,
+                //   headingRowHeight: 25,
+                //   dataRowHeight: 30,
+                //   headingRowColor: MaterialStateColor.resolveWith(
+                //       (states) => Color.fromARGB(255, 240, 235, 235)),
+                //   columnSpacing: 0,
+                //   showCheckboxColumn: false,
+                //   dataRowColor:
+                //       MaterialStateColor.resolveWith((states) => Colors.white),
+                //   border: TableBorder.all(width: 1, color: Colors.grey),
+                //   columns: getColumns(heading),
+                //   rows: getRowss(value.historydataList),
+                // ),
+              )
             ],
           ));
         },
@@ -95,6 +223,71 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
+///////////////////////////////////////////////////////////////////
+  List<DataColumn> getColumns(List<String> columns) {
+    print("columns---${columns}");
+    String behv;
+    String colsName;
+    return columns.map((String column) {
+      // double strwidth = double.parse(behv[3]);
+      // strwidth = strwidth * 10; //
+      return DataColumn(
+        label: Container(
+          width: 70,
+          child: Text(
+            column,
+            style: TextStyle(fontSize: 14),
+            textAlign: TextAlign.center,
+            // textAlign: behv[1] == "L" ? TextAlign.left : TextAlign.right,
+          ),
+          // ),
+        ),
+      );
+    }).toList();
+  }
+
+  //////////////////////////////////////////////////
+  List<DataRow> getRowss(List<Map<String, dynamic>> rows) {
+    List<String> newBehavr = [];
+    // print("rows---$rows");
+    return rows.map((row) {
+      return DataRow(
+        // color: MaterialStateProperty.all(Colors.green),
+        cells: getCelle(row),
+      );
+    }).toList();
+  }
+
+  ///////////////////////////////////////////////////
+  List<DataCell> getCelle(Map<String, dynamic> data) {
+    List<DataCell> datacell = [];
+    data.forEach((key, value) {
+      datacell.add(
+        DataCell(
+          Container(
+            width: 70,
+            // width: mainHeader[k][3] == "1" ? 70 : 30,
+            alignment: Alignment.center,
+            //     ? Alignment.centerLeft
+            //     : Alignment.centerRight,
+            child: Text(
+              value.toString(),
+              // textAlign:
+              //     mainHeader[k][1] == "L" ? TextAlign.left : TextAlign.right,
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+
+    // print(datacell.length);
+    return datacell;
+  }
+
+  //////////////////////////////////////////////////////
   Widget dropDownCustom(Size size, String type) {
     return Consumer<Controller>(
       builder: (context, value, child) {
