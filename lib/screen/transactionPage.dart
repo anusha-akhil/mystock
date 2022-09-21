@@ -126,7 +126,7 @@ class _TransactionPageState extends State<TransactionPage> {
         builder: (context, value, child) {
           print("brName------${value.brName}");
           if (brName == null) {
-            brName="...";
+            brName = "...";
           } else {
             brName = value.brName;
           }
@@ -142,18 +142,34 @@ class _TransactionPageState extends State<TransactionPage> {
                 //   width: size.width * 0.2,
                 // ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 0),
-                  child: Text(
-                    "Entry date  :  $todaydate",
-                    style: GoogleFonts.aBeeZee(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: Colors.red),
+                  padding: const EdgeInsets.only(left: 55, right: 55),
+                  child: TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      prefixIcon: Icon(
+                        Icons.date_range,
+                        color: Colors.red,
+                      ),
+                      labelText: "Entry date  :  $todaydate",
+                      labelStyle: TextStyle(
+                          color: Colors.red, fontSize: 15 //<-- SEE HERE
+                          ),
+                    ),
                   ),
+                  // Text(
+                  //   "Entry date  :  $todaydate",
+                  //   style: GoogleFonts.aBeeZee(
+                  //       textStyle: Theme.of(context).textTheme.bodyText2,
+                  //       fontSize: 16,
+                  //       // fontWeight: FontWeight.bold,
+                  //       color: Colors.red),
+                  // ),
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: size.height * 0.15,
                 ),
                 dropDownCustom(size, "transaction"),
                 value.stocktransferselected
@@ -230,7 +246,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       );
                     }),
                 SizedBox(
-                  height: size.height * 0.08,
+                  height: size.height * 0.015,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

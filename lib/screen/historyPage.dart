@@ -7,7 +7,6 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/dateFind.dart';
 import 'package:mystock/components/transInfoBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
-import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -256,13 +255,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                           index]
                                                                       ['os_id'],
                                                                   "delete");
+
                                                           //////////////////////////////////////////////////
-                                                          // Provider.of<Controller>(
-                                                          //         context,
-                                                          //         listen: false)
-                                                          //     .historyData(
-                                                          //         context,
-                                                          //         splitted[0]);
+                                                          await Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .historyData(
+                                                                  context,
+                                                                  splitted[0],"");
 
                                                           Navigator.of(ctx)
                                                               .pop();
