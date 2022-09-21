@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
@@ -32,34 +33,60 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
           builder: (context, value, child) {
             return Column(
               children: [
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
+                // value.isLoading?
+                // SpinKitFadingCircle(color: P_Settings.loginPagetheme,)
+                // :
                 Expanded(
                   child: ListView.builder(
-                    itemCount: value.productList.length,
+                    itemCount: value.stock_approve_detaillist.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: 1, bottom: 0),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 20.0,
-                            backgroundImage: NetworkImage(
-                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                            backgroundColor: Colors.transparent,
-                            // child: Image.network(
-
-                            //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                            //   fit: BoxFit.fill,
-                            // ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(width: 1, color: Colors.grey),
+                            ),
                           ),
-                          title: Text(
-                            value.stock_approve_detaillist[index]["item_name"],
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: P_Settings.loginPagetheme,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius:25.0,
+                              backgroundImage: NetworkImage(
+                                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                              backgroundColor: Colors.transparent,
+                              // child: Image.network(
+
+                              //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                              //   fit: BoxFit.fill,
+                              // ),
+                            ),
+                            title: Text(
+                              value.stock_approve_detaillist[index]
+                                  ["item_name"],
+                              style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 18,
+                                // fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme,
+                              ),
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "Qty :    ${value.stock_approve_detaillist[index]["qty"] } ,"),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                      "Srate1 :    ${value.stock_approve_detaillist[index]["s_rate_1"]} ,"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                      "Srate2 :    ${value.stock_approve_detaillist[index]["s_rate_2"]}"),
+                                ),
+                              ],
                             ),
                           ),
                         ),

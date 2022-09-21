@@ -422,11 +422,12 @@ class Controller extends ChangeNotifier {
         notifyListeners();
         print("json cart------$map");
 
-        if (action == "delete" && map["err_status"] == "0") {
+        if (action == "delete" && map["err_status"] == 0) {
           historyData(context, transid);
         }
 
-        if (action == "save" && map["err_status"] == "0") {
+        if (action == "save" && map["err_status"] == 0) {
+          print("savedd");
           return showDialog(
               context: context,
               builder: (context) {
@@ -458,7 +459,7 @@ class Controller extends ChangeNotifier {
                   ],
                 ));
               });
-        }
+        } else {}
       }
     });
   }
