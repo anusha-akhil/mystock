@@ -102,14 +102,17 @@ class _MainDashboardState extends State<MainDashboard> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Logout'), // <-- Text
-                            SizedBox(
-                              width: 5,
-                            ),
                             Icon(
                               // <-- Icon
                               Icons.person,
-                              size: 24.0,
+                              size: 18.0,
+                            ),
+                            Text(
+                              'Logout',
+                              style: TextStyle(fontSize: 12),
+                            ), // <-- Text
+                            SizedBox(
+                              width: size.width * 0.01,
                             ),
                           ],
                         ),

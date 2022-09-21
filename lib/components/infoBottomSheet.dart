@@ -41,6 +41,20 @@ class InfoBottomsheet {
                           title: Column(
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   // Text("Product Name"),Spacer(),
@@ -259,15 +273,17 @@ class InfoBottomsheet {
                                       horizontal: 0, vertical: -4),
                                   title: Row(
                                     children: [
-                                      Text(
-                                        value.stockList[index]["BranchName"],
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.grey[600],
+                                      Expanded(
+                                        child: Text(
+                                          value.stockList[index]["BranchName"],
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 17,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Colors.grey[600],
+                                          ),
                                         ),
                                       ),
                                       Spacer(),

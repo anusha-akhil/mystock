@@ -43,12 +43,26 @@ class Bottomsheet {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              color: P_Settings.loginPagetheme,
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
+                        padding: const EdgeInsets.only(top: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 30,
                               backgroundImage: NetworkImage(
                                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
@@ -59,6 +73,10 @@ class Bottomsheet {
                               // ),
                               // child: Image.asset("asset/"),
                             ),
+                            //  SizedBox(
+                            //   width: size.width * 0.5,
+                            // ),
+
                             // Spacer(),
                             // Text(
                             //       prodName.toString(),
