@@ -7,7 +7,6 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/dateFind.dart';
 import 'package:mystock/components/transInfoBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
-import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
