@@ -41,6 +41,20 @@ class InfoBottomsheet {
                           title: Column(
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   // Text("Product Name"),Spacer(),
