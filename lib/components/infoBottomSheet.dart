@@ -259,7 +259,7 @@ class InfoBottomsheet {
                                       horizontal: 0, vertical: -4),
                                   title: Row(
                                     children: [
-                                      Flexible(
+                                      Expanded(
                                         child: Text(
                                           value.stockList[index]["BranchName"],
                                           style: GoogleFonts.aBeeZee(
