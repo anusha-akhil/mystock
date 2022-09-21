@@ -6,8 +6,8 @@ import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
-class InfoBottomsheet {
-  showInfoSheet(BuildContext context) {
+class TransaInfoBottomsheet {
+  showtransInfoSheet(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -259,17 +259,15 @@ class InfoBottomsheet {
                                       horizontal: 0, vertical: -4),
                                   title: Row(
                                     children: [
-                                      Flexible(
-                                        child: Text(
-                                          value.stockList[index]["BranchName"],
-                                          style: GoogleFonts.aBeeZee(
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                            fontSize: 17,
-                                            // fontWeight: FontWeight.bold,
-                                            color: Colors.grey[600],
-                                          ),
+                                      Text(
+                                        value.stockList[index]["BranchName"],
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 17,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.grey[600],
                                         ),
                                       ),
                                       Spacer(),

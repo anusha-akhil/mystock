@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/dateFind.dart';
+import 'package:mystock/components/transInfoBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,8 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   DateTime now = DateTime.now();
+  TransaInfoBottomsheet infoshowsheet = TransaInfoBottomsheet();
+
   DateFind dateFind = DateFind();
   String? date;
   List<String> s = [];
@@ -137,105 +141,151 @@ class _HistoryPageState extends State<HistoryPage> {
                 //     // width: size.height*0.3,
                 //   )
                 // ),
-                Container(
-                  height: size.height * 0.7,
-                  child: ListView.builder(
-                    itemCount: value.historyList.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        trailing: Wrap(
-                          spacing: 10,
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: P_Settings.editclr,
-                                ),
-                                onPressed: () {
-                                  Navigator.pushReplacement<void, void>(
-                                      context,
-                                      MaterialPageRoute<void>(
-                                        builder: (BuildContext context) =>
-                                            TransactionPage(
-                                                page: "history",
-                                                remrk: value.historyList[index]
-                                                    ['remarks'],
-                                                branch: value.historyList[index]
-                                                    ['remarks'],
-                                                translist: splitted),
-                                      ));
-                                }),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: P_Settings.delete,
-                                ),
-                                onPressed: () {}),
-                          ],
-                        ),
-                        title: Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                "${value.historyList[index]['series']} ",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle:
-                                      Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: P_Settings.historyPageText,
-                                ),
-                              ),
+                value.isLoading
+                    ? SpinKitFadingCircle(
+                        color: P_Settings.loginPagetheme,
+                      )
+                    : value.historyList.length == 0
+                        ? Container(
+                            height: size.height * 0.15,
+                            child: Lottie.asset(
+                              'asset/filter.json',
+                              // height: size.height*0.3,
+                              // width: size.height*0.3,
+                            ))
+                        : Container(
+                            height: size.height * 0.7,
+                            child: ListView.builder(
+                              itemCount: value.historyList.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  trailing: Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getTransinfoList(
+                                                    context, );
+                                            infoshowsheet
+                                                .showtransInfoSheet(context);
+                                          },
+                                          icon: Icon(Icons.info)),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: P_Settings.editclr,
+                                          ),
+                                          onPressed: () {
+                                            // Provider.of<Controller>(context,
+                                            //         listen: false)
+                                            //     .saveCartDetails(
+                                            //         context,
+                                            //         widget.transId,
+                                            //         value.historyList[index]
+                                            //             ['to_branch_id']!,
+                                            //        value.historyList[index]
+                                            //                 ['trans_remark'],
+                                            //         "1");
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getBranchList(
+                                                    context,
+                                                    "history",
+                                                    value.historyList[index]
+                                                        ['to_branch_id']!);
+                                            Navigator.pushReplacement<void,
+                                                    void>(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          TransactionPage(
+                                                    page: "history",
+                                                    remrk:
+                                                        value.historyList[index]
+                                                            ['trans_remark'],
+                                                    branch:
+                                                        value.historyList[index]
+                                                            ['to_branch_id'],
+                                                    translist: splitted,
+                                                  ),
+                                                ));
+                                          }),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: P_Settings.delete,
+                                          ),
+                                          onPressed: () {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .saveCartDetails(
+                                                    context,
+                                                    splitted[0],
+                                                    value.historyList[index]
+                                                        ['to_branch_id'],
+                                                    value.historyList[index]
+                                                        ['trans_remark'],
+                                                    "2",
+                                                    value.historyList[index]
+                                                        ['os_id']);
+                                          }),
+                                    ],
+                                  ),
+                                  title: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "${value.historyList[index]['series']} ",
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.historyPageText,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.03,
+                                      ),
+                                      Text(
+                                        "(${value.historyList[index]['entry_date']})",
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 16,
+                                          // fontWeight: FontWeight.bold,
+                                          color: P_Settings.historyPageText,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.03,
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      "${value.historyList[index]['trans_remark']}",
+                                      style: GoogleFonts.aBeeZee(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                        fontSize: 16,
+                                        // fontWeight: FontWeight.bold,
+                                        color: P_Settings.historyPageText,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            SizedBox(
-                              width: size.width * 0.03,
-                            ),
-                            Text(
-                              "(${value.historyList[index]['entry_date']})",
-                              style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 16,
-                                // fontWeight: FontWeight.bold,
-                                color: P_Settings.historyPageText,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
-                          ],
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            "${value.historyList[index]['remarks']}",
-                            style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: P_Settings.historyPageText,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-
-                  // child: DataTable(
-                  //   horizontalMargin: 0,
-                  //   headingRowHeight: 25,
-                  //   dataRowHeight: 30,
-                  //   headingRowColor: MaterialStateColor.resolveWith(
-                  //       (states) => Color.fromARGB(255, 240, 235, 235)),
-                  //   columnSpacing: 0,
-                  //   showCheckboxColumn: false,
-                  //   dataRowColor:
-                  //       MaterialStateColor.resolveWith((states) => Colors.white),
-                  //   border: TableBorder.all(width: 1, color: Colors.grey),
-                  //   columns: getColumns(heading),
-                  //   rows: getRowss(value.historydataList),
-                  // ),
-                )
+                          )
               ],
             ));
           }
@@ -245,70 +295,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
 ///////////////////////////////////////////////////////////////////
-  List<DataColumn> getColumns(List<String> columns) {
-    print("columns---${columns}");
-    String behv;
-    String colsName;
-    return columns.map((String column) {
-      // double strwidth = double.parse(behv[3]);
-      // strwidth = strwidth * 10; //
-      return DataColumn(
-        label: Container(
-          width: 70,
-          child: Text(
-            column,
-            style: TextStyle(fontSize: 14),
-            textAlign: TextAlign.center,
-            // textAlign: behv[1] == "L" ? TextAlign.left : TextAlign.right,
-          ),
-          // ),
-        ),
-      );
-    }).toList();
-  }
 
-  //////////////////////////////////////////////////
-  List<DataRow> getRowss(List<Map<String, dynamic>> rows) {
-    List<String> newBehavr = [];
-    // print("rows---$rows");
-    return rows.map((row) {
-      return DataRow(
-        // color: MaterialStateProperty.all(Colors.green),
-        cells: getCelle(row),
-      );
-    }).toList();
-  }
-
-  ///////////////////////////////////////////////////
-  List<DataCell> getCelle(Map<String, dynamic> data) {
-    List<DataCell> datacell = [];
-    data.forEach((key, value) {
-      datacell.add(
-        DataCell(
-          Container(
-            width: 70,
-            // width: mainHeader[k][3] == "1" ? 70 : 30,
-            alignment: Alignment.center,
-            //     ? Alignment.centerLeft
-            //     : Alignment.centerRight,
-            child: Text(
-              value.toString(),
-              // textAlign:
-              //     mainHeader[k][1] == "L" ? TextAlign.left : TextAlign.right,
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ),
-      );
-    });
-
-    // print(datacell.length);
-    return datacell;
-  }
-
-  //////////////////////////////////////////////////////
   Widget dropDownCustom(Size size, String type) {
     return Consumer<Controller>(
       builder: (context, value, child) {

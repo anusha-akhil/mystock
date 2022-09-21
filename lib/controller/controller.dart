@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/components/externalDir.dart';
 import 'package:mystock/components/globalData.dart';
@@ -16,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
   String? fromDate;
+  String? brName;
+
   bool isVisible = false;
   bool isProdLoading = false;
   bool isSearch = false;
@@ -38,6 +41,8 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> infoList = [];
   List<Map<String, dynamic>> stockList = [];
+
+  List<Map<String, dynamic>> transinfoList = [];
 
   // String urlgolabl = Globaldata.apiglobal;
   bool filter = false;
@@ -110,7 +115,7 @@ class Controller extends ChangeNotifier {
   }
 
 /////////////////////////////////////////////////////////////////////////
-  getBranchList(BuildContext context) async {
+  getBranchList(BuildContext context, String page, String brId) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -137,6 +142,15 @@ class Controller extends ChangeNotifier {
           for (var item in map) {
             brnachModel = BranchModel.fromJson(item);
             branchist.add(brnachModel);
+          }
+
+          if (page == "history") {
+            for (var i = 0; i < branchist.length; i++) {
+              if (branchist[i].uID == brId) {
+                brName = branchist[i].branchName;
+              }
+            }
+            // print("brId------${branchist[i].branchName}");
           }
 
           isLoading = false;
@@ -195,8 +209,8 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  Future addDeletebagItem(String itemId, String srate1, String srate2, String qty,
-      String event, String cart_id, BuildContext context) async {
+  Future addDeletebagItem(String itemId, String srate1, String srate2,
+      String qty, String event, String cart_id, BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -224,12 +238,12 @@ class Controller extends ChangeNotifier {
 
           var map = jsonDecode(response.body);
           // print("delete response-----------------$map");
-           
+
           isLoading = false;
           notifyListeners();
           print("delete response-----------------${map["msg"]}");
-          var res=map["msg"];
-          if(res=="Bag deleted Successfully"){
+          var res = map["msg"];
+          if (res == "Bag deleted Successfully") {
             getbagData1(context);
           }
           return res;
@@ -344,12 +358,8 @@ class Controller extends ChangeNotifier {
   }
 
 // //////////////////////////////////////////////
-  saveCartDetails(
-    BuildContext context,
-    String transid,
-    String to_branch_id,
-    String remark,
-  ) async {
+  saveCartDetails(BuildContext context, String transid, String to_branch_id,
+      String remark, String event, String os_id) async {
     List<Map<String, dynamic>> jsonResult = [];
     Map<String, dynamic> itemmap = {};
     Map<String, dynamic> resultmmap = {};
@@ -377,6 +387,8 @@ class Controller extends ChangeNotifier {
           "remark": remark,
           "staff_id": user_id,
           "branch_id": branch_id,
+          "event": event,
+          "os_id": os_id,
           "details": jsonResult
         };
         // var jsonBody = jsonEncode(masterMap);
@@ -403,12 +415,37 @@ class Controller extends ChangeNotifier {
           CustomSnackbar snackbar = CustomSnackbar();
           snackbar.showSnackbar(context, "Cart Save failed !!!", "");
         } else {
-          Navigator.pushReplacement<void, void>(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => TransactionPage(),
-            ),
-          );
+          return showDialog(
+              context: context,
+              builder: (context) {
+                Size size = MediaQuery.of(context).size;
+
+                Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop(true);
+
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) => TransactionPage()
+                        // OrderForm(widget.areaname,"return"),
+                        ),
+                  );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Saved!!!',
+                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
         }
       }
     });
@@ -454,6 +491,44 @@ class Controller extends ChangeNotifier {
           }
 
           print("infoList---$infoList----$stockList");
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+///////////////////////////////////////////////////////////////////////
+  getTransinfoList(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+
+          Uri url = Uri.parse("$urlgolabl/item_search_stock.php");
+          // Map body = {
+          //   'item_id': itemId,
+          //   'branch_id': branch_id,
+          // };
+          // print("cart bag body-----$body");
+          // isDownloaded = true;
+          isListLoading = true;
+          notifyListeners();
+
+          // http.Response response = await http.post(
+          //   url,
+          //   body: body,
+          // );
+          // var map = jsonDecode(response.body);
+ 
+
+          isListLoading = false;
           notifyListeners();
 
           /////////////// insert into local db /////////////////////
@@ -564,7 +639,7 @@ class Controller extends ChangeNotifier {
       uniquelist =
           productbar.where((productbar) => seen.add(productbar)).toList();
       uniquelist.sort();
-      print("productDetailsTable--map ${productList.length}");
+      print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
 
       return productList;
@@ -746,4 +821,15 @@ class Controller extends ChangeNotifier {
     isSearch = isSrach;
     notifyListeners();
   }
+
+  ///////////////////////////////////////////////
+  // getbranchFrombId(String brId) {
+  //   print("brjhdjsz-----$branchist");
+  //   for (var i = 0; i < branchist.length; i++) {
+  //     if (branchist[i].uID == brId) {
+  //       return branchist[i].branchName;
+  //     }
+  //   }
+  //   // notifyListeners();
+  // }
 }

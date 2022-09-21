@@ -40,6 +40,8 @@ class _StockTransferState extends State<StockTransfer> {
   itemList() async {
     list = await Provider.of<Controller>(context, listen: false)
         .getProductDetails();
+
+    print("listttt----$list");
   }
 
   @override
@@ -137,7 +139,7 @@ class _StockTransferState extends State<StockTransfer> {
               color: P_Settings.loginPagetheme,
             );
           } else {
-            if (widget.list.length > 0) {
+            if (list.length > 0) {
               return ItemSelection(
                 list: list,
                 transVal: widget.transVal,

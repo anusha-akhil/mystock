@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/model/branchModel.dart';
 import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/historyPage.dart';
 import 'package:mystock/screen/itemSelection.dart';
@@ -32,6 +34,12 @@ class _TransactionPageState extends State<TransactionPage> {
   TextEditingController remrk = TextEditingController();
   String? hint;
   String? hintbra;
+  String? brName;
+  DateTime now = DateTime.now();
+  // DateFind dateFind = DateFind();
+  String? date;
+  List<String> s = [];
+  String? todaydate;
 
   @override
   void initState() {
@@ -39,10 +47,16 @@ class _TransactionPageState extends State<TransactionPage> {
     super.initState();
     shared();
     print("-----------${widget.page}");
+    todaydate = DateFormat('yyyy-MM-dd').format(now);
+    // s = date!.split(" ");
     if (widget.page == "history") {
       remrk.text = widget.remrk.toString();
       hint = widget.translist![2].toString();
       hintbra = widget.branch.toString();
+      // Provider.of<Controller>(context, listen: false)
+      //     .getBranchList(context, "history", hintbra!);
+
+      // print("brName------$brName");
       print("sd-----------${hint}");
       // selectedtransaction=widget.transType.toString();
       visible.value = false;
@@ -110,17 +124,40 @@ class _TransactionPageState extends State<TransactionPage> {
           backgroundColor: P_Settings.loginPagetheme),
       body: Consumer<Controller>(
         builder: (context, value, child) {
+          print("brName------${value.brName}");
+          if (brName == null) {
+            brName="...";
+          } else {
+            brName = value.brName;
+          }
           return SingleChildScrollView(
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: size.height * 0.1,
+                ),
+                // SizedBox(
+                //   width: size.width * 0.2,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Text(
+                    "Entry date  :  $todaydate",
+                    style: GoogleFonts.aBeeZee(
+                        textStyle: Theme.of(context).textTheme.bodyText2,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.05,
                 ),
                 dropDownCustom(size, "transaction"),
                 value.stocktransferselected
-                    ? dropDownbranch(size, "branch")
+                    ? dropDownbranch(size)
                     : Container(),
                 // SizedBox(
                 //   height: size.height * 0.08,
@@ -369,7 +406,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           Provider.of<Controller>(context, listen: false)
                               .setstockTranserselected(true);
                           Provider.of<Controller>(context, listen: false)
-                              .getBranchList(context);
+                              .getBranchList(context, "transaction", "");
                         } else {
                           Provider.of<Controller>(context, listen: false)
                               .setstockTranserselected(false);
@@ -384,7 +421,7 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   ////////////////////////////////////
-  Widget dropDownbranch(Size size, String type) {
+  Widget dropDownbranch(Size size) {
     return Consumer<Controller>(
       builder: (context, value, child) {
         return Padding(
@@ -406,10 +443,9 @@ class _TransactionPageState extends State<TransactionPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(widget.branch == null
                     ? "Select Branch"
-                    : hintbra.toString()),
+                    : brName.toString()),
               ),
-              // isExpanded: true,
-              autofocus: false,
+              autofocus: true,
               underline: SizedBox(),
               elevation: 0,
               items: value.branchist
@@ -428,16 +464,14 @@ class _TransactionPageState extends State<TransactionPage> {
                         ],
                       )))
                   .toList(),
-              onChanged: widget.page == "history"
-                  ? null
-                  : (item) {
-                      print("clicked");
-                      if (item != null) {
-                        setState(() {
-                          selectedbranch = item;
-                        });
-                      }
-                    },
+              onChanged: (item) {
+                print("clicked");
+                if (item != null) {
+                  setState(() {
+                    selectedbranch = item;
+                  });
+                }
+              },
             ),
           ),
         );

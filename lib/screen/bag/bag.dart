@@ -10,6 +10,7 @@ import 'package:mystock/components/modalBottomsheet.dart';
 import 'package:mystock/components/radioButton.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/confirmationPage.dart';
+import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
 
 class BagPage extends StatefulWidget {
@@ -172,7 +173,9 @@ class _BagPageState extends State<BagPage> {
                         onPressed: () async {
                           Provider.of<Controller>(context, listen: false)
                               .saveCartDetails(context, widget.transId,
-                                  widget.branchId!, widget.remark!);
+                                  widget.branchId!, widget.remark!,"0","0");
+
+                         
                         },
                         child: Text(
                           "Save",
@@ -507,7 +510,7 @@ class _BagPageState extends State<BagPage> {
                                                               "2",
                                                               cart_id,
                                                               context);
-                                                      
+
                                                       // Provider.of<Controller>(
                                                       //         context,
                                                       //         listen: false)
