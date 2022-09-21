@@ -11,6 +11,7 @@ import 'package:mystock/model/itemcategroy.dart';
 import 'package:mystock/model/productListModel.dart';
 import 'package:mystock/model/registrationModel.dart';
 import 'package:mystock/model/transactionModel.dart';
+import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/screen/transactionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -364,8 +365,6 @@ class Controller extends ChangeNotifier {
             }
           }
 
-          historyqty = List.generate(
-              historyList.length, (index) => TextEditingController());
           print("history list data........${historyList}");
           // isLoading = false;
           notifyListeners();
@@ -577,6 +576,90 @@ class Controller extends ChangeNotifier {
     });
   }
 
+  ///////////////////////////////////////////////////////////////////
+  saveStockApprovalList(BuildContext context, String osId) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          user_id = prefs.getString("user_id");
+
+          Uri url = Uri.parse("$urlgolabl/save_stock_approve.php");
+          Map body = {
+            'staff_id': user_id,
+            'branch_id': branch_id,
+            'os_id': osId
+          };
+          print("dmbody-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("stock approval save----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+
+          if (map["err_status"] == 0) {
+            return showDialog(
+                context: context,
+                builder: (context) {
+                  Size size = MediaQuery.of(context).size;
+
+                  Future.delayed(Duration(seconds: 2), () {
+                    Navigator.of(context).pop(true);
+                    getStockApprovalList(context);
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                          opaque: false, // set to false
+                          pageBuilder: (_, __, ___) => MainDashboard()
+                          // OrderForm(widget.areaname,"return"),
+                          ),
+                    );
+                  });
+                  return AlertDialog(
+                      content: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Stock Approved!!!',
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
+                      Icon(
+                        Icons.done,
+                        color: Colors.green,
+                      )
+                    ],
+                  ));
+                });
+          }
+
+          // stock_approve_list.clear();
+          // if (map != null) {
+          //   for (var item in map) {
+          //     stock_approve_list.add(item);
+          //   }
+          // }
+
+          // print("stock_approve_list---$stock_approve_list");
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
 ///////////////////////////////////////////////////////////////////////
   getStockApproveInfo(BuildContext context, String osId) async {
     NetConnection.networkConnection(context).then((value) async {
@@ -663,7 +746,10 @@ class Controller extends ChangeNotifier {
             for (var item in map["detail"]) {
               transiteminfoList.add(item);
             }
-
+            historyqty = List.generate(
+              transiteminfoList.length,
+              (index) => TextEditingController(),
+            );
             for (int i = 0; i < transiteminfoList.length; i++) {
               historyqty[i].text = transiteminfoList[i]["qty"].toString();
             }

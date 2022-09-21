@@ -51,7 +51,7 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: Consumer<Controller>(
         builder: (context, value, child) {
-          if (value.isListLoading) {
+          if (value.isLoading) {
             return Container(
                 height: 200,
                 child: SpinKitFadingCircle(

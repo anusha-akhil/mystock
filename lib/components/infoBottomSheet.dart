@@ -37,73 +37,36 @@ class InfoBottomsheet {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(Icons.close))
+                          ],
+                        ),
                         ListTile(
-                          title: Column(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: P_Settings.loginPagetheme,
-                                    ),
-                                  ),
-                                ],
+                              // Text("Product Name"),Spacer(),
+                              Text(
+                                "Item Info :",
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  // Text("Product Name"),Spacer(),
-                                  Text(
-                                    "Item Info :",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: P_Settings.loginPagetheme,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              //    ListTile(
-                              // title: Column(
-                              //   children: [
-                              //     Row(
-                              //       mainAxisAlignment: MainAxisAlignment.center,
-                              //       children: [
-                              //         // Text("Product Name"),Spacer(),
-                              //         Text(
-                              //           "Item Information",
-                              //           style: GoogleFonts.aBeeZee(
-                              //             textStyle:
-                              //                 Theme.of(context).textTheme.bodyText2,
-                              //             fontSize: 17,
-                              //             // fontWeight: FontWeight.bold,
-                              //             color: P_Settings.loginPagetheme,
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //     // Row(
-                              //     //   mainAxisAlignment: MainAxisAlignment.end,
-                              //     //   children: [
-                              //     //     IconButton(
-                              //     //         onPressed: () {
-                              //     //           Navigator.pop(context);
-                              //     //         },
-                              //     //         icon: Icon(Icons.close))
-                              //     //   ],
-                              //     // )
-                              //   ],
-                              // ),
-                              // ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.01,
                         ),
                         ListTile(
                           visualDensity:

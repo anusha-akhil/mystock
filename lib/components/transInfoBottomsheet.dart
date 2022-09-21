@@ -7,7 +7,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(BuildContext context,int index) {
+  showtransInfoSheet(BuildContext context, int index) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -56,72 +56,9 @@ class TransaInfoBottomsheet {
                                   ),
                                 ],
                               ),
-                              //    ListTile(
-                              // title: Column(
-                              //   children: [
-                              //     Row(
-                              //       mainAxisAlignment: MainAxisAlignment.center,
-                              //       children: [
-                              //         // Text("Product Name"),Spacer(),
-                              //         Text(
-                              //           "Item Information",
-                              //           style: GoogleFonts.aBeeZee(
-                              //             textStyle:
-                              //                 Theme.of(context).textTheme.bodyText2,
-                              //             fontSize: 17,
-                              //             // fontWeight: FontWeight.bold,
-                              //             color: P_Settings.loginPagetheme,
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //     // Row(
-                              //     //   mainAxisAlignment: MainAxisAlignment.end,
-                              //     //   children: [
-                              //     //     IconButton(
-                              //     //         onPressed: () {
-                              //     //           Navigator.pop(context);
-                              //     //         },
-                              //     //         icon: Icon(Icons.close))
-                              //     //   ],
-                              //     // )
-                              //   ],
-                              // ),
-                              // ),
                             ],
                           ),
                         ),
-                        // ListTile(
-                        //   visualDensity:
-                        //       VisualDensity(horizontal: 0, vertical: -4),
-                        //   leading: CircleAvatar(
-                        //     radius: 30,
-                        //     backgroundImage: NetworkImage(
-                        //         'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                        //     backgroundColor: Colors.transparent,
-                        //     // child: Image.network(
-                        //     //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                        //     //   fit: BoxFit.cover,
-                        //     // ),
-                        //     // child: Image.asset("asset/"),
-                        //   ),
-                        //   title: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.end,
-                        //       children: [
-                        //         Flexible(
-                        //           child: Text(
-                        //             value.transinfoList[0]["trans_type"].toString(),
-                        //             style: GoogleFonts.aBeeZee(
-                        //               textStyle:
-                        //                   Theme.of(context).textTheme.bodyText2,
-                        //               fontSize: 17,
-                        //               // fontWeight: FontWeight.bold,
-                        //               color: P_Settings.loginPagetheme,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ]),
-                        // ),
                         Padding(
                           padding: EdgeInsets.only(left: 10.0, right: 10),
                           child: ListTile(
@@ -224,7 +161,6 @@ class TransaInfoBottomsheet {
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Row(
@@ -247,192 +183,116 @@ class TransaInfoBottomsheet {
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-
-                        Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
-                          child: ListTile(
-                            visualDensity:
-                                VisualDensity(horizontal: 0, vertical: -4),
-                            title: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Item Name",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
+                        Container(
+                          height: size.height * 0.2,
+                          child: ListView.builder(
+                            itemCount: value.transiteminfoList.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                visualDensity:
+                                    VisualDensity(horizontal: 0, vertical: -4),
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        value.transiteminfoList[0]["item_name"],
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 17,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.grey[900],
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    value.transiteminfoList[0]["item_name"],
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                                    Container(
+                                      width: size.width * 0.2,
+                                      child: TextField(
+                                        onTap: () {
+                                          // Provider.of<Controller>(context,
+                                          //         listen: false)
+                                          //     .addDeletebagItem(
+                                          //         itemId,
+                                          //         srate1.toString(),
+                                          //         srate2.toString(),
+                                          //         value.qty[index].text,
+                                          //         "0",
+                                          //         "0",
+                                          //         context);
 
-                        Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: ListTile(
-                            visualDensity:
-                                VisualDensity(horizontal: 0, vertical: -4),
-                            title: Row(
-                              children: [
-                                Text(
-                                  "Qty ",
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 17,
-                                    // fontWeight: FontWeight.bold,
-                                    color: P_Settings.loginPagetheme,
-                                  ),
+                                          // print(
+                                          //     "quantity......${value.qty[index].value.text}");
+                                          // value.qty[index].selection = TextSelection(
+                                          //     baseOffset: 0,
+                                          //     extentOffset:
+                                          //         value.qty[index].value.text.length);
+                                        },
+
+                                        // autofocus: true,
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 17,
+                                          // fontWeight: FontWeight.bold,
+                                          color: P_Settings.loginPagetheme,
+                                        ),
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          contentPadding: EdgeInsets.all(0),
+                                          //border: InputBorder.none
+                                        ),
+
+                                        // maxLines: 1,
+                                        // minLines: 1,
+                                        keyboardType: TextInputType.number,
+                                        onSubmitted: (values) {
+                                          // Provider.of<Controller>(context,
+                                          //         listen: false)
+                                          //     .addDeletebagItem(
+                                          //         itemId,
+                                          //         srate1.toString(),
+                                          //         srate2.toString(),
+                                          //         value.qty[index].text,
+                                          //         "0",
+                                          //         "0",
+                                          //         context);
+                                          // print("values----$values");
+                                          // double valueqty = 0.0;
+                                          // value.discount_amount[index].text=;
+                                        },
+                                        textAlign: TextAlign.right,
+                                        controller: value.historyqty[index],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Spacer(),
-                                Container(
-                                  width: size.width * 0.2,
-                                  child: TextField(
-                                    onTap: () {
-                                      // Provider.of<Controller>(context,
-                                      //         listen: false)
-                                      //     .addDeletebagItem(
-                                      //         itemId,
-                                      //         srate1.toString(),
-                                      //         srate2.toString(),
-                                      //         value.qty[index].text,
-                                      //         "0",
-                                      //         "0",
-                                      //         context);
-
-                                      // print(
-                                      //     "quantity......${value.qty[index].value.text}");
-                                      // value.qty[index].selection = TextSelection(
-                                      //     baseOffset: 0,
-                                      //     extentOffset:
-                                      //         value.qty[index].value.text.length);
-                                    },
-
-                                    // autofocus: true,
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: P_Settings.loginPagetheme,
-                                    ),
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.all(0),
-                                      //border: InputBorder.none
-                                    ),
-
-                                    // maxLines: 1,
-                                    // minLines: 1,
-                                    keyboardType: TextInputType.number,
-                                    onSubmitted: (values) {
-                                      // Provider.of<Controller>(context,
-                                      //         listen: false)
-                                      //     .addDeletebagItem(
-                                      //         itemId,
-                                      //         srate1.toString(),
-                                      //         srate2.toString(),
-                                      //         value.qty[index].text,
-                                      //         "0",
-                                      //         "0",
-                                      //         context);
-                                      // print("values----$values");
-                                      // double valueqty = 0.0;
-                                      // value.discount_amount[index].text=;
-                                    },
-                                    textAlign: TextAlign.right,
-                                    controller: value.historyqty[index],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
-                          child: ListTile(
-                            visualDensity:
-                                VisualDensity(horizontal: 0, vertical: -4),
-                            title: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
+                                subtitle: Row(children: [
                                   Text(
-                                    "SRate1 :",
+                                    "SRate1 :  ${value.transiteminfoList[0]["s_rate_1"]}",
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,
                                       fontSize: 17,
                                       // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
+                                      color: Colors.grey[500],
                                     ),
                                   ),
-                                  Spacer(),
+                                  SizedBox(width: size.width*0.01,),
                                   Text(
-                                    value.transiteminfoList[0]["s_rate_1"],
+                                    "SRate2 :  ${value.transiteminfoList[0]["s_rate_2"]}",
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,
                                       fontSize: 17,
                                       // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
+                                      color: Colors.grey[500],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
-                          child: ListTile(
-                            visualDensity:
-                                VisualDensity(horizontal: 0, vertical: -4),
-                            title: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "SRate2 :",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    value.transiteminfoList[0]["s_rate_2"],
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[900],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                ]),
+                              );
+                            },
                           ),
                         ),
                       ],

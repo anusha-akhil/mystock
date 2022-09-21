@@ -7,6 +7,8 @@ import 'package:mystock/screen/itemSelection.dart';
 import 'package:provider/provider.dart';
 
 class StockApprovalPage extends StatefulWidget {
+  String os_id;
+  StockApprovalPage({required this.os_id});
   @override
   State<StockApprovalPage> createState() => _StockApprovalPageState();
 }
@@ -50,7 +52,7 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                           ),
                           child: ListTile(
                             leading: CircleAvatar(
-                              radius:25.0,
+                              radius: 25.0,
                               backgroundImage: NetworkImage(
                                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
                               backgroundColor: Colors.transparent,
@@ -75,7 +77,7 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                    "Qty :    ${value.stock_approve_detaillist[index]["qty"] } ,"),
+                                    "Qty :    ${value.stock_approve_detaillist[index]["qty"]} ,"),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
@@ -117,7 +119,10 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                             color: P_Settings.buttonColor,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<Controller>(context, listen: false)
+                              .saveStockApprovalList(context, widget.os_id);
+                        },
                       ),
                     ),
                   ],

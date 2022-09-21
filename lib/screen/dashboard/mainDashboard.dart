@@ -209,7 +209,9 @@ class _MainDashboardState extends State<MainDashboard> {
                       ),
                     ),
                   ),
-                  Padding(
+                 value.stock_approve_list.length==0?
+                 Container()
+                 : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
@@ -247,7 +249,10 @@ class _MainDashboardState extends State<MainDashboard> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              StockApprovalPage()),
+                                              StockApprovalPage(
+                                                os_id: value.stock_approve_list[
+                                                    index]["os_id"],
+                                              )),
                                     );
                                   },
                                   trailing: Icon(Icons.arrow_forward),
