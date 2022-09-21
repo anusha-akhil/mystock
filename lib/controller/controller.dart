@@ -427,6 +427,7 @@ class Controller extends ChangeNotifier {
         }
 
         if (action == "save" && map["err_status"] == 0) {
+          print("savedd");
           return showDialog(
               context: context,
               builder: (context) {
@@ -458,7 +459,7 @@ class Controller extends ChangeNotifier {
                   ],
                 ));
               });
-        }
+        } else {}
       }
     });
   }

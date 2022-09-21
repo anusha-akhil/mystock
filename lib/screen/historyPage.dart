@@ -147,9 +147,9 @@ class _HistoryPageState extends State<HistoryPage> {
                       )
                     : value.historyList.length == 0
                         ? Container(
-                            height: size.height * 0.15,
+                            height: size.height * 0.2,
                             child: Lottie.asset(
-                              'asset/filter.json',
+                              'asset/history.json',
                               // height: size.height*0.3,
                               // width: size.height*0.3,
                             ))
