@@ -507,7 +507,7 @@ class _BagPageState extends State<BagPage> {
                                                               qty.toString(),
                                                               "2",
                                                               cart_id,
-                                                              context);
+                                                              context,"delete");
 
                                                       // Provider.of<Controller>(
                                                       //         context,

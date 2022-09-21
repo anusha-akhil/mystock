@@ -149,7 +149,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ? Container(
                             height: size.height * 0.2,
                             child: Lottie.asset(
-                              'asset/history.json',
+                              'asset/historyjson.json',
                               // height: size.height*0.3,
                               // width: size.height*0.3,
                             ))
@@ -421,7 +421,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   }
 
                   Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0]);
+                      .historyData(context, splitted[0],"");
                 }
               },
             ),

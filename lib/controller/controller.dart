@@ -215,8 +215,15 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  Future addDeletebagItem(String itemId, String srate1, String srate2,
-      String qty, String event, String cart_id, BuildContext context) async {
+  Future addDeletebagItem(
+      String itemId,
+      String srate1,
+      String srate2,
+      String qty,
+      String event,
+      String cart_id,
+      BuildContext context,
+      String action) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -234,8 +241,10 @@ class Controller extends ChangeNotifier {
             'cart_id': cart_id
           };
           print("body-----$body");
-          isLoading = true;
-          notifyListeners();
+          if (action != "delete") {
+            isLoading = true;
+            notifyListeners();
+          }
 
           http.Response response = await http.post(
             url,
@@ -244,9 +253,10 @@ class Controller extends ChangeNotifier {
 
           var map = jsonDecode(response.body);
           // print("delete response-----------------$map");
-
-          isLoading = false;
-          notifyListeners();
+          if (action != "delete") {
+            isLoading = false;
+            notifyListeners();
+          }
           print("delete response-----------------${map["msg"]}");
           var res = map["msg"];
           if (res == "Bag deleted Successfully") {
@@ -314,7 +324,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id) async {
+  historyData(BuildContext context, String trans_id, String action) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -329,9 +339,10 @@ class Controller extends ChangeNotifier {
             'trans_id': trans_id
           };
           print("history body-----$body");
-
-          isLoading = true;
-          notifyListeners();
+          if (action != "delete") {
+            isLoading = true;
+            notifyListeners();
+          }
 
           http.Response response = await http.post(
             url,
@@ -340,8 +351,11 @@ class Controller extends ChangeNotifier {
 
           var map = jsonDecode(response.body);
           print("history response-----------------${map}");
-          isLoading = false;
-          notifyListeners();
+
+          if (action != "delete") {
+            isLoading = false;
+            notifyListeners();
+          }
 
           historyList.clear();
           if (map != null) {
@@ -423,7 +437,8 @@ class Controller extends ChangeNotifier {
         print("json cart------$map");
 
         if (action == "delete" && map["err_status"] == 0) {
-          historyData(context, transid);
+          // print("hist-----------$historyList");
+          historyData(context, transid, "delete");
         }
 
         if (action == "save" && map["err_status"] == 0) {
