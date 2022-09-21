@@ -147,7 +147,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       )
                     : value.historyList.length == 0
                         ? Container(
-                            height: size.height * 0.15,
+                            height: size.height * 0.2,
                             child: Lottie.asset(
                               'asset/history.json',
                               // height: size.height*0.3,
@@ -254,8 +254,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   "2",
                                                                   value.historyList[
                                                                           index]
-                                                                      [
-                                                                      'os_id'],"delete");
+                                                                      ['os_id'],
+                                                                  "delete");
                                                           //////////////////////////////////////////////////
                                                           // Provider.of<Controller>(
                                                           //         context,
@@ -263,7 +263,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                           //     .historyData(
                                                           //         context,
                                                           //         splitted[0]);
-                                                          
+
                                                           Navigator.of(ctx)
                                                               .pop();
                                                         },
