@@ -314,7 +314,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id) async {
+  Future historyData(BuildContext context, String trans_id) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -422,11 +422,11 @@ class Controller extends ChangeNotifier {
         notifyListeners();
         print("json cart------$map");
 
-        if (action == "delete" && map["err_status"] == "0") {
+        if (action == "delete" && map["err_status"] == 0) {
           historyData(context, transid);
         }
 
-        if (action == "save" && map["err_status"] == "0") {
+        if (action == "save" && map["err_status"] == 0) {
           return showDialog(
               context: context,
               builder: (context) {

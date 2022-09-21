@@ -254,16 +254,18 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   "2",
                                                                   value.historyList[
                                                                           index]
-                                                                      [
-                                                                      'os_id'],"delete");
+                                                                      ['os_id'],
+                                                                  "delete");
+
                                                           //////////////////////////////////////////////////
-                                                          // Provider.of<Controller>(
-                                                          //         context,
-                                                          //         listen: false)
-                                                          //     .historyData(
-                                                          //         context,
-                                                          //         splitted[0]);
-                                                          
+                                                          await Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .historyData(
+                                                                  context,
+                                                                  splitted[0]);
+
                                                           Navigator.of(ctx)
                                                               .pop();
                                                         },
