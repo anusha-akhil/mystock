@@ -173,9 +173,7 @@ class _BagPageState extends State<BagPage> {
                         onPressed: () async {
                           Provider.of<Controller>(context, listen: false)
                               .saveCartDetails(context, widget.transId,
-                                  widget.branchId!, widget.remark!,"0","0");
-
-                         
+                                  widget.branchId!, widget.remark!, "0", "0","save");
                         },
                         child: Text(
                           "Save",

@@ -40,9 +40,14 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> searchList = [];
 
   List<Map<String, dynamic>> infoList = [];
+  List<Map<String, dynamic>> stock_approve_list = [];
+  List<Map<String, dynamic>> stock_approve_masterlist = [];
+  List<Map<String, dynamic>> stock_approve_detaillist = [];
+
   List<Map<String, dynamic>> stockList = [];
 
   List<Map<String, dynamic>> transinfoList = [];
+  List<Map<String, dynamic>> transiteminfoList = [];
 
   // String urlgolabl = Globaldata.apiglobal;
   bool filter = false;
@@ -50,6 +55,7 @@ class Controller extends ChangeNotifier {
   String? priceval;
   List<bool> errorClicked = [];
   List<TextEditingController> qty = [];
+  List<TextEditingController> historyqty = [];
 
   String? cartCount;
 
@@ -120,18 +126,18 @@ class Controller extends ChangeNotifier {
       if (value == true) {
         try {
           BranchModel brnachModel = BranchModel();
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
           Uri url = Uri.parse("$urlgolabl/branch_list.php");
-          // Map body = {
-          //   'cid': cid,
-          // };
-          // print("compny----${cid}");
-          // isDownloaded = true;
+          Map body = {
+            'branch_id': branch_id,
+          };
           isLoading = true;
           // notifyListeners();
 
           http.Response response = await http.post(
             url,
-            // body: body,
+            body: body,
           );
 
           // print("body ${body}");
@@ -343,6 +349,9 @@ class Controller extends ChangeNotifier {
               historyList.add(item);
             }
           }
+
+          historyqty = List.generate(
+              historyList.length, (index) => TextEditingController());
           print("history list data........${historyList}");
           // isLoading = false;
           notifyListeners();
@@ -359,7 +368,7 @@ class Controller extends ChangeNotifier {
 
 // //////////////////////////////////////////////
   saveCartDetails(BuildContext context, String transid, String to_branch_id,
-      String remark, String event, String os_id) async {
+      String remark, String event, String os_id, String action) async {
     List<Map<String, dynamic>> jsonResult = [];
     Map<String, dynamic> itemmap = {};
     Map<String, dynamic> resultmmap = {};
@@ -381,6 +390,7 @@ class Controller extends ChangeNotifier {
           itemmap["s_rate_2"] = item["s_rate_2"];
           jsonResult.add(itemmap);
         }
+
         Map masterMap = {
           "trans_id": transid,
           "to_branch_id": to_branch_id,
@@ -391,6 +401,7 @@ class Controller extends ChangeNotifier {
           "os_id": os_id,
           "details": jsonResult
         };
+
         // var jsonBody = jsonEncode(masterMap);
         print("resultmap----$masterMap");
         // var body = {'json_data': masterMap};
@@ -411,10 +422,11 @@ class Controller extends ChangeNotifier {
         notifyListeners();
         print("json cart------$map");
 
-        if (map["msg"] != "Stock Transfer  Inserted Successfully") {
-          CustomSnackbar snackbar = CustomSnackbar();
-          snackbar.showSnackbar(context, "Cart Save failed !!!", "");
-        } else {
+        if (action == "delete" && map["err_status"] == "0") {
+          historyData(context, transid);
+        }
+
+        if (action == "save" && map["err_status"] == "0") {
           return showDialog(
               context: context,
               builder: (context) {
@@ -503,31 +515,145 @@ class Controller extends ChangeNotifier {
     });
   }
 
-///////////////////////////////////////////////////////////////////////
-  getTransinfoList(BuildContext context) async {
+//////////////////////////////////////////////////////////////////////
+  getStockApprovalList(BuildContext context) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           branch_id = prefs.getString("branch_id");
 
-          Uri url = Uri.parse("$urlgolabl/item_search_stock.php");
-          // Map body = {
-          //   'item_id': itemId,
-          //   'branch_id': branch_id,
-          // };
+          Uri url = Uri.parse("$urlgolabl/stock_approve_list.php");
+          Map body = {
+            'branch_id': branch_id,
+          };
+          print("mbody-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("stock approval list-----------------$map");
+
+          isLoading = false;
+          notifyListeners();
+          stock_approve_list.clear();
+          if (map != null) {
+            for (var item in map) {
+              stock_approve_list.add(item);
+            }
+          }
+
+          print("stock_approve_list---$stock_approve_list");
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+///////////////////////////////////////////////////////////////////////
+  getStockApproveInfo(BuildContext context, String osId) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+
+          Uri url = Uri.parse("$urlgolabl/stock_approve_info.php");
+          Map body = {
+            'os_id': osId,
+          };
+          print("cart bag body-----$body");
+          // isDownloaded = true;
+          isLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("stockinfo----------$map");
+
+          isLoading = false;
+          notifyListeners();
+          // ProductListModel productListModel;
+          if (map != null) {
+            stock_approve_masterlist.clear();
+            for (var item in map["master"]) {
+              print("haiiiiii----$item");
+              stock_approve_masterlist.add(item);
+            }
+            stock_approve_detaillist.clear();
+            for (var item in map["detail"]) {
+              print("sd---$item");
+              stock_approve_detaillist.add(item);
+            }
+          }
+
+          print("stock_approve_detaillist--$stock_approve_detaillist---");
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+///////////////////////////////////////////////////////////////////////
+  getTransinfoList(BuildContext context, String os_id) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+
+          Uri url = Uri.parse("$urlgolabl/transaction_info.php");
+          Map body = {
+            'os_id': os_id,
+          };
           // print("cart bag body-----$body");
           // isDownloaded = true;
           isListLoading = true;
           notifyListeners();
 
-          // http.Response response = await http.post(
-          //   url,
-          //   body: body,
-          // );
-          // var map = jsonDecode(response.body);
- 
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
 
+          print("i tag-----$map");
+          if (map != null) {
+            transinfoList.clear();
+            for (var item in map["master"]) {
+              transinfoList.add(item);
+            }
+            transiteminfoList.clear();
+            for (var item in map["detail"]) {
+              transiteminfoList.add(item);
+            }
+
+            for (int i = 0; i < transiteminfoList.length; i++) {
+              historyqty[i].text = transiteminfoList[i]["qty"].toString();
+            }
+          }
+          print(
+              "transinfoList--------------------$transinfoList------------$transiteminfoList");
           isListLoading = false;
           notifyListeners();
 

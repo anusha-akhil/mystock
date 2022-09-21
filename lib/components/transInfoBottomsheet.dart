@@ -7,7 +7,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(BuildContext context) {
+  showtransInfoSheet(BuildContext context,int index) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -45,7 +45,7 @@ class TransaInfoBottomsheet {
                                 children: [
                                   // Text("Product Name"),Spacer(),
                                   Text(
-                                    "Item Info :",
+                                    "Transaction info :",
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,
@@ -91,37 +91,37 @@ class TransaInfoBottomsheet {
                             ],
                           ),
                         ),
-                        ListTile(
-                          visualDensity:
-                              VisualDensity(horizontal: 0, vertical: -4),
-                          leading: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                            backgroundColor: Colors.transparent,
-                            // child: Image.network(
-                            //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                            //   fit: BoxFit.cover,
-                            // ),
-                            // child: Image.asset("asset/"),
-                          ),
-                          title: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    value.infoList[0]["item_name"].toString(),
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: P_Settings.loginPagetheme,
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                        ),
+                        // ListTile(
+                        //   visualDensity:
+                        //       VisualDensity(horizontal: 0, vertical: -4),
+                        //   leading: CircleAvatar(
+                        //     radius: 30,
+                        //     backgroundImage: NetworkImage(
+                        //         'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                        //     backgroundColor: Colors.transparent,
+                        //     // child: Image.network(
+                        //     //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                        //     //   fit: BoxFit.cover,
+                        //     // ),
+                        //     // child: Image.asset("asset/"),
+                        //   ),
+                        //   title: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.end,
+                        //       children: [
+                        //         Flexible(
+                        //           child: Text(
+                        //             value.transinfoList[0]["trans_type"].toString(),
+                        //             style: GoogleFonts.aBeeZee(
+                        //               textStyle:
+                        //                   Theme.of(context).textTheme.bodyText2,
+                        //               fontSize: 17,
+                        //               // fontWeight: FontWeight.bold,
+                        //               color: P_Settings.loginPagetheme,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ]),
+                        // ),
                         Padding(
                           padding: EdgeInsets.only(left: 10.0, right: 10),
                           child: ListTile(
@@ -130,7 +130,7 @@ class TransaInfoBottomsheet {
                             title: Row(
                               children: [
                                 Text(
-                                  "SRate 1",
+                                  "Type",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
@@ -141,7 +141,7 @@ class TransaInfoBottomsheet {
                                 ),
                                 Spacer(),
                                 Text(
-                                  '\u{20B9}${value.infoList[0]["s_rate_1"].toString()}',
+                                  '${value.transinfoList[0]["trans_type"]}',
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
@@ -162,7 +162,7 @@ class TransaInfoBottomsheet {
                             title: Row(
                               children: [
                                 Text(
-                                  "SRate 2",
+                                  "Date :",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
@@ -173,7 +173,39 @@ class TransaInfoBottomsheet {
                                 ),
                                 Spacer(),
                                 Text(
-                                  '\u{20B9}${value.infoList[0]["s_rate_2"].toString()}',
+                                  '${value.transinfoList[0]["entry_date"]}',
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 17,
+                                    // fontWeight: FontWeight.bold,
+                                    color: P_Settings.loginPagetheme,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 10),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Row(
+                              children: [
+                                Text(
+                                  "Branch :",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 17,
+                                    // fontWeight: FontWeight.bold,
+                                    color: P_Settings.loginPagetheme,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '${value.transinfoList[0]["transfer_branch"]}',
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
@@ -189,102 +221,218 @@ class TransaInfoBottomsheet {
                         Divider(
                           thickness: 2,
                         ),
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 8),
+                          padding: const EdgeInsets.only(left: 15.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               // Text("Product Name"),Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "Stock Info : ",
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: P_Settings.loginPagetheme,
-                                  ),
+                              Text(
+                                "Item info :",
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding: EdgeInsets.only(left: 5, right: 5),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Item Name",
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    value.transiteminfoList[0]["item_name"],
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
                           child: ListTile(
                             visualDensity:
                                 VisualDensity(horizontal: 0, vertical: -4),
                             title: Row(
                               children: [
                                 Text(
-                                  "Branch Name",
+                                  "Qty ",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
                                     fontSize: 17,
                                     // fontWeight: FontWeight.bold,
-                                    color: Colors.grey[900],
+                                    color: P_Settings.loginPagetheme,
                                   ),
                                 ),
                                 Spacer(),
-                                Text(
-                                  "Stock",
-                                  style: GoogleFonts.aBeeZee(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                    fontSize: 17,
-                                    // fontWeight: FontWeight.bold,
-                                    color: Colors.grey[900],
+                                Container(
+                                  width: size.width * 0.2,
+                                  child: TextField(
+                                    onTap: () {
+                                      // Provider.of<Controller>(context,
+                                      //         listen: false)
+                                      //     .addDeletebagItem(
+                                      //         itemId,
+                                      //         srate1.toString(),
+                                      //         srate2.toString(),
+                                      //         value.qty[index].text,
+                                      //         "0",
+                                      //         "0",
+                                      //         context);
+
+                                      // print(
+                                      //     "quantity......${value.qty[index].value.text}");
+                                      // value.qty[index].selection = TextSelection(
+                                      //     baseOffset: 0,
+                                      //     extentOffset:
+                                      //         value.qty[index].value.text.length);
+                                    },
+
+                                    // autofocus: true,
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(0),
+                                      //border: InputBorder.none
+                                    ),
+
+                                    // maxLines: 1,
+                                    // minLines: 1,
+                                    keyboardType: TextInputType.number,
+                                    onSubmitted: (values) {
+                                      // Provider.of<Controller>(context,
+                                      //         listen: false)
+                                      //     .addDeletebagItem(
+                                      //         itemId,
+                                      //         srate1.toString(),
+                                      //         srate2.toString(),
+                                      //         value.qty[index].text,
+                                      //         "0",
+                                      //         "0",
+                                      //         context);
+                                      // print("values----$values");
+                                      // double valueqty = 0.0;
+                                      // value.discount_amount[index].text=;
+                                    },
+                                    textAlign: TextAlign.right,
+                                    controller: value.historyqty[index],
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        Divider(
-                          indent: 10,
-                          endIndent: 20,
+                        Padding(
+                          padding: EdgeInsets.only(left: 5, right: 5),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "SRate1 :",
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    value.transiteminfoList[0]["s_rate_1"],
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                        Container(
-                          height: value.stockList.length == 2
-                              ? size.height * 0.1
-                              : size.height * 0.2,
-                          child: ListView.builder(
-                            itemCount: value.stockList.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                  visualDensity: VisualDensity(
-                                      horizontal: 0, vertical: -4),
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        value.stockList[index]["BranchName"],
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Text(
-                                        value.stockList[index]["stock"],
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            },
+                        Padding(
+                          padding: EdgeInsets.only(left: 5, right: 5),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "SRate2 :",
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    value.transiteminfoList[0]["s_rate_2"],
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 17,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.grey[900],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],

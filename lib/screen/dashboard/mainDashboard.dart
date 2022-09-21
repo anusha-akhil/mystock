@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
@@ -39,6 +40,8 @@ class _MainDashboardState extends State<MainDashboard> {
     super.initState();
     shared();
     Provider.of<Controller>(context, listen: false).userDetails();
+    Provider.of<Controller>(context, listen: false)
+        .getStockApprovalList(context);
     print("branch_id----$branch_id-----$branch_name");
   }
 
@@ -209,6 +212,7 @@ class _MainDashboardState extends State<MainDashboard> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
                         "Stock Approval",
                         style: GoogleFonts.aBeeZee(
@@ -220,37 +224,84 @@ class _MainDashboardState extends State<MainDashboard> {
                       ),
                     ),
                   ),
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StockApprovalPage()),
-                              );
-                            },
-                            trailing: Icon(Icons.arrow_forward),
-                            title: Text(
-                              "Branch",
-                              style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: P_Settings.loginPagetheme,
+                  value.isLoading
+                      ? SpinKitFadingCircle(
+                          color: P_Settings.loginPagetheme,
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                          itemCount: value.stock_approve_list.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                child: ListTile(
+                                  onTap: () {
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .getStockApproveInfo(
+                                            context,
+                                            value.stock_approve_list[index]
+                                                ["os_id"]);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              StockApprovalPage()),
+                                    );
+                                  },
+                                  trailing: Icon(Icons.arrow_forward),
+                                  title: Row(
+                                    children: [
+                                      Text(
+                                        value.stock_approve_list[index]
+                                                ["series"]
+                                            .toString(),
+                                        style: GoogleFonts.aBeeZee(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: P_Settings.loginPagetheme,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 14.0),
+                                        child: Text(
+                                          value.stock_approve_list[index]
+                                                  ["entry_date"]
+                                              .toString(),
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 16,
+                                            // fontWeight: FontWeight.bold,
+                                            color: P_Settings.loginPagetheme,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Text(
+                                    value.stock_approve_list[index]
+                                            ["from_branch"]
+                                        .toString(),
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 15,
+                                      // fontWeight: FontWeight.bold,
+                                      color: P_Settings.loginPagetheme,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ))
+                            );
+                          },
+                        ))
                   // Positioned(
                   //   left: 10,
                   //   right: 10,

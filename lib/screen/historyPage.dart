@@ -167,70 +167,128 @@ class _HistoryPageState extends State<HistoryPage> {
                                             Provider.of<Controller>(context,
                                                     listen: false)
                                                 .getTransinfoList(
-                                                    context, );
-                                            infoshowsheet
-                                                .showtransInfoSheet(context);
+                                                    context,
+                                                    value.historyList[index]
+                                                        ['os_id']);
+                                            infoshowsheet.showtransInfoSheet(
+                                                context, index);
                                           },
                                           icon: Icon(Icons.info)),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: P_Settings.editclr,
-                                          ),
-                                          onPressed: () {
-                                            // Provider.of<Controller>(context,
-                                            //         listen: false)
-                                            //     .saveCartDetails(
-                                            //         context,
-                                            //         widget.transId,
-                                            //         value.historyList[index]
-                                            //             ['to_branch_id']!,
-                                            //        value.historyList[index]
-                                            //                 ['trans_remark'],
-                                            //         "1");
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .getBranchList(
-                                                    context,
-                                                    "history",
-                                                    value.historyList[index]
-                                                        ['to_branch_id']!);
-                                            Navigator.pushReplacement<void,
-                                                    void>(
-                                                context,
-                                                MaterialPageRoute<void>(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          TransactionPage(
-                                                    page: "history",
-                                                    remrk:
-                                                        value.historyList[index]
-                                                            ['trans_remark'],
-                                                    branch:
-                                                        value.historyList[index]
-                                                            ['to_branch_id'],
-                                                    translist: splitted,
-                                                  ),
-                                                ));
-                                          }),
+                                      // IconButton(
+                                      //     icon: Icon(
+                                      //       Icons.edit,
+                                      //       color: P_Settings.editclr,
+                                      //     ),
+                                      //     onPressed: () {
+                                      //       // Provider.of<Controller>(context,
+                                      //       //         listen: false)
+                                      //       //     .saveCartDetails(
+                                      //       //         context,
+                                      //       //         widget.transId,
+                                      //       //         value.historyList[index]
+                                      //       //             ['to_branch_id']!,
+                                      //       //        value.historyList[index]
+                                      //       //                 ['trans_remark'],
+                                      //       //         "1");
+                                      //       Provider.of<Controller>(context,
+                                      //               listen: false)
+                                      //           .getBranchList(
+                                      //               context,
+                                      //               "history",
+                                      //               value.historyList[index]
+                                      //                   ['to_branch_id']!);
+                                      //       Navigator.pushReplacement<void,
+                                      //               void>(
+                                      //           context,
+                                      //           MaterialPageRoute<void>(
+                                      //             builder:
+                                      //                 (BuildContext context) =>
+                                      //                     TransactionPage(
+                                      //               page: "history",
+                                      //               remrk:
+                                      //                   value.historyList[index]
+                                      //                       ['trans_remark'],
+                                      //               branch:
+                                      //                   value.historyList[index]
+                                      //                       ['to_branch_id'],
+                                      //               translist: splitted,
+                                      //             ),
+                                      //           ));
+                                      //     }),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
                                             color: P_Settings.delete,
                                           ),
                                           onPressed: () {
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .saveCartDetails(
-                                                    context,
-                                                    splitted[0],
-                                                    value.historyList[index]
-                                                        ['to_branch_id'],
-                                                    value.historyList[index]
-                                                        ['trans_remark'],
-                                                    "2",
-                                                    value.historyList[index]
-                                                        ['os_id']);
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                content: Text(
+                                                    "Do you want to delete???"),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .loginPagetheme),
+                                                        onPressed: () async {
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .saveCartDetails(
+                                                                  context,
+                                                                  splitted[0],
+                                                                  value.historyList[
+                                                                          index]
+                                                                      [
+                                                                      'to_branch_id'],
+                                                                  value.historyList[
+                                                                          index]
+                                                                      [
+                                                                      'trans_remark'],
+                                                                  "2",
+                                                                  value.historyList[
+                                                                          index]
+                                                                      [
+                                                                      'os_id'],"delete");
+                                                          //////////////////////////////////////////////////
+                                                          // Provider.of<Controller>(
+                                                          //         context,
+                                                          //         listen: false)
+                                                          //     .historyData(
+                                                          //         context,
+                                                          //         splitted[0]);
+                                                          
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Ok"),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.01,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .loginPagetheme),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Cancel"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
                                           }),
                                     ],
                                   ),

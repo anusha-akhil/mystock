@@ -54,10 +54,9 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                             // ),
                           ),
                           title: Text(
-                            value.productList[index]["item"],
+                            value.stock_approve_detaillist[index]["item_name"],
                             style: GoogleFonts.aBeeZee(
-                              textStyle:
-                                  Theme.of(context).textTheme.bodyText2,
+                              textStyle: Theme.of(context).textTheme.bodyText2,
                               fontSize: 16,
                               // fontWeight: FontWeight.bold,
                               color: P_Settings.loginPagetheme,
