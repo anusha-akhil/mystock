@@ -177,7 +177,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 .getTransinfoList(
                                                     context,
                                                     value.historyList[index]
-                                                        ['os_id'],"");
+                                                        ['os_id'],
+                                                    "");
                                             infoshowsheet.showtransInfoSheet(
                                                 context,
                                                 index,
@@ -268,8 +269,28 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                           index]
                                                                       ['os_id'],
                                                                   "delete");
+                                                          String df;
+                                                          String tf;
+
+                                                          if (value.fromDate ==
+                                                              null) {
+                                                            df = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            df = value.fromDate
+                                                                .toString();
+                                                          }
+                                                          if (value.todate ==
+                                                              null) {
+                                                            tf = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            tf = value.todate
+                                                                .toString();
+                                                          }
 
                                                           //////////////////////////////////////////////////
+                                                
                                                           await Provider.of<
                                                                       Controller>(
                                                                   context,
@@ -278,10 +299,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   context,
                                                                   splitted[0],
                                                                   "",
-                                                                  value.fromDate
-                                                                      .toString(),
-                                                                  value.todate
-                                                                      .toString());
+                                                                  df,
+                                                                  tf);
 
                                                           Navigator.of(ctx)
                                                               .pop();
@@ -438,13 +457,22 @@ class _HistoryPageState extends State<HistoryPage> {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }
+                  String df;
+                  String tf;
 
-                  Provider.of<Controller>(context, listen: false).historyData(
-                      context,
-                      splitted[0],
-                      "",
-                      value.fromDate.toString(),
-                      value.todate.toString());
+                  if (value.fromDate == null) {
+                    df = todaydate.toString();
+                  } else {
+                    df = value.fromDate.toString();
+                  }
+                  if (value.todate == null) {
+                    tf = todaydate.toString();
+                  } else {
+                    tf = value.todate.toString();
+                  }
+
+                  Provider.of<Controller>(context, listen: false)
+                      .historyData(context, splitted[0], "", df, tf);
                 }
               },
             ),

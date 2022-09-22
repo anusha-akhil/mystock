@@ -363,17 +363,22 @@ class TransaInfoBottomsheet {
                                                                 event,
                                                                 context);
 
-                                                        Provider.of<Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .historyData(
-                                                                context,
-                                                                transval,
-                                                                "",
-                                                                value.fromDate
-                                                                    .toString(),
-                                                                value.todate
-                                                                    .toString());
+                                                        if (msg ==
+                                                            "transaction delete") {
+                                                              String d;
+                                                         
+                                                          Provider.of<Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .historyData(
+                                                                  context,
+                                                                  transval,
+                                                                  "",
+                                                                  value.fromDate
+                                                                      .toString(),
+                                                                  value.todate
+                                                                      .toString());
+                                                        }
 
                                                         Navigator.of(ctx).pop();
                                                       },

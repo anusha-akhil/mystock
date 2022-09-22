@@ -260,9 +260,6 @@ class _ItemSelectionState extends State<ItemSelection> {
                     ? IconButton(
                         onPressed: () {
                           int qty;
-
-                          
-
                           value.setqtyErrormsg(false);
                           value.qty[index].selection = TextSelection(
                               baseOffset: 0,

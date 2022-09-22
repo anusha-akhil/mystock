@@ -260,7 +260,8 @@ class Controller extends ChangeNotifier {
             isLoading = false;
             notifyListeners();
           }
-          print("delete response-----------------${map["msg"]}");
+          print("delete response-----------------${map}");
+          cartCount = map["cart_count"];
           var res = map["msg"];
           if (res == "Bag deleted Successfully") {
             getbagData1(context);
