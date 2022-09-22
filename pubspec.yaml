@@ -63,6 +63,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   sqflite: ^2.0.3+1
   badges: ^2.0.3
+  pull_to_refresh: ^2.0.0
 
 
 
