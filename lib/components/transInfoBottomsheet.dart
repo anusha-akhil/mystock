@@ -7,7 +7,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(BuildContext context, int index) {
+  showtransInfoSheet(BuildContext context, int index, String transval) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -57,6 +57,38 @@ class TransaInfoBottomsheet {
                                 ],
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 10),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Row(
+                              children: [
+                                Text(
+                                  "Series",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 17,
+                                    // fontWeight: FontWeight.bold,
+                                    color: P_Settings.loginPagetheme,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '${value.transinfoList[0]["series"]}',
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
+                                    fontSize: 17,
+                                    // fontWeight: FontWeight.bold,
+                                    color: P_Settings.loginPagetheme,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         Padding(
@@ -195,7 +227,8 @@ class TransaInfoBottomsheet {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        value.transiteminfoList[0]["item_name"],
+                                        value.transiteminfoList[index]
+                                            ["item_name"],
                                         style: GoogleFonts.aBeeZee(
                                           textStyle: Theme.of(context)
                                               .textTheme
@@ -209,6 +242,7 @@ class TransaInfoBottomsheet {
                                     Container(
                                       width: size.width * 0.2,
                                       child: TextField(
+                                        onChanged: (value) {},
                                         onTap: () {
                                           // Provider.of<Controller>(context,
                                           //         listen: false)
@@ -223,10 +257,14 @@ class TransaInfoBottomsheet {
 
                                           // print(
                                           //     "quantity......${value.qty[index].value.text}");
-                                          // value.qty[index].selection = TextSelection(
-                                          //     baseOffset: 0,
-                                          //     extentOffset:
-                                          //         value.qty[index].value.text.length);
+                                          value.historyqty[index].selection =
+                                              TextSelection(
+                                                  baseOffset: 0,
+                                                  extentOffset: value
+                                                      .historyqty[index]
+                                                      .value
+                                                      .text
+                                                      .length);
                                         },
 
                                         // autofocus: true,
@@ -248,19 +286,95 @@ class TransaInfoBottomsheet {
                                         // minLines: 1,
                                         keyboardType: TextInputType.number,
                                         onSubmitted: (values) {
-                                          // Provider.of<Controller>(context,
-                                          //         listen: false)
-                                          //     .addDeletebagItem(
-                                          //         itemId,
-                                          //         srate1.toString(),
-                                          //         srate2.toString(),
-                                          //         value.qty[index].text,
-                                          //         "0",
-                                          //         "0",
-                                          //         context);
-                                          // print("values----$values");
-                                          // double valueqty = 0.0;
-                                          // value.discount_amount[index].text=;
+                                          print(
+                                              "don clicked----${value.oldhistoryqty[index].text}");
+                                          String content = "";
+                                          String msg = "";
+                                          String event = "";
+
+                                          if (value.historyqty[index].text ==
+                                                  "0" &&
+                                              value.transiteminfoList.length ==
+                                                  1) {
+                                            event = "2";
+
+                                            msg = "transaction delete";
+                                            content = " Delete Transaction???";
+                                          } else if (value
+                                                  .historyqty[index].text ==
+                                              "0") {
+                                            msg = "delete";
+                                            event = "1";
+
+                                            content = "Confirm Delete???";
+                                          } else {
+                                            msg = "update";
+                                            event = "0";
+
+                                            content = "Update Quantity???";
+                                          }
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              content: Text(content),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .loginPagetheme),
+                                                      onPressed: () async {
+                                                        print("ontap------");
+                                                        Provider.of<Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .editDeleteTransaction(
+                                                                transval,
+                                                                value.transiteminfoList[
+                                                                        index]
+                                                                    ["os_d_id"],
+                                                                value.transiteminfoList[
+                                                                        index]
+                                                                    ["item_id"],
+                                                                value
+                                                                    .oldhistoryqty[
+                                                                        index]
+                                                                    .text,
+                                                                value
+                                                                    .historyqty[
+                                                                        index]
+                                                                    .text,
+                                                                msg,
+                                                                event,
+                                                                context);
+
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("Ok"),
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width * 0.01,
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: P_Settings
+                                                                  .loginPagetheme),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: Text("Cancel"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
                                         },
                                         textAlign: TextAlign.right,
                                         controller: value.historyqty[index],
@@ -270,7 +384,7 @@ class TransaInfoBottomsheet {
                                 ),
                                 subtitle: Row(children: [
                                   Text(
-                                    "SRate1 :  ${value.transiteminfoList[0]["s_rate_1"]}",
+                                    "SRate1 :  ${value.transiteminfoList[index]["s_rate_1"]}",
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,
@@ -279,9 +393,11 @@ class TransaInfoBottomsheet {
                                       color: Colors.grey[500],
                                     ),
                                   ),
-                                  SizedBox(width: size.width*0.01,),
+                                  SizedBox(
+                                    width: size.width * 0.01,
+                                  ),
                                   Text(
-                                    "SRate2 :  ${value.transiteminfoList[0]["s_rate_2"]}",
+                                    "SRate2 :  ${value.transiteminfoList[index]["s_rate_2"]}",
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,

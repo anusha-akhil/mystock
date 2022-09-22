@@ -170,7 +170,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     value.historyList[index]
                                                         ['os_id']);
                                             infoshowsheet.showtransInfoSheet(
-                                                context, index);
+                                                context, index,splitted[3]);
                                           },
                                           icon: Icon(Icons.info)),
                                       // IconButton(

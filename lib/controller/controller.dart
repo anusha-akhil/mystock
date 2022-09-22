@@ -57,6 +57,7 @@ class Controller extends ChangeNotifier {
   List<bool> errorClicked = [];
   List<TextEditingController> qty = [];
   List<TextEditingController> historyqty = [];
+  List<TextEditingController> oldhistoryqty = [];
 
   String? cartCount;
 
@@ -396,13 +397,16 @@ class Controller extends ChangeNotifier {
       if (value == true) {
         print("bagList-----$bagList");
         Uri url = Uri.parse("$urlgolabl/save_transaction.php");
-        for (var item in bagList) {
-          itemmap["item_id"] = item["item_id"];
-          itemmap["qty"] = item["qty"];
-          itemmap["s_rate_1"] = item["s_rate_1"];
-          itemmap["s_rate_2"] = item["s_rate_2"];
+        for (var i = 0; i < bagList.length; i++) {
+          print("bagList[i]-------------${bagList[i]}");
+          itemmap[i]["item_id"] = bagList[i]["item_id"];
+          itemmap[i]["qty"] = bagList[i]["qty"];
+          itemmap[i]["s_rate_1"] = bagList[i]["s_rate_1"];
+          itemmap[i]["s_rate_2"] = bagList[i]["s_rate_2"];
           jsonResult.add(itemmap);
         }
+
+        print("itemmap----$itemmap");
 
         Map masterMap = {
           "trans_id": transid,
@@ -425,57 +429,55 @@ class Controller extends ChangeNotifier {
         print("jsonEnc-----$jsonEnc");
         isLoading = true;
         notifyListeners();
-        http.Response response = await http.post(
-          url,
-          body: {'json_data': jsonEnc},
-        );
+        // http.Response response = await http.post(
+        //   url,
+        //   body: {'json_data': jsonEnc},
+        // );
 
-        var map = jsonDecode(response.body);
+        // var map = jsonDecode(response.body);
         isLoading = false;
         notifyListeners();
-        print("json cart------$map");
+        // print("json cart------$map");
 
-        if (action == "delete" && map["err_status"] == 0) {
-          // print("hist-----------$historyList");
-          historyData(context, transid, "delete");
-        }
+        // if (action == "delete" && map["err_status"] == 0) {
+        //   // print("hist-----------$historyList");
+        //   historyData(context, transid, "delete");
+        // }
 
-        if (action == "save" && map["err_status"] == 0) {
-          print("message${map['msg']}");
-          return showDialog(
-              context: context,
-              builder: (context) {
-                Size size = MediaQuery.of(context).size;
+        // if (action == "save" && map["err_status"] == 0) {
+        //   print("savedd");
+        //   return showDialog(
+        //       context: context,
+        //       builder: (context) {
+        //         Size size = MediaQuery.of(context).size;
 
-                Future.delayed(Duration(seconds: 2), () {
-                  Navigator.of(context).pop(true);
+        //         Future.delayed(Duration(seconds: 2), () {
+        //           Navigator.of(context).pop(true);
 
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                        opaque: false, // set to false
-                        pageBuilder: (_, __, ___) => TransactionPage()
-                        // OrderForm(widget.areaname,"return"),
-                        ),
-                  );
-                });
-                return AlertDialog(
-                    content: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        '${map['msg']}',
-                        style: TextStyle(color: P_Settings.loginPagetheme),
-                      ),
-                    ),
-                    Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    )
-                  ],
-                ));
-              });
-        } else {}
+        //           Navigator.of(context).push(
+        //             PageRouteBuilder(
+        //                 opaque: false, // set to false
+        //                 pageBuilder: (_, __, ___) => TransactionPage()
+        //                 // OrderForm(widget.areaname,"return"),
+        //                 ),
+        //           );
+        //         });
+        //         return AlertDialog(
+        //             content: Row(
+        //           mainAxisAlignment: MainAxisAlignment.end,
+        //           children: [
+        //             Text(
+        //               '${map['msg']}',
+        //               style: TextStyle(color: P_Settings.loginPagetheme),
+        //             ),
+        //             Icon(
+        //               Icons.done,
+        //               color: Colors.green,
+        //             )
+        //           ],
+        //         ));
+        //       });
+        // } else {}
       }
     });
   }
@@ -727,7 +729,7 @@ class Controller extends ChangeNotifier {
           Map body = {
             'os_id': os_id,
           };
-          // print("cart bag body-----$body");
+          print("os_id-----$body");
           // isDownloaded = true;
           isListLoading = true;
           notifyListeners();
@@ -752,8 +754,15 @@ class Controller extends ChangeNotifier {
               transiteminfoList.length,
               (index) => TextEditingController(),
             );
+
+            oldhistoryqty = List.generate(
+              transiteminfoList.length,
+              (index) => TextEditingController(),
+            );
+
             for (int i = 0; i < transiteminfoList.length; i++) {
               historyqty[i].text = transiteminfoList[i]["qty"].toString();
+              oldhistoryqty[i].text = transiteminfoList[i]["qty"].toString();
             }
           }
           print(
@@ -1052,6 +1061,51 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  editDeleteTransaction(
+      String transaval,
+      String osId,
+      String item_id,
+      String oldqty,
+      String newqty,
+      String msg,
+      String event,
+      BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          Uri url = Uri.parse("$urlgolabl/transaction_update.php");
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+          Map body = {
+            'os_id': osId,
+            'trans_val': transaval,
+            'item_id': item_id,
+            'old_qty': oldqty,
+            'qty': newqty,
+            'msg': msg,
+            'event': event,
+            'branch_id': branch_id
+          };
+
+          print("editdelete body----------------------$body");
+
+          isLoading = true;
+          notifyListeners();
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+
+          print("edit delete -----$map");
+          isLoading = false;
+          notifyListeners();
+        } catch (e) {
+          print(e);
+        }
+      }
+    });
+  }
   ///////////////////////////////////////////////
   // getbranchFrombId(String brId) {
   //   print("brjhdjsz-----$branchist");

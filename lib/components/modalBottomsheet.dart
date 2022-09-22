@@ -146,6 +146,7 @@ class Bottomsheet {
                               Container(
                                 width: size.width * 0.2,
                                 child: TextField(
+                                  autofocus: true,
                                   onTap: () {
                                     Provider.of<Controller>(context,
                                             listen: false)
@@ -156,7 +157,8 @@ class Bottomsheet {
                                             value.qty[index].text,
                                             "0",
                                             "0",
-                                            context,"save");
+                                            context,
+                                            "save");
 
                                     print(
                                         "quantity......${value.qty[index].value.text}");
@@ -193,7 +195,8 @@ class Bottomsheet {
                                             value.qty[index].text,
                                             "0",
                                             "0",
-                                            context,"save");
+                                            context,
+                                            "save");
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -362,7 +365,8 @@ class Bottomsheet {
                                           value.qty[index].text,
                                           "0",
                                           "0",
-                                          context,"save");
+                                          context,
+                                          "save");
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .getbagData1(
