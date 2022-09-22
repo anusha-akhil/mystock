@@ -263,7 +263,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   listen: false)
                                                               .historyData(
                                                                   context,
-                                                                  splitted[0],"");
+                                                                  splitted[0],
+                                                                  "");
 
                                                           Navigator.of(ctx)
                                                               .pop();
@@ -422,7 +423,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   }
 
                   Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0],"");
+                      .historyData(context, splitted[0], "");
                 }
               },
             ),

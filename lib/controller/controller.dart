@@ -441,7 +441,7 @@ class Controller extends ChangeNotifier {
         }
 
         if (action == "save" && map["err_status"] == 0) {
-          print("savedd");
+          print("message${map['msg']}");
           return showDialog(
               context: context,
               builder: (context) {
@@ -462,9 +462,11 @@ class Controller extends ChangeNotifier {
                     content: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      'Saved!!!',
-                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    Flexible(
+                      child: Text(
+                        '${map['msg']}',
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
                     ),
                     Icon(
                       Icons.done,
