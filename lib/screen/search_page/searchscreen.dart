@@ -41,6 +41,7 @@ class _SearchScreenState extends State<SearchScreen> {
               width: size.width * 0.95,
               height: size.height * 0.09,
               child: TextField(
+                autofocus: true,
                 controller: searchcontroll,
                 onChanged: (value) {
                   if (value != null || value.isNotEmpty) {
@@ -79,14 +80,13 @@ class _SearchScreenState extends State<SearchScreen> {
               //   color: P_Settings.loginPagetheme,
               // );
               return Container(
-                height: size.height * 0.15,
-                // child: Text("No Data Found !!!"),
-                child: Lottie.asset(
-                  'asset/search.json',
-                  // height: size.height*0.3,
-                  // width: size.height*0.3,
-                )
-              );
+                  height: size.height * 0.15,
+                  // child: Text("No Data Found !!!"),
+                  child: Lottie.asset(
+                    'asset/search.json',
+                    // height: size.height*0.3,
+                    // width: size.height*0.3,
+                  ));
             } else {
               return Expanded(
                 child: ListView.builder(

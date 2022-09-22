@@ -11,6 +11,7 @@ import 'package:mystock/screen/search_page/searchscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
 import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDashboard extends StatefulWidget {
@@ -19,6 +20,8 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   String? branch_id;
   String? staff_name;
   String? branch_name;
@@ -45,6 +48,16 @@ class _MainDashboardState extends State<MainDashboard> {
     print("branch_id----$branch_id-----$branch_name");
   }
 
+  void _onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cid = prefs.getString("cid");
+    Provider.of<Controller>(context, listen: false).userDetails();
+    Provider.of<Controller>(context, listen: false)
+        .getStockApprovalList(context);
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,287 +68,330 @@ class _MainDashboardState extends State<MainDashboard> {
         appBar: AppBar(
           backgroundColor: P_Settings.loginPagetheme,
           automaticallyImplyLeading: false,
+          actions: [
+            PopupMenuButton(
+                // add icon, by default "3 dot" icon
+                // icon: Icon(Icons.book)
+                itemBuilder: (context) {
+              return [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: Text("Refresh"),
+                ),
+              ];
+            }, onSelected: (value) {
+              if (value == 0) {
+                Provider.of<Controller>(context, listen: false).userDetails();
+                Provider.of<Controller>(context, listen: false)
+                    .getStockApprovalList(context);
+              }
+            }),
+          ],
         ),
-        body: Container(
-          height: double.infinity,
-          // color: P_Settings.loginPagetheme,
-          child: Consumer<Controller>(
-            builder: (context, value, child) {
-              return Column(
-                children: [
-                  Container(
-                    height: size.height * 0.1,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Image.asset("asset/login.png"),
-                      ),
-                      title: Text(
-                        value.staff_name.toString(),
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.buttonColor,
+        body: SmartRefresher(
+          controller: _refreshController,
+          enablePullDown: true,
+          onRefresh: _onRefresh,
+          child: Container(
+            height: double.infinity,
+            // color: P_Settings.loginPagetheme,
+            child: Consumer<Controller>(
+              builder: (context, value, child) {
+                return Column(
+                  children: [
+                    // Container(
+                    //   alignment: Alignment.topRight,
+                    //   color: P_Settings.loginPagetheme,
+                    //   height: size.height * 0.04,
+                    //   width: double.infinity,
+                    //   child: IconButton(
+                    //     icon: const Icon(
+                    //       Icons.refresh_outlined,
+                    //       size: 20,
+                    //     ),
+                    //     color: Colors.white,
+                    //     onPressed: () {},
+                    //   ),
+                    // ),
+                    Container(
+                      height: size.height * 0.1,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Image.asset("asset/login.png"),
                         ),
-                      ),
-                      subtitle: Text(
-                        value.branch_name.toString(),
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 14,
-                          // fontWeight: FontWeight.bold,
-                          color: P_Settings.buttonColor,
+                        title: Text(
+                          value.staff_name.toString(),
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
                         ),
-                      ),
-                      trailing: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent, // background
+                        subtitle: Text(
+                          value.branch_name.toString(),
+                          style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 14,
+                            // fontWeight: FontWeight.bold,
+                            color: P_Settings.buttonColor,
+                          ),
                         ),
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.remove('st_username');
-                          await prefs.remove('st_pwd');
-                          Navigator.pushReplacement(
+                        trailing: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent, // background
+                          ),
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('st_username');
+                            await prefs.remove('st_pwd');
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                            print('Pressed');
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                // <-- Icon
+                                Icons.person,
+                                size: 18.0,
+                              ),
+                              Text(
+                                'Logout',
+                                style: TextStyle(fontSize: 12),
+                              ), // <-- Text
+                              SizedBox(
+                                width: size.width * 0.01,
+                              ),
+                            ],
+                          ),
+                        ),
+                        //  OutlinedButton.icon(
+                        //   label: Text('Logout',
+                        //       style: TextStyle(color: Colors.white)),
+                        //   icon: Icon(
+                        //     Icons.person,
+                        //     color: Colors.white,
+                        //   ),
+
+                        //   onPressed: () async {
+                        //     final prefs = await SharedPreferences.getInstance();
+                        //     await prefs.remove('st_username');
+                        //     await prefs.remove('st_pwd');
+                        //     Navigator.pushReplacement(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => LoginPage()));
+                        //     print('Pressed');
+                        //   },
+                        // ),
+                        dense: false,
+                      ),
+                      color: P_Settings.loginPagetheme,
+                    ),
+
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Provider.of<Controller>(context, listen: false)
+                                .getTransactionList(context);
+
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
-                          print('Pressed');
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              // <-- Icon
-                              Icons.person,
-                              size: 18.0,
+                                  builder: (context) => TransactionPage()),
+                            );
+                          },
+                          leading: CircleAvatar(
+                              radius: 20,
+                              child: Image.asset("asset/exchanging.png")),
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Transaction",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.loginPagetheme,
                             ),
-                            Text(
-                              'Logout',
-                              style: TextStyle(fontSize: 12),
-                            ), // <-- Text
-                            SizedBox(
-                              width: size.width * 0.01,
-                            ),
-                          ],
-                        ),
-                      ),
-                      //  OutlinedButton.icon(
-                      //   label: Text('Logout',
-                      //       style: TextStyle(color: Colors.white)),
-                      //   icon: Icon(
-                      //     Icons.person,
-                      //     color: Colors.white,
-                      //   ),
-
-                      //   onPressed: () async {
-                      //     final prefs = await SharedPreferences.getInstance();
-                      //     await prefs.remove('st_username');
-                      //     await prefs.remove('st_pwd');
-                      //     Navigator.pushReplacement(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => LoginPage()));
-                      //     print('Pressed');
-                      //   },
-                      // ),
-                      dense: false,
-                    ),
-                    color: P_Settings.loginPagetheme,
-                  ),
-
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: ListTile(
-                        onTap: () {
-                          Provider.of<Controller>(context, listen: false)
-                              .getTransactionList(context);
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TransactionPage()),
-                          );
-                        },
-                        leading: CircleAvatar(
-                            radius: 20,
-                            child: Image.asset("asset/exchanging.png")),
-                        trailing: Icon(Icons.arrow_forward),
-                        title: Text(
-                          "Transaction",
-                          style: GoogleFonts.aBeeZee(
-                            textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: P_Settings.loginPagetheme,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: ListTile(
-                        onTap: () {
-                          Provider.of<Controller>(context, listen: false)
-                              .getTransactionList(context);
-                          Provider.of<Controller>(context, listen: false)
-                              .setIssearch(false);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SearchScreen(type: "start")),
-                          );
-                        },
-                        leading: CircleAvatar(
-                            radius: 20, child: Image.asset("asset/search.png")),
-                        trailing: Icon(Icons.arrow_forward),
-                        title: Text(
-                          "Search",
-                          style: GoogleFonts.aBeeZee(
-                            textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: P_Settings.loginPagetheme,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Provider.of<Controller>(context, listen: false)
+                                .getTransactionList(context);
+                            Provider.of<Controller>(context, listen: false)
+                                .setIssearch(false);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SearchScreen(type: "start")),
+                            );
+                          },
+                          leading: CircleAvatar(
+                              radius: 20,
+                              child: Image.asset("asset/search.png")),
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Search",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.loginPagetheme,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                 value.stock_approve_list.length==0?
-                 Container()
-                 : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                      title: Text(
-                        "Stock Approval",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme,
-                        ),
-                      ),
-                    ),
-                  ),
-                  value.isLoading
-                      ? SpinKitFadingCircle(
-                          color: P_Settings.loginPagetheme,
-                        )
-                      : Expanded(
-                          child: ListView.builder(
-                          itemCount: value.stock_approve_list.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                child: ListTile(
-                                  onTap: () {
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .getStockApproveInfo(
-                                            context,
-                                            value.stock_approve_list[index]
-                                                ["os_id"]);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              StockApprovalPage(
-                                                os_id: value.stock_approve_list[
-                                                    index]["os_id"],
-                                              )),
-                                    );
-                                  },
-                                  trailing: Icon(Icons.arrow_forward),
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        value.stock_approve_list[index]
-                                                ["series"]
-                                            .toString(),
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: P_Settings.loginPagetheme,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 14.0),
-                                        child: Text(
+                    value.stock_approve_list.length == 0
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              visualDensity:
+                                  VisualDensity(horizontal: 0, vertical: -4),
+                              title: Text(
+                                "Stock Approval",
+                                style: GoogleFonts.aBeeZee(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: P_Settings.loginPagetheme,
+                                ),
+                              ),
+                            ),
+                          ),
+                    value.isLoading
+                        ? SpinKitFadingCircle(
+                            color: P_Settings.loginPagetheme,
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                            itemCount: value.stock_approve_list.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: ListTile(
+                                    onTap: () {
+                                      Provider.of<Controller>(context,
+                                              listen: false)
+                                          .getStockApproveInfo(
+                                              context,
+                                              value.stock_approve_list[index]
+                                                  ["os_id"]);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StockApprovalPage(
+                                                  os_id:
+                                                      value.stock_approve_list[
+                                                          index]["os_id"],
+                                                )),
+                                      );
+                                    },
+                                    trailing: Icon(Icons.arrow_forward),
+                                    title: Row(
+                                      children: [
+                                        Text(
                                           value.stock_approve_list[index]
-                                                  ["entry_date"]
+                                                  ["series"]
                                               .toString(),
                                           style: GoogleFonts.aBeeZee(
                                             textStyle: Theme.of(context)
                                                 .textTheme
                                                 .bodyText2,
                                             fontSize: 16,
-                                            // fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             color: P_Settings.loginPagetheme,
                                           ),
                                         ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 14.0),
+                                          child: Text(
+                                            value.stock_approve_list[index]
+                                                    ["entry_date"]
+                                                .toString(),
+                                            style: GoogleFonts.aBeeZee(
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
+                                              fontSize: 16,
+                                              // fontWeight: FontWeight.bold,
+                                              color: P_Settings.loginPagetheme,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    subtitle: Text(
+                                      value.stock_approve_list[index]
+                                              ["from_branch"]
+                                          .toString(),
+                                      style: GoogleFonts.aBeeZee(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                        fontSize: 15,
+                                        // fontWeight: FontWeight.bold,
+                                        color: P_Settings.loginPagetheme,
                                       ),
-                                    ],
-                                  ),
-                                  subtitle: Text(
-                                    value.stock_approve_list[index]
-                                            ["from_branch"]
-                                        .toString(),
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold,
-                                      color: P_Settings.loginPagetheme,
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ))
-                  // Positioned(
-                  //   left: 10,
-                  //   right: 10,
-                  //   top: 100,
-                  //   // bottom: 200,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //     children: [
-                  //       customCard(size, "Stock", 12),
-                  //       customCard(size, "Transfer", 23),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Positioned(
-                  //   left: 10,
-                  //   right: 10,
-                  //   top: 280,
-                  //   // bottom: 200,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //     children: [
-                  //       customCard(size, "Stock", 12),
-                  //       customCard(size, "Transfer", 23),
-                  //     ],
-                  //   ),
-                  // )
-                ],
-              );
-            },
+                              );
+                            },
+                          ))
+                    // Positioned(
+                    //   left: 10,
+                    //   right: 10,
+                    //   top: 100,
+                    //   // bottom: 200,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //     children: [
+                    //       customCard(size, "Stock", 12),
+                    //       customCard(size, "Transfer", 23),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Positioned(
+                    //   left: 10,
+                    //   right: 10,
+                    //   top: 280,
+                    //   // bottom: 200,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //     children: [
+                    //       customCard(size, "Stock", 12),
+                    //       customCard(size, "Transfer", 23),
+                    //     ],
+                    //   ),
+                    // )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
