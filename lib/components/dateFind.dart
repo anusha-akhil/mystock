@@ -38,11 +38,11 @@ class DateFind {
 
     if (dateType == "from date") {
       print("curnt date----$currentDate");
-      fromDate = DateFormat('yyyy-MM-dd').format(currentDate);
+      fromDate = DateFormat('dd-MM-yyyy').format(currentDate);
+      // toDate = DateFormat('dd-MM-yyyy').format(currentDate);
     }
-
     if (dateType == "to date") {
-      toDate = DateFormat('yyyy-MM-dd').format(currentDate);
+      toDate = DateFormat('dd-MM-yyyy').format(currentDate);
     }
 
 

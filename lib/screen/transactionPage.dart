@@ -47,7 +47,7 @@ class _TransactionPageState extends State<TransactionPage> {
     super.initState();
     shared();
     print("-----------${widget.page}");
-    todaydate = DateFormat('yyyy-MM-dd').format(now);
+    todaydate = DateFormat('dd-MM-yyyy').format(now);
     // s = date!.split(" ");
     if (widget.page == "history") {
       remrk.text = widget.remrk.toString();

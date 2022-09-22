@@ -259,6 +259,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                 trailing: value.qty[index].text == "0"
                     ? IconButton(
                         onPressed: () {
+                          // value.cartCountFun(count);
                           value.setqtyErrormsg(false);
                           value.qty[index].selection = TextSelection(
                               baseOffset: 0,

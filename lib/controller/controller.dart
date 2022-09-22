@@ -60,6 +60,7 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> oldhistoryqty = [];
 
   String? cartCount;
+  int? cartCountInc;
 
   List<Map<String, dynamic>> productList = [];
   List<Map<String, dynamic>> bagList = [];
@@ -326,7 +327,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id, String action) async {
+  historyData(BuildContext context, String trans_id, String action,String fromDate,String tillDate) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -338,7 +339,9 @@ class Controller extends ChangeNotifier {
           Map body = {
             'staff_id': user_id,
             'branch_id': branch_id,
-            'trans_id': trans_id
+            'trans_id': trans_id,
+            'from_date':fromDate,
+            'till_date':tillDate
           };
           print("history body-----$body");
           if (action != "delete") {
@@ -455,7 +458,7 @@ class Controller extends ChangeNotifier {
 
         if (action == "delete" && map["err_status"] == 0) {
           // print("hist-----------$historyList");
-          historyData(context, transid, "delete");
+          historyData(context, transid, "delete","","");
         }
 
         if (action == "save" && map["err_status"] == 0) {
@@ -481,7 +484,7 @@ class Controller extends ChangeNotifier {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      'Saved!!!',
+                      map["msg"].toString(),
                       style: TextStyle(color: P_Settings.loginPagetheme),
                     ),
                     Icon(
@@ -1075,6 +1078,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+////////////////////////////////////////////////////////////////
   editDeleteTransaction(
       String transaval,
       String osId,
@@ -1114,11 +1118,50 @@ class Controller extends ChangeNotifier {
           print("edit delete -----$map");
           isLoading = false;
           notifyListeners();
+
+          print("savedd");
+          return showDialog(
+              context: context,
+              builder: (context) {
+                Size size = MediaQuery.of(context).size;
+
+                Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop(true);
+
+                  // Navigator.of(context).push(
+                  //   PageRouteBuilder(
+                  //       opaque: false, // set to false
+                  //       pageBuilder: (_, __, ___) => TransactionPage()
+                  //       // OrderForm(widget.areaname,"return"),
+                  //       ),
+                  // );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      map["msg"].toString(),
+                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
         } catch (e) {
           print(e);
         }
       }
     });
+  }
+
+  /////////////////////////////////////////////////
+  cartCountFun(int count) {
+    cartCountInc = count + 1;
+    notifyListeners();
   }
   ///////////////////////////////////////////////
   // getbranchFrombId(String brId) {

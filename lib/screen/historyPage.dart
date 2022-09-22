@@ -31,8 +31,8 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    date = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
-    todaydate = DateFormat('yyyy-MM-dd').format(now);
+    date = DateFormat('dd-MM-yyyy kk:mm:ss').format(now);
+    todaydate = DateFormat('dd-MM-yyyy').format(now);
     s = date!.split(" ");
   }
 
@@ -170,7 +170,11 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     value.historyList[index]
                                                         ['os_id']);
                                             infoshowsheet.showtransInfoSheet(
-                                                context, index,splitted[3]);
+                                                context,
+                                                index,
+                                                splitted[3],
+                                                value.historyList[index]
+                                                    ['os_id']);
                                           },
                                           icon: Icon(Icons.info)),
                                       // IconButton(
@@ -263,7 +267,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   listen: false)
                                                               .historyData(
                                                                   context,
-                                                                  splitted[0],"");
+                                                                  splitted[0],
+                                                                  "",value.fromDate.toString(),value.todate.toString());
 
                                                           Navigator.of(ctx)
                                                               .pop();
@@ -422,7 +427,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   }
 
                   Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0],"");
+                      .historyData(context, splitted[0], "",value.fromDate.toString(),value.todate.toString());
                 }
               },
             ),

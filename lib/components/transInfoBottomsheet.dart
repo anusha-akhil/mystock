@@ -7,7 +7,8 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(BuildContext context, int index, String transval) {
+  showtransInfoSheet(
+      BuildContext context, int index, String transval, String osId) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -37,6 +38,17 @@ class TransaInfoBottomsheet {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Text("Product Name"),Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(Icons.close))
+                          ],
+                        ),
                         ListTile(
                           title: Column(
                             children: [
@@ -335,9 +347,7 @@ class TransaInfoBottomsheet {
                                                                 listen: false)
                                                             .editDeleteTransaction(
                                                                 transval,
-                                                                value.transiteminfoList[
-                                                                        index]
-                                                                    ["os_d_id"],
+                                                                osId,
                                                                 value.transiteminfoList[
                                                                         index]
                                                                     ["item_id"],
