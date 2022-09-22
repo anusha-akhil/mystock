@@ -60,6 +60,7 @@ class Controller extends ChangeNotifier {
   List<TextEditingController> oldhistoryqty = [];
 
   String? cartCount;
+  int? cartCountInc;
 
   List<Map<String, dynamic>> productList = [];
   List<Map<String, dynamic>> bagList = [];
@@ -259,7 +260,8 @@ class Controller extends ChangeNotifier {
             isLoading = false;
             notifyListeners();
           }
-          print("delete response-----------------${map["msg"]}");
+          print("delete response-----------------${map}");
+          cartCount = map["cart_count"];
           var res = map["msg"];
           if (res == "Bag deleted Successfully") {
             getbagData1(context);
@@ -326,7 +328,8 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id, String action) async {
+  historyData(BuildContext context, String trans_id, String action,
+      String fromDate, String tillDate) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -338,7 +341,9 @@ class Controller extends ChangeNotifier {
           Map body = {
             'staff_id': user_id,
             'branch_id': branch_id,
-            'trans_id': trans_id
+            'trans_id': trans_id,
+            'from_date': fromDate,
+            'till_date': tillDate
           };
           print("history body-----$body");
           if (action != "delete") {
@@ -381,7 +386,7 @@ class Controller extends ChangeNotifier {
   }
 
 // //////////////////////////////////////////////
-  saveCartDetails(BuildContext mycontext, String transid, String to_branch_id,
+  saveCartDetails(BuildContext context, String transid, String to_branch_id,
       String remark, String event, String os_id, String action) async {
     List<Map<String, dynamic>> jsonResult = [];
     Map<String, dynamic> itemmap = {};
@@ -394,7 +399,7 @@ class Controller extends ChangeNotifier {
     print(
         "datas------$transid---$to_branch_id----$remark------$branch_id----$user_id");
     print("action........$action");
-    NetConnection.networkConnection(mycontext).then((value) async {
+    NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         print("bagList-----$bagList");
         Uri url = Uri.parse("$urlgolabl/save_transaction.php");
@@ -456,19 +461,18 @@ class Controller extends ChangeNotifier {
 
         if (action == "delete" && map["err_status"] == 0) {
           // print("hist-----------$historyList");
-          historyData(mycontext, transid, "delete");
+          historyData(context, transid, "delete", "", "");
         }
 
         if (action == "save" && map["err_status"] == 0) {
           print("savedd");
           return showDialog(
-              context: mycontext,
+              context: context,
               builder: (context) {
                 Size size = MediaQuery.of(context).size;
 
                 Future.delayed(Duration(seconds: 2), () {
                   Navigator.of(context).pop(true);
-
                   Navigator.of(context).push(
                     PageRouteBuilder(
                         opaque: false, // set to false
@@ -494,13 +498,19 @@ class Controller extends ChangeNotifier {
                   ],
                 ));
               });
-        } else if (action == 'delete' && map["err_status"] == 1) {
+        } else if (action == "delete" && map["err_status"] == 1) {
+          print("heloooooo");
+          // CustomSnackbar snackbar = CustomSnackbar();
+          // snackbar.showSnackbar(context, "Invalid Apk Key", "");
+
           return showDialog(
-              context: mycontext,
-              builder: (context) {
-                Size size = MediaQuery.of(context).size;
+              context: context,
+              builder: (mycontext) {
+                Size size = MediaQuery.of(mycontext).size;
 
                 Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop();
+                  // Navigator.of(mycontext).pop(false);
                   // Navigator.of(dialogContex).pop(true);
 
                   // Navigator.of(context).push(
@@ -769,7 +779,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////////////////////////
-  getTransinfoList(BuildContext context, String os_id) async {
+  getTransinfoList(BuildContext context, String os_id, String type) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -781,9 +791,10 @@ class Controller extends ChangeNotifier {
             'os_id': os_id,
           };
           print("os_id-----$body");
-          // isDownloaded = true;
-          isListLoading = true;
-          notifyListeners();
+          if (type != "delete") {
+            isListLoading = true;
+            notifyListeners();
+          }
 
           http.Response response = await http.post(
             url,
@@ -818,8 +829,10 @@ class Controller extends ChangeNotifier {
           }
           print(
               "transinfoList--------------------$transinfoList------------$transiteminfoList");
-          isListLoading = false;
-          notifyListeners();
+          if (type != "delete") {
+            isListLoading = false;
+            notifyListeners();
+          }
 
           /////////////// insert into local db /////////////////////
         } catch (e) {
@@ -901,7 +914,7 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       var map = jsonDecode(response.body);
 
-      print("nmnmkzd-------${map["product_list"].length}");
+      print("nmnmkzd-------${map}");
       productList.clear();
       productbar.clear();
 
@@ -1112,6 +1125,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+////////////////////////////////////////////////////////////////
   editDeleteTransaction(
       String transaval,
       String osId,
@@ -1152,11 +1166,58 @@ class Controller extends ChangeNotifier {
           print("edit delete -----$map");
           isLoading = false;
           notifyListeners();
+          if (map["err_status"] == 0) {
+            getTransinfoList(context, osId, "delete");
+          }
+          print("savedd");
+          return showDialog(
+              context: context,
+              builder: (context) {
+                Size size = MediaQuery.of(context).size;
+
+                Future.delayed(Duration(seconds: 2), () {
+                  // if (map["err_status"] == 0) {
+                  //   getTransinfoList(context, osId, "delete");
+                  // }
+                  Navigator.of(context).pop(true);
+
+                  // Navigator.of(context).push(
+                  //   PageRouteBuilder(
+                  //       opaque: false, // set to false
+                  //       pageBuilder: (_, __, ___) => TransactionPage()
+                  //       // OrderForm(widget.areaname,"return"),
+                  //       ),
+                  // );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        map["msg"].toString(),
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
         } catch (e) {
           print(e);
         }
       }
     });
+  }
+
+  /////////////////////////////////////////////////
+  cartCountFun(int count) {
+    print("count------$count");
+    cartCountInc = count + 1;
+    notifyListeners();
   }
   ///////////////////////////////////////////////
   // getbranchFrombId(String brId) {

@@ -361,6 +361,15 @@ class Bottomsheet {
                                   print("value.qtyerror ----${value.qtyerror}");
 
                                   if (value.qtyerror == false) {
+
+
+                                    // value.cartCountFun(
+                                    //     int.parse(value.cartCount!));
+
+                                    // if (value.cartCountInc != null) {
+                                    //   qty = value.cartCountInc! + 1;
+                                    //   print("cart----$qty");
+                                    // }
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .addDeletebagItem(

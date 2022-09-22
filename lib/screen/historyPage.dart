@@ -31,8 +31,8 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    date = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
-    todaydate = DateFormat('yyyy-MM-dd').format(now);
+    date = DateFormat('dd-MM-yyyy kk:mm:ss').format(now);
+    todaydate = DateFormat('dd-MM-yyyy').format(now);
     s = date!.split(" ");
   }
 
@@ -41,6 +41,15 @@ class _HistoryPageState extends State<HistoryPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "History",
+          style: GoogleFonts.aBeeZee(
+            textStyle: Theme.of(context).textTheme.bodyText2,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: P_Settings.buttonColor,
+          ),
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -168,12 +177,14 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 .getTransinfoList(
                                                     context,
                                                     value.historyList[index]
-                                                        ['os_id']);
+                                                        ['os_id'],
+                                                    "");
                                             infoshowsheet.showtransInfoSheet(
                                                 context,
                                                 index,
                                                 splitted[3],
-                                                splitted[0]);
+                                                value.historyList[index]
+                                                    ['os_id']);
                                           },
                                           icon: Icon(Icons.info)),
                                       // IconButton(
@@ -239,12 +250,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                 primary: P_Settings
                                                                     .loginPagetheme),
                                                         onPressed: () async {
-                                                          
+                                                          print(
+                                                              "heloooooooooooooooo");
                                                           Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
                                                               .saveCartDetails(
-                                                                  context,
+                                                                  ctx,
                                                                   splitted[0],
                                                                   value.historyList[
                                                                           index]
@@ -259,19 +271,40 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                           index]
                                                                       ['os_id'],
                                                                   "delete");
+                                                          String df;
+                                                          String tf;
+
+                                                          if (value.fromDate ==
+                                                              null) {
+                                                            df = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            df = value.fromDate
+                                                                .toString();
+                                                          }
+                                                          if (value.todate ==
+                                                              null) {
+                                                            tf = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            tf = value.todate
+                                                                .toString();
+                                                          }
 
                                                           //////////////////////////////////////////////////
-                                                          // await Provider.of<
-                                                          //             Controller>(
-                                                          //         context,
-                                                          //         listen: false)
-                                                          //     .historyData(
-                                                          //         context,
-                                                          //         splitted[0],
-                                                          //         "");
 
-                                                          Navigator.of(ctx)
-                                                              .pop();
+                                                          await Provider.of<
+                                                                      Controller>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .historyData(
+                                                                  context,
+                                                                  splitted[0],
+                                                                  "",
+                                                                  df,
+                                                                  tf);
+
+                                                          // Navigator.pop(context);
                                                         },
                                                         child: Text("Ok"),
                                                       ),
@@ -425,9 +458,22 @@ class _HistoryPageState extends State<HistoryPage> {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }
+                  String df;
+                  String tf;
+
+                  if (value.fromDate == null) {
+                    df = todaydate.toString();
+                  } else {
+                    df = value.fromDate.toString();
+                  }
+                  if (value.todate == null) {
+                    tf = todaydate.toString();
+                  } else {
+                    tf = value.todate.toString();
+                  }
 
                   Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0], "");
+                      .historyData(context, splitted[0], "", df, tf);
                 }
               },
             ),
