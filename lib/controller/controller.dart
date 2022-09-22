@@ -397,6 +397,7 @@ class Controller extends ChangeNotifier {
 
     print(
         "datas------$transid---$to_branch_id----$remark------$branch_id----$user_id");
+    print("action........$action");
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         print("bagList-----$bagList");
@@ -471,7 +472,6 @@ class Controller extends ChangeNotifier {
 
                 Future.delayed(Duration(seconds: 2), () {
                   Navigator.of(context).pop(true);
-
                   Navigator.of(context).push(
                     PageRouteBuilder(
                         opaque: false, // set to false
@@ -479,6 +479,46 @@ class Controller extends ChangeNotifier {
                         // OrderForm(widget.areaname,"return"),
                         ),
                   );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        '${map['msg']}',
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
+        } else if (action == "delete" && map["err_status"] == 1) {
+          print("heloooooo");
+          // CustomSnackbar snackbar = CustomSnackbar();
+          // snackbar.showSnackbar(context, "Invalid Apk Key", "");
+
+          return showDialog(
+              context: context,
+              builder: (mycontext) {
+                Size size = MediaQuery.of(mycontext).size;
+
+                Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop();
+                  // Navigator.of(mycontext).pop(false);
+                  // Navigator.of(dialogContex).pop(true);
+
+                  // Navigator.of(context).push(
+                  //   PageRouteBuilder(
+                  //       opaque: false, // set to false
+                  //       pageBuilder: (_, __, ___) => MainDashboard()
+                  //       // OrderForm(widget.areaname,"return"),
+                  //       ),
+                  // );
                 });
                 return AlertDialog(
                     content: Row(

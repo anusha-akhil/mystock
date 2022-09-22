@@ -250,11 +250,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                 primary: P_Settings
                                                                     .loginPagetheme),
                                                         onPressed: () async {
+                                                          print(
+                                                              "heloooooooooooooooo");
                                                           Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
                                                               .saveCartDetails(
-                                                                  context,
+                                                                  ctx,
                                                                   splitted[0],
                                                                   value.historyList[
                                                                           index]
@@ -290,7 +292,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                           }
 
                                                           //////////////////////////////////////////////////
-                                                
+
                                                           await Provider.of<
                                                                       Controller>(
                                                                   context,
@@ -302,8 +304,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   df,
                                                                   tf);
 
-                                                          Navigator.of(ctx)
-                                                              .pop();
+                                                          // Navigator.pop(context);
                                                         },
                                                         child: Text("Ok"),
                                                       ),

@@ -83,20 +83,32 @@ class _StockTransferState extends State<StockTransfer> {
               position: const BadgePosition(start: 33, bottom: 25),
               child: IconButton(
                 onPressed: () async {
-                  Provider.of<Controller>(context, listen: false)
+                  await Provider.of<Controller>(context, listen: false)
                       .getbagData1(context);
-
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BagPage(
+                      context,
+                      PageRouteBuilder(
+                          opaque: false, // set to false
+                          pageBuilder: (_, __, ___) {
+                            return BagPage(
                               transVal: widget.transVal,
                               transType: widget.transType,
                               transId: widget.transId,
                               branchId: widget.branchId!,
                               remark: widget.remark,
-                            )),
-                  );
+                            );
+                          }));
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => BagPage(
+                  //             transVal: widget.transVal,
+                  //             transType: widget.transType,
+                  //             transId: widget.transId,
+                  //             branchId: widget.branchId!,
+                  //             remark: widget.remark,
+                  //           )),
+                  // );
                 },
                 icon: const Icon(Icons.shopping_cart),
               ),

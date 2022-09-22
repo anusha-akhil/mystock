@@ -78,12 +78,23 @@ class _MainDashboardState extends State<MainDashboard> {
                   value: 0,
                   child: Text("Refresh"),
                 ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: Text("Logout"),
+                ),
               ];
-            }, onSelected: (value) {
+            }, onSelected: (value) async {
               if (value == 0) {
                 Provider.of<Controller>(context, listen: false).userDetails();
                 Provider.of<Controller>(context, listen: false)
                     .getStockApprovalList(context);
+              } else if (value == 1) {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('st_username');
+                await prefs.remove('st_pwd');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+                print('Pressed');
               }
             }),
           ],
@@ -99,20 +110,6 @@ class _MainDashboardState extends State<MainDashboard> {
               builder: (context, value, child) {
                 return Column(
                   children: [
-                    // Container(
-                    //   alignment: Alignment.topRight,
-                    //   color: P_Settings.loginPagetheme,
-                    //   height: size.height * 0.04,
-                    //   width: double.infinity,
-                    //   child: IconButton(
-                    //     icon: const Icon(
-                    //       Icons.refresh_outlined,
-                    //       size: 20,
-                    //     ),
-                    //     color: Colors.white,
-                    //     onPressed: () {},
-                    //   ),
-                    // ),
                     Container(
                       height: size.height * 0.1,
                       child: ListTile(
@@ -138,57 +135,6 @@ class _MainDashboardState extends State<MainDashboard> {
                             color: P_Settings.buttonColor,
                           ),
                         ),
-                        trailing: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // background
-                          ),
-                          onPressed: () async {
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.remove('st_username');
-                            await prefs.remove('st_pwd');
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
-                            print('Pressed');
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                // <-- Icon
-                                Icons.person,
-                                size: 18.0,
-                              ),
-                              Text(
-                                'Logout',
-                                style: TextStyle(fontSize: 12),
-                              ), // <-- Text
-                              SizedBox(
-                                width: size.width * 0.01,
-                              ),
-                            ],
-                          ),
-                        ),
-                        //  OutlinedButton.icon(
-                        //   label: Text('Logout',
-                        //       style: TextStyle(color: Colors.white)),
-                        //   icon: Icon(
-                        //     Icons.person,
-                        //     color: Colors.white,
-                        //   ),
-
-                        //   onPressed: () async {
-                        //     final prefs = await SharedPreferences.getInstance();
-                        //     await prefs.remove('st_username');
-                        //     await prefs.remove('st_pwd');
-                        //     Navigator.pushReplacement(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => LoginPage()));
-                        //     print('Pressed');
-                        //   },
-                        // ),
                         dense: false,
                       ),
                       color: P_Settings.loginPagetheme,
