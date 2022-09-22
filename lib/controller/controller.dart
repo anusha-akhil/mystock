@@ -327,7 +327,8 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id, String action,String fromDate,String tillDate) async {
+  historyData(BuildContext context, String trans_id, String action,
+      String fromDate, String tillDate) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -340,8 +341,8 @@ class Controller extends ChangeNotifier {
             'staff_id': user_id,
             'branch_id': branch_id,
             'trans_id': trans_id,
-            'from_date':fromDate,
-            'till_date':tillDate
+            'from_date': fromDate,
+            'till_date': tillDate
           };
           print("history body-----$body");
           if (action != "delete") {
@@ -458,7 +459,7 @@ class Controller extends ChangeNotifier {
 
         if (action == "delete" && map["err_status"] == 0) {
           // print("hist-----------$historyList");
-          historyData(context, transid, "delete","","");
+          historyData(context, transid, "delete", "", "");
         }
 
         if (action == "save" && map["err_status"] == 0) {
@@ -483,9 +484,11 @@ class Controller extends ChangeNotifier {
                     content: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      map["msg"].toString(),
-                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    Flexible(
+                      child: Text(
+                        '${map['msg']}',
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
                     ),
                     Icon(
                       Icons.done,
@@ -735,7 +738,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////////////////////////
-  getTransinfoList(BuildContext context, String os_id) async {
+  getTransinfoList(BuildContext context, String os_id, String type) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -747,9 +750,10 @@ class Controller extends ChangeNotifier {
             'os_id': os_id,
           };
           print("os_id-----$body");
-          // isDownloaded = true;
-          isListLoading = true;
-          notifyListeners();
+          if (type != "delete") {
+            isListLoading = true;
+            notifyListeners();
+          }
 
           http.Response response = await http.post(
             url,
@@ -784,8 +788,10 @@ class Controller extends ChangeNotifier {
           }
           print(
               "transinfoList--------------------$transinfoList------------$transiteminfoList");
-          isListLoading = false;
-          notifyListeners();
+          if (type != "delete") {
+            isListLoading = false;
+            notifyListeners();
+          }
 
           /////////////// insert into local db /////////////////////
         } catch (e) {
@@ -867,7 +873,7 @@ class Controller extends ChangeNotifier {
       print("body ${body}");
       var map = jsonDecode(response.body);
 
-      print("nmnmkzd-------${map["product_list"].length}");
+      print("nmnmkzd-------${map}");
       productList.clear();
       productbar.clear();
 
@@ -1118,7 +1124,9 @@ class Controller extends ChangeNotifier {
           print("edit delete -----$map");
           isLoading = false;
           notifyListeners();
-
+          if (map["err_status"] == 0) {
+            getTransinfoList(context, osId, "delete");
+          }
           print("savedd");
           return showDialog(
               context: context,
@@ -1126,6 +1134,9 @@ class Controller extends ChangeNotifier {
                 Size size = MediaQuery.of(context).size;
 
                 Future.delayed(Duration(seconds: 2), () {
+                  // if (map["err_status"] == 0) {
+                  //   getTransinfoList(context, osId, "delete");
+                  // }
                   Navigator.of(context).pop(true);
 
                   // Navigator.of(context).push(
@@ -1140,9 +1151,11 @@ class Controller extends ChangeNotifier {
                     content: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      map["msg"].toString(),
-                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    Flexible(
+                      child: Text(
+                        map["msg"].toString(),
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
                     ),
                     Icon(
                       Icons.done,
@@ -1160,6 +1173,7 @@ class Controller extends ChangeNotifier {
 
   /////////////////////////////////////////////////
   cartCountFun(int count) {
+    print("count------$count");
     cartCountInc = count + 1;
     notifyListeners();
   }

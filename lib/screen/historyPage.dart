@@ -41,6 +41,15 @@ class _HistoryPageState extends State<HistoryPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "History",
+          style: GoogleFonts.aBeeZee(
+            textStyle: Theme.of(context).textTheme.bodyText2,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: P_Settings.buttonColor,
+          ),
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -168,7 +177,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 .getTransinfoList(
                                                     context,
                                                     value.historyList[index]
-                                                        ['os_id']);
+                                                        ['os_id'],"");
                                             infoshowsheet.showtransInfoSheet(
                                                 context,
                                                 index,
@@ -268,7 +277,11 @@ class _HistoryPageState extends State<HistoryPage> {
                                                               .historyData(
                                                                   context,
                                                                   splitted[0],
-                                                                  "",value.fromDate.toString(),value.todate.toString());
+                                                                  "",
+                                                                  value.fromDate
+                                                                      .toString(),
+                                                                  value.todate
+                                                                      .toString());
 
                                                           Navigator.of(ctx)
                                                               .pop();
@@ -426,8 +439,12 @@ class _HistoryPageState extends State<HistoryPage> {
                         .setstockTranserselected(false);
                   }
 
-                  Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0], "",value.fromDate.toString(),value.todate.toString());
+                  Provider.of<Controller>(context, listen: false).historyData(
+                      context,
+                      splitted[0],
+                      "",
+                      value.fromDate.toString(),
+                      value.todate.toString());
                 }
               },
             ),

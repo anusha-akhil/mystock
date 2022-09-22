@@ -146,6 +146,7 @@ class Bottomsheet {
                               Container(
                                 width: size.width * 0.2,
                                 child: TextField(
+                                  autofocus: true,
                                   onTap: () {
                                     Provider.of<Controller>(context,
                                             listen: false)
@@ -156,7 +157,8 @@ class Bottomsheet {
                                             value.qty[index].text,
                                             "0",
                                             "0",
-                                            context,"save");
+                                            context,
+                                            "save");
 
                                     print(
                                         "quantity......${value.qty[index].value.text}");
@@ -193,7 +195,8 @@ class Bottomsheet {
                                             value.qty[index].text,
                                             "0",
                                             "0",
-                                            context,"save");
+                                            context,
+                                            "save");
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -329,52 +332,68 @@ class Bottomsheet {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                              child: Text('Apply'),
-                              style: ElevatedButton.styleFrom(
-                                  primary: P_Settings.loginPagetheme,
-                                  textStyle: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
-                              onPressed: () {
-                                // value.setApplyClicked(true, index);
-                                double qty =
-                                    double.parse(value.qty[index].text);
-                                if (transval == -1) {
-                                  if (stock < qty) {
-                                    print("error");
-                                    value.qty[index].text = qtyf;
-                                    value.seterrorClicked(true, index);
-                                    value.setqtyErrormsg(true);
-                                  } else {
-                                    value.setqtyErrormsg(false);
+                          Container(
+                            height: size.height * 0.05,
+                            width: size.width * 0.5,
+                            child: ElevatedButton(
+                                child: Text(
+                                  'Apply',
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: P_Settings.loginPagetheme,
+                                    textStyle: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold)),
+                                onPressed: () {
+                                  // value.setApplyClicked(true, index);
+                                  double qty =
+                                      double.parse(value.qty[index].text);
+                                  if (transval == -1) {
+                                    if (stock < qty) {
+                                      print("error");
+                                      value.qty[index].text = qtyf;
+                                      value.seterrorClicked(true, index);
+                                      value.setqtyErrormsg(true);
+                                    } else {
+                                      value.setqtyErrormsg(false);
+                                    }
                                   }
-                                }
-                                print("value.qtyerror ----${value.qtyerror}");
+                                  print("value.qtyerror ----${value.qtyerror}");
 
-                                if (value.qtyerror == false) {
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .addDeletebagItem(
-                                          itemId,
-                                          srate1.toString(),
-                                          srate2.toString(),
-                                          value.qty[index].text,
-                                          "0",
-                                          "0",
-                                          context,"save");
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .getbagData1(
-                                    context,
-                                  );
-                                  print(
-                                      "quantityyyyyy.....${value.qty[index].text}........");
-                                  Navigator.pop(context);
-                                }
+                                  if (value.qtyerror == false) {
 
-                                print("payment mode...........$payment_mode");
-                              }),
+
+                                    // value.cartCountFun(
+                                    //     int.parse(value.cartCount!));
+
+                                    // if (value.cartCountInc != null) {
+                                    //   qty = value.cartCountInc! + 1;
+                                    //   print("cart----$qty");
+                                    // }
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .addDeletebagItem(
+                                            itemId,
+                                            srate1.toString(),
+                                            srate2.toString(),
+                                            value.qty[index].text,
+                                            "0",
+                                            "0",
+                                            context,
+                                            "save");
+                                    Provider.of<Controller>(context,
+                                            listen: false)
+                                        .getbagData1(
+                                      context,
+                                    );
+                                    print(
+                                        "quantityyyyyy.....${value.qty[index].text}........");
+                                    Navigator.pop(context);
+                                  }
+
+                                  print("payment mode...........$payment_mode");
+                                }),
+                          ),
                           SizedBox(
                             width: size.width * 0.06,
                           ),

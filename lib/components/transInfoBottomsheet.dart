@@ -363,6 +363,18 @@ class TransaInfoBottomsheet {
                                                                 event,
                                                                 context);
 
+                                                        Provider.of<Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .historyData(
+                                                                context,
+                                                                transval,
+                                                                "",
+                                                                value.fromDate
+                                                                    .toString(),
+                                                                value.todate
+                                                                    .toString());
+
                                                         Navigator.of(ctx).pop();
                                                       },
                                                       child: Text("Ok"),

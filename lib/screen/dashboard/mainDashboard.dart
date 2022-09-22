@@ -209,23 +209,25 @@ class _MainDashboardState extends State<MainDashboard> {
                       ),
                     ),
                   ),
-                 value.stock_approve_list.length==0?
-                 Container()
-                 : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                      title: Text(
-                        "Stock Approval",
-                        style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme,
+                  value.stock_approve_list.length == 0
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            visualDensity:
+                                VisualDensity(horizontal: 0, vertical: -4),
+                            title: Text(
+                              "Stock Approval",
+                              style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   value.isLoading
                       ? SpinKitFadingCircle(
                           color: P_Settings.loginPagetheme,
@@ -290,16 +292,32 @@ class _MainDashboardState extends State<MainDashboard> {
                                       ),
                                     ],
                                   ),
-                                  subtitle: Text(
-                                    value.stock_approve_list[index]
-                                            ["from_branch"]
-                                        .toString(),
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold,
-                                      color: P_Settings.loginPagetheme,
+                                  subtitle: Flexible(
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Branch : ",
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 15,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        Text(
+                                          "${value.stock_approve_list[index]["from_branch"].toString()}",
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: P_Settings.loginPagetheme,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
