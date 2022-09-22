@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(
-      BuildContext context, int index, String transval, String osId) {
+  showtransInfoSheet(BuildContext context, int index, String transid,
+      String transval, String osId) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
+    String? todaydate;
+    DateTime now = DateTime.now();
 
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
+        todaydate = DateFormat('dd-MM-yyyy').format(now);
         return Consumer<Controller>(
           builder: (context, value, child) {
             // value.qty[index].text=qty.toString();
@@ -232,209 +236,240 @@ class TransaInfoBottomsheet {
                           child: ListView.builder(
                             itemCount: value.transiteminfoList.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                visualDensity:
-                                    VisualDensity(horizontal: 0, vertical: -4),
-                                title: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        value.transiteminfoList[index]
-                                            ["item_name"],
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.grey[900],
+                              if (value.transinfohide[index]) {
+                                return Container();
+                              } else {
+                                return ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: 0, vertical: -4),
+                                  title: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          value.transiteminfoList[index]
+                                              ["item_name"],
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 17,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Colors.grey[900],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: size.width * 0.2,
-                                      child: TextField(
-                                        onChanged: (value) {},
-                                        onTap: () {
-                                          // Provider.of<Controller>(context,
-                                          //         listen: false)
-                                          //     .addDeletebagItem(
-                                          //         itemId,
-                                          //         srate1.toString(),
-                                          //         srate2.toString(),
-                                          //         value.qty[index].text,
-                                          //         "0",
-                                          //         "0",
-                                          //         context);
+                                      Container(
+                                        width: size.width * 0.2,
+                                        child: TextField(
+                                          onChanged: (value) {},
+                                          onTap: () {
+                                            // Provider.of<Controller>(context,
+                                            //         listen: false)
+                                            //     .addDeletebagItem(
+                                            //         itemId,
+                                            //         srate1.toString(),
+                                            //         srate2.toString(),
+                                            //         value.qty[index].text,
+                                            //         "0",
+                                            //         "0",
+                                            //         context);
 
-                                          // print(
-                                          //     "quantity......${value.qty[index].value.text}");
-                                          value.historyqty[index].selection =
-                                              TextSelection(
-                                                  baseOffset: 0,
-                                                  extentOffset: value
-                                                      .historyqty[index]
-                                                      .value
-                                                      .text
-                                                      .length);
-                                        },
+                                            // print(
+                                            //     "quantity......${value.qty[index].value.text}");
+                                            value.historyqty[index].selection =
+                                                TextSelection(
+                                                    baseOffset: 0,
+                                                    extentOffset: value
+                                                        .historyqty[index]
+                                                        .value
+                                                        .text
+                                                        .length);
+                                          },
 
-                                        // autofocus: true,
-                                        style: GoogleFonts.aBeeZee(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: P_Settings.loginPagetheme,
-                                        ),
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.all(0),
-                                          //border: InputBorder.none
-                                        ),
+                                          // autofocus: true,
+                                          style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 17,
+                                            // fontWeight: FontWeight.bold,
+                                            color: P_Settings.loginPagetheme,
+                                          ),
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(0),
+                                            //border: InputBorder.none
+                                          ),
 
-                                        // maxLines: 1,
-                                        // minLines: 1,
-                                        keyboardType: TextInputType.number,
-                                        onSubmitted: (values) {
-                                          print(
-                                              "don clicked----${value.oldhistoryqty[index].text}");
-                                          String content = "";
-                                          String msg = "";
-                                          String event = "";
+                                          // maxLines: 1,
+                                          // minLines: 1,
+                                          keyboardType: TextInputType.number,
+                                          onSubmitted: (values) {
+                                            print(
+                                                "don clicked----${value.oldhistoryqty[index].text}");
+                                            String content = "";
+                                            String msg = "";
+                                            String event = "";
 
-                                          if (value.historyqty[index].text ==
-                                                  "0" &&
-                                              value.transiteminfoList.length ==
-                                                  1) {
-                                            event = "2";
+                                            if (value.historyqty[index].text ==
+                                                    "0" &&
+                                                value.transiteminfoList
+                                                        .length ==
+                                                    1) {
+                                              event = "2";
 
-                                            msg = "transaction delete";
-                                            content = " Delete Transaction???";
-                                          } else if (value
-                                                  .historyqty[index].text ==
-                                              "0") {
-                                            msg = "delete";
-                                            event = "1";
+                                              msg = "transaction delete";
+                                              content =
+                                                  " Delete Transaction???";
+                                            } else if (value
+                                                    .historyqty[index].text ==
+                                                "0") {
+                                              msg = "delete";
+                                              event = "1";
 
-                                            content = "Confirm Delete???";
-                                          } else {
-                                            msg = "update";
-                                            event = "0";
+                                              content = "Confirm Delete???";
+                                            } else {
+                                              msg = "update";
+                                              event = "0";
 
-                                            content = "Update Quantity???";
-                                          }
+                                              content = "Update Quantity???";
+                                            }
 
-                                          showDialog(
-                                            context: context,
-                                            builder: (ctx) => AlertDialog(
-                                              content: Text(content),
-                                              actions: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: P_Settings
-                                                                  .loginPagetheme),
-                                                      onPressed: () async {
-                                                        print("ontap------");
-                                                        Provider.of<Controller>(
-                                                                context,
-                                                                listen: false)
-                                                            .editDeleteTransaction(
-                                                                transval,
-                                                                osId,
-                                                                value.transiteminfoList[
-                                                                        index]
-                                                                    ["item_id"],
-                                                                value
-                                                                    .oldhistoryqty[
-                                                                        index]
-                                                                    .text,
-                                                                value
-                                                                    .historyqty[
-                                                                        index]
-                                                                    .text,
-                                                                msg,
-                                                                event,
-                                                                context);
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                content: Text(content),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .loginPagetheme),
+                                                        onPressed: () async {
+                                                          String? df;
+                                                          String? tf;
+                                                          if (value.fromDate ==
+                                                              null) {
+                                                            df = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            df = value.fromDate
+                                                                .toString();
+                                                          }
+                                                          if (value.todate ==
+                                                              null) {
+                                                            tf = todaydate
+                                                                .toString();
+                                                          } else {
+                                                            tf = value.todate
+                                                                .toString();
+                                                          }
 
-                                                        if (msg ==
-                                                            "transaction delete") {
-                                                              String d;
-                                                         
+                                                          print("ontap------");
                                                           Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
-                                                              .historyData(
-                                                                  context,
+                                                              .editDeleteTransaction(
+                                                                  transid,
                                                                   transval,
-                                                                  "",
-                                                                  value.fromDate
-                                                                      .toString(),
-                                                                  value.todate
-                                                                      .toString());
-                                                        }
+                                                                  osId,
+                                                                  value.transiteminfoList[
+                                                                          index]
+                                                                      [
+                                                                      "item_id"],
+                                                                  value
+                                                                      .oldhistoryqty[
+                                                                          index]
+                                                                      .text,
+                                                                  value
+                                                                      .historyqty[
+                                                                          index]
+                                                                      .text,
+                                                                  msg,
+                                                                  event,
+                                                                  context,
+                                                                  df,
+                                                                  tf,index);
 
-                                                        Navigator.of(ctx).pop();
-                                                      },
-                                                      child: Text("Ok"),
-                                                    ),
-                                                    SizedBox(
-                                                      width: size.width * 0.01,
-                                                    ),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: P_Settings
-                                                                  .loginPagetheme),
-                                                      onPressed: () {
-                                                        Navigator.of(ctx).pop();
-                                                      },
-                                                      child: Text("Cancel"),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        textAlign: TextAlign.right,
-                                        controller: value.historyqty[index],
+                                                          // if (msg ==
+                                                          //     "transaction delete") {
+
+                                                          //   Provider.of<Controller>(
+                                                          //           context,
+                                                          //           listen: false)
+                                                          //       .historyData(
+                                                          //           context,
+                                                          //           transval,
+                                                          //           "delete",
+                                                          //           df,
+                                                          //           tf);
+                                                          // }
+
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Ok"),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            size.width * 0.01,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: P_Settings
+                                                                    .loginPagetheme),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Cancel"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          textAlign: TextAlign.right,
+                                          controller: value.historyqty[index],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Row(children: [
+                                    Text(
+                                      "SRate1 :  ${value.transiteminfoList[index]["s_rate_1"]}",
+                                      style: GoogleFonts.aBeeZee(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                        fontSize: 17,
+                                        // fontWeight: FontWeight.bold,
+                                        color: Colors.grey[500],
                                       ),
                                     ),
-                                  ],
-                                ),
-                                subtitle: Row(children: [
-                                  Text(
-                                    "SRate1 :  ${value.transiteminfoList[index]["s_rate_1"]}",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[500],
+                                    SizedBox(
+                                      width: size.width * 0.01,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.01,
-                                  ),
-                                  Text(
-                                    "SRate2 :  ${value.transiteminfoList[index]["s_rate_2"]}",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.grey[500],
+                                    Text(
+                                      "SRate2 :  ${value.transiteminfoList[index]["s_rate_2"]}",
+                                      style: GoogleFonts.aBeeZee(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                        fontSize: 17,
+                                        // fontWeight: FontWeight.bold,
+                                        color: Colors.grey[500],
+                                      ),
                                     ),
-                                  ),
-                                ]),
-                              );
+                                  ]),
+                                );
+                              }
                             },
                           ),
                         ),

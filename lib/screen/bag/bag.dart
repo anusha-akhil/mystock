@@ -95,41 +95,6 @@ class _BagPageState extends State<BagPage> {
                     // width: size.height*0.3,
                   )),
             );
-            // return Container(
-            //   height: size.height * 0.3,
-            //   child: Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Image.asset(
-            //           "asset/empty.png",
-            //           height: 80,
-            //           color: P_Settings.loginPagetheme,
-            //           width: 100,
-            //         ),
-            //         SizedBox(
-            //           height: size.height * 0.02,
-            //         ),
-            //         Text(
-            //           "Your cart is empty !!!",
-            //           style: TextStyle(fontSize: 17),
-            //         ),
-            //         SizedBox(
-            //           height: size.height * 0.02,
-            //         ),
-            //         ElevatedButton(
-            //             style: ElevatedButton.styleFrom(
-            //                 primary: P_Settings.loginPagetheme,
-            //                 textStyle: TextStyle(
-            //                     fontSize: 15, fontWeight: FontWeight.bold)),
-            //             onPressed: () {
-            //               Navigator.pop(context);
-            //             },
-            //             child: Text("View products"))
-            //       ],
-            //     ),
-            //   ),
-            // );
           }
           if (value.isLoading) {
             return SpinKitFadingCircle(
@@ -172,8 +137,14 @@ class _BagPageState extends State<BagPage> {
                         ),
                         onPressed: () async {
                           Provider.of<Controller>(context, listen: false)
-                              .saveCartDetails(context, widget.transId,
-                                  widget.branchId!, widget.remark!, "0", "0","save");
+                              .saveCartDetails(
+                                  context,
+                                  widget.transId,
+                                  widget.branchId!,
+                                  widget.remark!,
+                                  "0",
+                                  "0",
+                                  "save");
                         },
                         child: Text(
                           "Save",
@@ -507,7 +478,8 @@ class _BagPageState extends State<BagPage> {
                                                               qty.toString(),
                                                               "2",
                                                               cart_id,
-                                                              context,"delete");
+                                                              context,
+                                                              "delete");
 
                                                       // Provider.of<Controller>(
                                                       //         context,

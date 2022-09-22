@@ -181,7 +181,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     "");
                                             infoshowsheet.showtransInfoSheet(
                                                 context,
-                                                index,
+                                                index,splitted[0],
                                                 splitted[3],
                                                 value.historyList[index]
                                                     ['os_id']);

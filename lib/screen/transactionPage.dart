@@ -93,6 +93,10 @@ class _TransactionPageState extends State<TransactionPage> {
           actions: [
             IconButton(
                 onPressed: () {
+                  Provider.of<Controller>(context, listen: false)
+                      .historyList
+                      .clear();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HistoryPage()),
