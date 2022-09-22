@@ -397,17 +397,30 @@ class Controller extends ChangeNotifier {
       if (value == true) {
         print("bagList-----$bagList");
         Uri url = Uri.parse("$urlgolabl/save_transaction.php");
-        for (var i=0;i<bagList.length;i++) {
-          print("bagList[i]-------------${bagList[i]}");
-          itemmap[i]["item_id"] = bagList[i]["item_id"];
-          itemmap[i]["qty"] = bagList[i]["qty"];
-          itemmap[i]["s_rate_1"] = bagList[i]["s_rate_1"];
-          itemmap[i]["s_rate_2"] = bagList[i]["s_rate_2"];
-          jsonResult.add(itemmap);
-        }
 
+        jsonResult.clear();
+        itemmap.clear();
 
-        print("itemmap----$itemmap");
+        bagList.map((e) {
+          itemmap["item_id"] = e["item_id"];
+          itemmap["qty"] = e["qty"];
+          itemmap["s_rate_1"] = e["s_rate_1"];
+          itemmap["s_rate_2"] = e["s_rate_2"];
+          print("itemmap----$itemmap");
+          jsonResult.add(e);
+        }).toList();
+
+        // for (var i = 0; i < bagList.length; i++) {
+        //   print("bagList[i]-------------${bagList[i]}");
+        //   itemmap["item_id"] = bagList[i]["item_id"];
+        //   itemmap["qty"] = bagList[i]["qty"];
+        //   itemmap["s_rate_1"] = bagList[i]["s_rate_1"];
+        //   itemmap["s_rate_2"] = bagList[i]["s_rate_2"];
+        //   print("itemmap----$itemmap");
+        //   jsonResult.add(itemmap);
+        // }
+
+        print("jsonResult----$jsonResult");
 
         Map masterMap = {
           "trans_id": transid,
@@ -430,55 +443,55 @@ class Controller extends ChangeNotifier {
         print("jsonEnc-----$jsonEnc");
         isLoading = true;
         notifyListeners();
-        // http.Response response = await http.post(
-        //   url,
-        //   body: {'json_data': jsonEnc},
-        // );
+        http.Response response = await http.post(
+          url,
+          body: {'json_data': jsonEnc},
+        );
 
-        // var map = jsonDecode(response.body);
+        var map = jsonDecode(response.body);
         isLoading = false;
         notifyListeners();
-        // print("json cart------$map");
+        print("json cart------$map");
 
-        // if (action == "delete" && map["err_status"] == 0) {
-        //   // print("hist-----------$historyList");
-        //   historyData(context, transid, "delete");
-        // }
+        if (action == "delete" && map["err_status"] == 0) {
+          // print("hist-----------$historyList");
+          historyData(context, transid, "delete");
+        }
 
-        // if (action == "save" && map["err_status"] == 0) {
-        //   print("savedd");
-        //   return showDialog(
-        //       context: context,
-        //       builder: (context) {
-        //         Size size = MediaQuery.of(context).size;
+        if (action == "save" && map["err_status"] == 0) {
+          print("savedd");
+          return showDialog(
+              context: context,
+              builder: (context) {
+                Size size = MediaQuery.of(context).size;
 
-        //         Future.delayed(Duration(seconds: 2), () {
-        //           Navigator.of(context).pop(true);
+                Future.delayed(Duration(seconds: 2), () {
+                  Navigator.of(context).pop(true);
 
-        //           Navigator.of(context).push(
-        //             PageRouteBuilder(
-        //                 opaque: false, // set to false
-        //                 pageBuilder: (_, __, ___) => TransactionPage()
-        //                 // OrderForm(widget.areaname,"return"),
-        //                 ),
-        //           );
-        //         });
-        //         return AlertDialog(
-        //             content: Row(
-        //           mainAxisAlignment: MainAxisAlignment.end,
-        //           children: [
-        //             Text(
-        //               'Saved!!!',
-        //               style: TextStyle(color: P_Settings.loginPagetheme),
-        //             ),
-        //             Icon(
-        //               Icons.done,
-        //               color: Colors.green,
-        //             )
-        //           ],
-        //         ));
-        //       });
-        // } else {}
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) => TransactionPage()
+                        // OrderForm(widget.areaname,"return"),
+                        ),
+                  );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Saved!!!',
+                      style: TextStyle(color: P_Settings.loginPagetheme),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
+        } else {}
       }
     });
   }
