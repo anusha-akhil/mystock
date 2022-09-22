@@ -161,7 +161,7 @@ class _BagPageState extends State<BagPage> {
                 ),
                 Container(
                     height: size.height * 0.05,
-                    width: size.width * 0.3,
+                    width: size.width * 0.5,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: P_Settings.loginPagetheme,
@@ -179,7 +179,7 @@ class _BagPageState extends State<BagPage> {
                           "Save",
                           style: GoogleFonts.aBeeZee(
                             textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 16,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: P_Settings.buttonColor,
                           ),
