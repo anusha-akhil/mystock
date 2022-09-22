@@ -170,7 +170,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     value.historyList[index]
                                                         ['os_id']);
                                             infoshowsheet.showtransInfoSheet(
-                                                context, index,splitted[3]);
+                                                context,
+                                                index,
+                                                splitted[3],
+                                                splitted[0]);
                                           },
                                           icon: Icon(Icons.info)),
                                       // IconButton(
@@ -236,6 +239,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                 primary: P_Settings
                                                                     .loginPagetheme),
                                                         onPressed: () async {
+                                                          
                                                           Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
@@ -257,14 +261,14 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   "delete");
 
                                                           //////////////////////////////////////////////////
-                                                          await Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .historyData(
-                                                                  context,
-                                                                  splitted[0],
-                                                                  "");
+                                                          // await Provider.of<
+                                                          //             Controller>(
+                                                          //         context,
+                                                          //         listen: false)
+                                                          //     .historyData(
+                                                          //         context,
+                                                          //         splitted[0],
+                                                          //         "");
 
                                                           Navigator.of(ctx)
                                                               .pop();

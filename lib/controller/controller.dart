@@ -381,7 +381,7 @@ class Controller extends ChangeNotifier {
   }
 
 // //////////////////////////////////////////////
-  saveCartDetails(BuildContext context, String transid, String to_branch_id,
+  saveCartDetails(BuildContext mycontext, String transid, String to_branch_id,
       String remark, String event, String os_id, String action) async {
     List<Map<String, dynamic>> jsonResult = [];
     Map<String, dynamic> itemmap = {};
@@ -393,7 +393,8 @@ class Controller extends ChangeNotifier {
 
     print(
         "datas------$transid---$to_branch_id----$remark------$branch_id----$user_id");
-    NetConnection.networkConnection(context).then((value) async {
+    print("action........$action");
+    NetConnection.networkConnection(mycontext).then((value) async {
       if (value == true) {
         print("bagList-----$bagList");
         Uri url = Uri.parse("$urlgolabl/save_transaction.php");
@@ -455,13 +456,13 @@ class Controller extends ChangeNotifier {
 
         if (action == "delete" && map["err_status"] == 0) {
           // print("hist-----------$historyList");
-          historyData(context, transid, "delete");
+          historyData(mycontext, transid, "delete");
         }
 
         if (action == "save" && map["err_status"] == 0) {
           print("savedd");
           return showDialog(
-              context: context,
+              context: mycontext,
               builder: (context) {
                 Size size = MediaQuery.of(context).size;
 
@@ -475,6 +476,40 @@ class Controller extends ChangeNotifier {
                         // OrderForm(widget.areaname,"return"),
                         ),
                   );
+                });
+                return AlertDialog(
+                    content: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        '${map['msg']}',
+                        style: TextStyle(color: P_Settings.loginPagetheme),
+                      ),
+                    ),
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  ],
+                ));
+              });
+        } else if (action == 'delete' && map["err_status"] == 1) {
+          return showDialog(
+              context: mycontext,
+              builder: (context) {
+                Size size = MediaQuery.of(context).size;
+
+                Future.delayed(Duration(seconds: 2), () {
+                  // Navigator.of(dialogContex).pop(true);
+
+                  // Navigator.of(context).push(
+                  //   PageRouteBuilder(
+                  //       opaque: false, // set to false
+                  //       pageBuilder: (_, __, ___) => MainDashboard()
+                  //       // OrderForm(widget.areaname,"return"),
+                  //       ),
+                  // );
                 });
                 return AlertDialog(
                     content: Row(
@@ -1086,6 +1121,7 @@ class Controller extends ChangeNotifier {
       String msg,
       String event,
       BuildContext context) async {
+    print("old quantity.......$oldqty....$newqty");
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {

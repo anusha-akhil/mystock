@@ -7,7 +7,8 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class TransaInfoBottomsheet {
-  showtransInfoSheet(BuildContext context, int index, String transval) {
+  showtransInfoSheet(
+      BuildContext context, int index, String transval, String transtype) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -330,7 +331,9 @@ class TransaInfoBottomsheet {
                                                                   .loginPagetheme),
                                                       onPressed: () async {
                                                         print("ontap------");
-                                                        Provider.of<Controller>(
+
+                                                        await Provider.of<
+                                                                    Controller>(
                                                                 context,
                                                                 listen: false)
                                                             .editDeleteTransaction(
@@ -352,7 +355,14 @@ class TransaInfoBottomsheet {
                                                                 msg,
                                                                 event,
                                                                 context);
-
+                                                        await Provider.of<
+                                                                    Controller>(
+                                                                context,
+                                                                listen: false)
+                                                            .historyData(
+                                                                context,
+                                                                transtype,
+                                                                "");
                                                         Navigator.of(ctx).pop();
                                                       },
                                                       child: Text("Ok"),

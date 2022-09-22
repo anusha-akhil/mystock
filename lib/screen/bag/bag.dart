@@ -172,8 +172,14 @@ class _BagPageState extends State<BagPage> {
                         ),
                         onPressed: () async {
                           Provider.of<Controller>(context, listen: false)
-                              .saveCartDetails(context, widget.transId,
-                                  widget.branchId!, widget.remark!, "0", "0","save");
+                              .saveCartDetails(
+                                  context,
+                                  widget.transId,
+                                  widget.branchId!,
+                                  widget.remark!,
+                                  "0",
+                                  "0",
+                                  "save");
                         },
                         child: Text(
                           "Save",
@@ -507,7 +513,8 @@ class _BagPageState extends State<BagPage> {
                                                               qty.toString(),
                                                               "2",
                                                               cart_id,
-                                                              context,"delete");
+                                                              context,
+                                                              "delete");
 
                                                       // Provider.of<Controller>(
                                                       //         context,
