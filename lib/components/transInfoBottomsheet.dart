@@ -393,7 +393,8 @@ class TransaInfoBottomsheet {
                                                                   event,
                                                                   context,
                                                                   df,
-                                                                  tf,index);
+                                                                  tf,
+                                                                  index);
 
                                                           // if (msg ==
                                                           //     "transaction delete") {
@@ -408,7 +409,10 @@ class TransaInfoBottomsheet {
                                                           //           df,
                                                           //           tf);
                                                           // }
-
+                                                          if (event == "2") {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }
                                                           Navigator.of(ctx)
                                                               .pop();
                                                         },

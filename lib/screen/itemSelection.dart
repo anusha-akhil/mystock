@@ -259,7 +259,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                 trailing: value.qty[index].text == "0"
                     ? IconButton(
                         onPressed: () {
-                          int qty;
+                          // int qty;
                           value.setqtyErrormsg(false);
                           value.qty[index].selection = TextSelection(
                               baseOffset: 0,
@@ -282,14 +282,35 @@ class _ItemSelectionState extends State<ItemSelection> {
                           Icons.add,
                           size: 20,
                         ))
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 18.0),
-                        child: Text(
-                          value.qty[index].text,
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red),
+                    : GestureDetector(
+                        onTap: () {
+                          value.setqtyErrormsg(false);
+                          value.qty[index].selection = TextSelection(
+                              baseOffset: 0,
+                              extentOffset: value.qty[index].value.text.length);
+                          showsheet.showSheet(
+                              context,
+                              index,
+                              item.itemId!,
+                              item.catId!,
+                              item.batchCode!,
+                              item.itemName!,
+                              item.itemImg!,
+                              double.parse(item.sRate1!),
+                              double.parse(item.sRate2!),
+                              double.parse(item.stock!),
+                              widget.transVal,
+                              value.qty[index].text);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 18.0),
+                          child: Text(
+                            value.qty[index].text,
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
                         ),
                       ),
                 title: Text(item.itemName!,

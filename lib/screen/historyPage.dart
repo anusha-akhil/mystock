@@ -3,7 +3,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mystock/components/alertDialogue.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/components/commonPopup.dart';
 import 'package:mystock/components/dateFind.dart';
 import 'package:mystock/components/transInfoBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
@@ -19,7 +21,7 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   DateTime now = DateTime.now();
   TransaInfoBottomsheet infoshowsheet = TransaInfoBottomsheet();
-
+  AlertCommon popup = AlertCommon();
   DateFind dateFind = DateFind();
   String? date;
   List<String> s = [];
@@ -62,7 +64,8 @@ class _HistoryPageState extends State<HistoryPage> {
         builder: (context, value, child) {
           if (value.isLoading) {
             return Container(
-                height: 200,
+                height: double.infinity,
+                // height: size.height*0.8,
                 child: SpinKitFadingCircle(
                   color: P_Settings.loginPagetheme,
                 ));
@@ -71,13 +74,28 @@ class _HistoryPageState extends State<HistoryPage> {
                 child: Column(
               children: [
                 Container(
-                  height: size.height * 0.1,
+                  height: size.height * 0.08,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
                           onPressed: () {
+                            // String df;
+                            // String tf;
                             dateFind.selectDateFind(context, "from date");
+                            // if (value.fromDate == null) {
+                            //   df = todaydate.toString();
+                            // } else {
+                            //   df = value.fromDate.toString();
+                            // }
+                            // if (value.todate == null) {
+                            //   tf = todaydate.toString();
+                            // } else {
+                            //   tf = value.todate.toString();
+                            // }
+                            // Provider.of<Controller>(context, listen: false)
+                            //     .historyData(context, splitted[0], "",
+                            //         df, tf);
                           },
                           icon: Icon(
                             Icons.calendar_month,
@@ -116,7 +134,55 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
                   // dropDownCustom(size,""),
                 ),
-                dropDownCustom(size, ""),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    dropDownCustom(size, ""),
+                    Flexible(
+                        child: Container(
+                      height: size.height * 0.05,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: P_Settings.loginPagetheme,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(2), // <-- Radius
+                            ),
+                          ),
+                          onPressed: () {
+                            String df;
+                            String tf;
+
+                            if (value.fromDate == null) {
+                              df = todaydate.toString();
+                            } else {
+                              df = value.fromDate.toString();
+                            }
+                            if (value.todate == null) {
+                              tf = todaydate.toString();
+                            } else {
+                              tf = value.todate.toString();
+                            }
+
+                            print("splited-----$splitted");
+                            if (splitted != null && splitted.isNotEmpty) {
+                              Provider.of<Controller>(context, listen: false)
+                                  .historyData(
+                                      context, splitted[0], "", df, tf);
+                            }
+                          },
+                          child: Text(
+                            "Apply",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.buttonColor,
+                            ),
+                          )),
+                    ))
+                  ],
+                ),
 
                 ValueListenableBuilder(
                     valueListenable: visible,
@@ -154,13 +220,15 @@ class _HistoryPageState extends State<HistoryPage> {
                         color: P_Settings.loginPagetheme,
                       )
                     : value.historyList.length == 0
-                        ? Container(
-                            height: size.height * 0.2,
-                            child: Lottie.asset(
-                              'asset/historyjson.json',
-                              // height: size.height*0.3,
-                              // width: size.height*0.3,
-                            ))
+                        ? Center(
+                            child: Container(
+                                height: size.height * 0.2,
+                                child: Lottie.asset(
+                                  'asset/historyjson.json',
+                                  // height: size.height*0.3,
+                                  // width: size.height*0.3,
+                                )),
+                          )
                         : Container(
                             height: size.height * 0.7,
                             child: ListView.builder(
@@ -181,7 +249,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     "");
                                             infoshowsheet.showtransInfoSheet(
                                                 context,
-                                                index,splitted[0],
+                                                index,
+                                                splitted[0],
                                                 splitted[3],
                                                 value.historyList[index]
                                                     ['os_id']);
@@ -234,100 +303,103 @@ class _HistoryPageState extends State<HistoryPage> {
                                             color: P_Settings.delete,
                                           ),
                                           onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                content: Text(
-                                                    "Do you want to delete???"),
-                                                actions: <Widget>[
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                primary: P_Settings
-                                                                    .loginPagetheme),
-                                                        onPressed: () async {
-                                                          print(
-                                                              "heloooooooooooooooo");
-                                                          Provider.of<Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .saveCartDetails(
-                                                                  ctx,
-                                                                  splitted[0],
-                                                                  value.historyList[
-                                                                          index]
-                                                                      [
-                                                                      'to_branch_id'],
-                                                                  value.historyList[
-                                                                          index]
-                                                                      [
-                                                                      'trans_remark'],
-                                                                  "2",
-                                                                  value.historyList[
-                                                                          index]
-                                                                      ['os_id'],
-                                                                  "delete");
-                                                          String df;
-                                                          String tf;
+                                            popup.buildPopupDialog(context, size, splitted, index, todaydate!);
+                                            // showDialog(
+                                            //   context: context,
+                                            //   builder: (ctx) => AlertDialog(
+                                            //     content: Text(
+                                            //         "Do you want to delete???"),
+                                            //     actions: <Widget>[
 
-                                                          if (value.fromDate ==
-                                                              null) {
-                                                            df = todaydate
-                                                                .toString();
-                                                          } else {
-                                                            df = value.fromDate
-                                                                .toString();
-                                                          }
-                                                          if (value.todate ==
-                                                              null) {
-                                                            tf = todaydate
-                                                                .toString();
-                                                          } else {
-                                                            tf = value.todate
-                                                                .toString();
-                                                          }
+                                            //       Row(
+                                            //         mainAxisAlignment:
+                                            //             MainAxisAlignment.end,
+                                            //         children: [
+                                            //           ElevatedButton(
+                                            //             style: ElevatedButton
+                                            //                 .styleFrom(
+                                            //                     primary: P_Settings
+                                            //                         .loginPagetheme),
+                                            //             onPressed: () async {
+                                            //               print(
+                                            //                   "heloooooooooooooooo");
+                                            //               Provider.of<Controller>(
+                                            //                       context,
+                                            //                       listen: false)
+                                            //                   .saveCartDetails(
+                                            //                       ctx,
+                                            //                       splitted[0],
+                                            //                       value.historyList[
+                                            //                               index]
+                                            //                           [
+                                            //                           'to_branch_id'],
+                                            //                       value.historyList[
+                                            //                               index]
+                                            //                           [
+                                            //                           'trans_remark'],
+                                            //                       "2",
+                                            //                       value.historyList[
+                                            //                               index]
+                                            //                           ['os_id'],
+                                            //                       "delete");
+                                            //               String df;
+                                            //               String tf;
 
-                                                          //////////////////////////////////////////////////
+                                            //               if (value.fromDate ==
+                                            //                   null) {
+                                            //                 df = todaydate
+                                            //                     .toString();
+                                            //               } else {
+                                            //                 df = value.fromDate
+                                            //                     .toString();
+                                            //               }
+                                            //               if (value.todate ==
+                                            //                   null) {
+                                            //                 tf = todaydate
+                                            //                     .toString();
+                                            //               } else {
+                                            //                 tf = value.todate
+                                            //                     .toString();
+                                            //               }
 
-                                                          await Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .historyData(
-                                                                  context,
-                                                                  splitted[0],
-                                                                  "",
-                                                                  df,
-                                                                  tf);
+                                            //               //////////////////////////////////////////////////
 
-                                                          // Navigator.pop(context);
-                                                        },
-                                                        child: Text("Ok"),
-                                                      ),
-                                                      SizedBox(
-                                                        width:
-                                                            size.width * 0.01,
-                                                      ),
-                                                      ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                primary: P_Settings
-                                                                    .loginPagetheme),
-                                                        onPressed: () {
-                                                          Navigator.of(ctx)
-                                                              .pop();
-                                                        },
-                                                        child: Text("Cancel"),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            );
+                                            //               await Provider.of<
+                                            //                           Controller>(
+                                            //                       context,
+                                            //                       listen: false)
+                                            //                   .historyData(
+                                            //                       context,
+                                            //                       splitted[0],
+                                            //                       "",
+                                            //                       df,
+                                            //                       tf);
+
+                                            //               //  Navigator.of(ctx)
+                                            //               //     .pop();
+                                            //             },
+                                            //             child: Text("Ok"),
+                                            //           ),
+                                            //           SizedBox(
+                                            //             width:
+                                            //                 size.width * 0.01,
+                                            //           ),
+                                            //           ElevatedButton(
+                                            //             style: ElevatedButton
+                                            //                 .styleFrom(
+                                            //                     primary: P_Settings
+                                            //                         .loginPagetheme),
+                                            //             onPressed: () {
+                                            //               Navigator.of(ctx)
+                                            //                   .pop();
+                                            //             },
+                                            //             child: Text("Cancel"),
+                                            //           ),
+                                            //         ],
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // );
                                           }),
                                     ],
                                   ),
@@ -399,7 +471,7 @@ class _HistoryPageState extends State<HistoryPage> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            width: size.height * 0.4,
+            width: size.width * 0.7,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
               border: Border.all(
@@ -408,6 +480,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   width: 0.4),
             ),
             child: DropdownButton<String>(
+              itemHeight: null,
               isExpanded: true,
               value: selectedtransaction,
 
@@ -458,22 +531,22 @@ class _HistoryPageState extends State<HistoryPage> {
                     Provider.of<Controller>(context, listen: false)
                         .setstockTranserselected(false);
                   }
-                  String df;
-                  String tf;
+                  // String df;
+                  // String tf;
 
-                  if (value.fromDate == null) {
-                    df = todaydate.toString();
-                  } else {
-                    df = value.fromDate.toString();
-                  }
-                  if (value.todate == null) {
-                    tf = todaydate.toString();
-                  } else {
-                    tf = value.todate.toString();
-                  }
+                  // if (value.fromDate == null) {
+                  //   df = todaydate.toString();
+                  // } else {
+                  //   df = value.fromDate.toString();
+                  // }
+                  // if (value.todate == null) {
+                  //   tf = todaydate.toString();
+                  // } else {
+                  //   tf = value.todate.toString();
+                  // }
 
-                  Provider.of<Controller>(context, listen: false)
-                      .historyData(context, splitted[0], "", df, tf);
+                  // Provider.of<Controller>(context, listen: false)
+                  //     .historyData(context, splitted[0], "", df, tf);
                 }
               },
             ),
