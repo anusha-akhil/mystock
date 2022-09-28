@@ -93,6 +93,10 @@ class _TransactionPageState extends State<TransactionPage> {
           actions: [
             IconButton(
                 onPressed: () {
+                  Provider.of<Controller>(context, listen: false)
+                      .historyList
+                      .clear();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HistoryPage()),
@@ -136,13 +140,13 @@ class _TransactionPageState extends State<TransactionPage> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: size.height * 0.1,
+                  height: size.height * 0.24,
                 ),
                 // SizedBox(
                 //   width: size.width * 0.2,
                 // ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 55, right: 55),
+                  padding: const EdgeInsets.only(left: 25, right: 55),
                   child: TextField(
                     enabled: false,
                     decoration: InputDecoration(
@@ -168,9 +172,9 @@ class _TransactionPageState extends State<TransactionPage> {
                   //       color: Colors.red),
                   // ),
                 ),
-                SizedBox(
-                  height: size.height * 0.15,
-                ),
+                // SizedBox(
+                //   height: size.height * 0.1,
+                // ),
                 dropDownCustom(size, "transaction"),
                 value.stocktransferselected
                     ? dropDownbranch(size)
@@ -341,7 +345,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
                 value.isProdLoading
                     ? Padding(
-                        padding: const EdgeInsets.only(top: 35.0),
+                        padding: const EdgeInsets.only(top: 80.0),
                         child: SpinKitFadingCircle(
                           color: P_Settings.loginPagetheme,
                         ),

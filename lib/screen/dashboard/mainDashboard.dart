@@ -226,8 +226,13 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                           ),
                     value.isLoading
-                        ? SpinKitFadingCircle(
-                            color: P_Settings.loginPagetheme,
+                        ? Flexible(
+                            child: Container(
+                              height: double.infinity,
+                              child: SpinKitFadingCircle(
+                                color: P_Settings.loginPagetheme,
+                              ),
+                            ),
                           )
                         : Expanded(
                             child: ListView.builder(

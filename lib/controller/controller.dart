@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Controller extends ChangeNotifier {
   String? fromDate;
   String? brName;
-
+  List<bool> transinfohide = [];
   bool isVisible = false;
   bool isProdLoading = false;
   bool isSearch = false;
@@ -303,8 +303,7 @@ class Controller extends ChangeNotifier {
 
           var map = jsonDecode(response.body);
           print("cart response-----------------${map}");
-          isLoading = false;
-          notifyListeners();
+
           ProductListModel productListModel;
           bagList.clear();
           if (map != null) {
@@ -314,7 +313,7 @@ class Controller extends ChangeNotifier {
             }
           }
           print("bag list data........${bagList.length}");
-          // isLoading = false;
+          isLoading = false;
           notifyListeners();
 
           /////////////// insert into local db /////////////////////
@@ -464,15 +463,15 @@ class Controller extends ChangeNotifier {
           historyData(context, transid, "delete", "", "");
         }
 
-        if (action == "save" && map["err_status"] == 0) {
+        if (action == "save") {
           print("savedd");
           return showDialog(
               context: context,
-              builder: (context) {
-                Size size = MediaQuery.of(context).size;
+              builder: (ct) {
+                Size size = MediaQuery.of(ct).size;
 
                 Future.delayed(Duration(seconds: 2), () {
-                  Navigator.of(context).pop(true);
+                  Navigator.of(ct).pop(true);
                   Navigator.of(context).push(
                     PageRouteBuilder(
                         opaque: false, // set to false
@@ -498,18 +497,18 @@ class Controller extends ChangeNotifier {
                   ],
                 ));
               });
-        } else if (action == "delete" && map["err_status"] == 1) {
+        } else if (action == "delete") {
           print("heloooooo");
-          // CustomSnackbar snackbar = CustomSnackbar();
-          // snackbar.showSnackbar(context, "Invalid Apk Key", "");
 
           return showDialog(
               context: context,
-              builder: (mycontext) {
+              builder: (BuildContext mycontext) {
                 Size size = MediaQuery.of(mycontext).size;
 
                 Future.delayed(Duration(seconds: 2), () {
-                  Navigator.of(context).pop();
+                  Navigator.of(mycontext).pop();
+ 
+                  Navigator.pop(context);
                   // Navigator.of(mycontext).pop(false);
                   // Navigator.of(dialogContex).pop(true);
 
@@ -821,6 +820,8 @@ class Controller extends ChangeNotifier {
               transiteminfoList.length,
               (index) => TextEditingController(),
             );
+            transinfohide =
+                List.generate(transiteminfoList.length, (index) => false);
 
             for (int i = 0; i < transiteminfoList.length; i++) {
               historyqty[i].text = transiteminfoList[i]["qty"].toString();
@@ -1127,6 +1128,7 @@ class Controller extends ChangeNotifier {
 
 ////////////////////////////////////////////////////////////////
   editDeleteTransaction(
+      String transId,
       String transaval,
       String osId,
       String item_id,
@@ -1134,8 +1136,10 @@ class Controller extends ChangeNotifier {
       String newqty,
       String msg,
       String event,
-      BuildContext context) async {
-    print("old quantity.......$oldqty....$newqty");
+      BuildContext context,
+      String frDate,
+      String todate,
+      int index) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -1164,12 +1168,18 @@ class Controller extends ChangeNotifier {
           var map = jsonDecode(response.body);
 
           print("edit delete -----$map");
+
           isLoading = false;
           notifyListeners();
-          if (map["err_status"] == 0) {
+          if (event == "2" && map["err_status"] == 0) {
+            historyData(context, transId, "", frDate, todate);
+          }
+          if (event == "1" && map["err_status"] == 0) {
+            transinfohide[index] = true;
+            notifyListeners();
             getTransinfoList(context, osId, "delete");
           }
-          print("savedd");
+          // print("savedd");
           return showDialog(
               context: context,
               builder: (context) {
