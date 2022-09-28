@@ -250,6 +250,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                 primary: P_Settings
                                                                     .loginPagetheme),
                                                         onPressed: () async {
+                                                          //  Navigator.pop(context);
                                                           print(
                                                               "heloooooooooooooooo");
                                                           Provider.of<Controller>(
@@ -303,8 +304,6 @@ class _HistoryPageState extends State<HistoryPage> {
                                                                   "",
                                                                   df,
                                                                   tf);
-
-                                                          // Navigator.pop(context);
                                                         },
                                                         child: Text("Ok"),
                                                       ),

@@ -367,8 +367,8 @@ class TransaInfoBottomsheet {
 
                                                         if (msg ==
                                                             "transaction delete") {
-                                                              String d;
-                                                         
+                                                          String d;
+
                                                           Provider.of<Controller>(
                                                                   context,
                                                                   listen: false)
