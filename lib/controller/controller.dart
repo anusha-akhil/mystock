@@ -337,7 +337,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-  historyData(BuildContext context, String trans_id, String action,
+   historyData(BuildContext context, String trans_id, String action,
       String fromDate, String tillDate) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
