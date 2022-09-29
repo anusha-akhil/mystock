@@ -65,7 +65,7 @@ class _BagPageState extends State<BagPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Provider.of<Controller>(context, listen: false).getProductDetails();
+            Provider.of<Controller>(context, listen: false).getProductDetails("","");
 
             Navigator.pop(context);
           },

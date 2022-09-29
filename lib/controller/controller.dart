@@ -23,6 +23,9 @@ class Controller extends ChangeNotifier {
   bool isVisible = false;
   bool isProdLoading = false;
   bool isSearch = false;
+  String? dropdwnVal;
+  // String? dropdwnString;
+
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
   bool isLoading = false;
@@ -98,10 +101,9 @@ class Controller extends ChangeNotifier {
           http.Response response = await http.post(
             url,
           );
-
-          // print("body ${body}");
           ItemCategoryModel itemCategory;
           List map = jsonDecode(response.body);
+          print("dropdwn------$map");
           productList.clear();
           productbar.clear();
           itemCategoryList.clear();
@@ -110,9 +112,17 @@ class Controller extends ChangeNotifier {
             itemCategoryList.add(itemCategory);
           }
 
+          dropdwnVal = itemCategoryList[0].catName.toString();
+          notifyListeners();
+
+
+          // notifyListeners();
+
           isLoading = false;
           notifyListeners();
-          return itemCategoryList;
+          print("sdhjz-----$dropdwnVal");
+
+          return dropdwnVal;
           /////////////// insert into local db /////////////////////
         } catch (e) {
           print(e);
@@ -507,7 +517,7 @@ class Controller extends ChangeNotifier {
 
                 Future.delayed(Duration(seconds: 2), () {
                   Navigator.of(mycontext).pop();
- 
+
                   Navigator.pop(context);
                   // Navigator.of(mycontext).pop(false);
                   // Navigator.of(dialogContex).pop(true);
@@ -886,8 +896,9 @@ class Controller extends ChangeNotifier {
   }
 
 /////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getProductDetails() async {
-    // print("sid.......$branchid........${sid}");
+  Future<List<Map<String, dynamic>>> getProductDetails(
+      String cat_id, String catName) async {
+    print("cat_id.......$cat_id---$catName");
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       branch_id = prefs.getString("branch_id");
@@ -896,9 +907,13 @@ class Controller extends ChangeNotifier {
       branch_prefix = prefs.getString("branch_prefix");
       user_id = prefs.getString("user_id");
       print("kjn---------------$branch_id----$user_id-");
-      Uri url = Uri.parse("$urlgolabl/products_list.php");
+      Uri url = Uri.parse("$urlgolabl/products_list2.php");
 
-      Map body = {'staff_id': user_id, 'branch_id': branch_id};
+      Map body = {
+        'staff_id': user_id,
+        'branch_id': branch_id,
+        'cat_id': cat_id
+      };
       print("body----${body}");
       // isDownloaded = true;
       isProdLoading = true;
@@ -945,8 +960,11 @@ class Controller extends ChangeNotifier {
       uniquelist.sort();
       print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
-
+      dropdwnVal = catName.toString();
+      print("catName-----$dropdwnVal");
+      notifyListeners();
       return productList;
+
       /////////////// insert into local db /////////////////////
     } catch (e) {
       print(e);
@@ -1146,6 +1164,8 @@ class Controller extends ChangeNotifier {
           Uri url = Uri.parse("$urlgolabl/transaction_update.php");
           SharedPreferences prefs = await SharedPreferences.getInstance();
           branch_id = prefs.getString("branch_id");
+          String? user_id = prefs.getString("user_id");
+
           Map body = {
             'os_id': osId,
             'trans_val': transaval,
@@ -1154,9 +1174,9 @@ class Controller extends ChangeNotifier {
             'qty': newqty,
             'msg': msg,
             'event': event,
-            'branch_id': branch_id
+            'branch_id': branch_id,
+            'staff_id': user_id
           };
-
           print("editdelete body----------------------$body");
 
           isLoading = true;
@@ -1172,11 +1192,14 @@ class Controller extends ChangeNotifier {
           isLoading = false;
           notifyListeners();
           if (event == "2" && map["err_status"] == 0) {
+            print("event----2---$event");
             historyData(context, transId, "", frDate, todate);
           }
           if (event == "1" && map["err_status"] == 0) {
             transinfohide[index] = true;
+            print("event----2---$event");
             notifyListeners();
+
             getTransinfoList(context, osId, "delete");
           }
           // print("savedd");

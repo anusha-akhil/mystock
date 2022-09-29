@@ -15,9 +15,13 @@ class ItemSelection extends StatefulWidget {
   List<Map<String, dynamic>> list;
   int transVal;
   String transType;
+  String page;
 
   ItemSelection(
-      {required this.list, required this.transVal, required this.transType});
+      {required this.list,
+      required this.transVal,
+      required this.transType,
+      required this.page});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -25,6 +29,10 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String? selected;
+  // String? selecteditem;
+
+  String? hint;
+  List splitted = [];
   List<_AZItem> items = [];
   List<String> uniqueList = [];
   Bottomsheet showsheet = Bottomsheet();
@@ -99,6 +107,7 @@ class _ItemSelectionState extends State<ItemSelection> {
         // ),
         body: Consumer<Controller>(
       builder: (context, value, child) {
+        print("value.dropdwn-------${value.dropdwnVal}");
         if (value.isLoading) {
           return SpinKitFadingCircle(
             color: P_Settings.loginPagetheme,
@@ -128,11 +137,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                 ),
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value: selected,
+                  value:value.dropdwnVal,
+                  // value: selected,
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Select Item Category"),
+                    child: Text(hint.toString()),
                   ),
                   // isExpanded: true,
                   autofocus: false,
@@ -140,7 +150,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   elevation: 0,
                   items: value.itemCategoryList
                       .map((item) => DropdownMenuItem<String>(
-                          value: item.catId.toString(),
+                          value: "${item.catId},${item.catName}",
                           child: Container(
                             width: size.width * 0.9,
                             child: Padding(
@@ -156,20 +166,16 @@ class _ItemSelectionState extends State<ItemSelection> {
                     print("clicked");
                     if (item != null) {
                       setState(() {
-                        Provider.of<Controller>(context, listen: false)
-                            .setfilter(true);
                         selected = item;
                       });
-
-                      Provider.of<Controller>(context, listen: false)
-                          .filterProduct(selected!);
-
-                      initList(value.filteredproductList);
-
-                      Provider.of<Controller>(context, listen: false)
-                          .setbardata();
+                      splitted = selected!.split(',');
+                      print("splitted---$splitted");
+                      // Provider.of<Controller>(context, listen: false)
+                      //     .filterProduct(selected!);
                       print("se;ected---$item");
                     }
+                    Provider.of<Controller>(context, listen: false)
+                        .getProductDetails(splitted[0],splitted[1]);
                   },
                 ),
               ),
@@ -201,9 +207,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                     indexBarMargin: EdgeInsets.all(10),
                     indexBarAlignment: Alignment.centerLeft,
                     indexBarItemHeight: 30,
-                    indexBarData: value.filter
-                        ? value.filtereduniquelist
-                        : value.uniquelist,
+                    indexBarData: value.uniquelist,
                     indexBarOptions: IndexBarOptions(
                       needRebuild: true,
                       selectTextStyle: TextStyle(

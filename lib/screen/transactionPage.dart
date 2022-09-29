@@ -273,11 +273,14 @@ class _TransactionPageState extends State<TransactionPage> {
                             visible.value = false;
                             Provider.of<Controller>(context, listen: false)
                                 .getItemCategory(context);
+
                             list = await Provider.of<Controller>(context,
                                     listen: false)
-                                .getProductDetails();
+                                .getProductDetails("0", "");
+                            String hint = value.dropdwnVal.toString();
 
-                            print("fkjdfjdjfnzskfn;lg------${list}");
+
+                            print("fkjdfjdjfnzskfn;lg---$hint---");
                             if (list.length > 0) {
                               // setState(() {
                               //   isLoad=true;

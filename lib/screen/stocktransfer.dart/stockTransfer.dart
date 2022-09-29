@@ -29,6 +29,7 @@ class StockTransfer extends StatefulWidget {
 
 class _StockTransferState extends State<StockTransfer> {
   List<Map<String, dynamic>> list = [];
+  String? hint;
   @override
   void initState() {
     // TODO: implement initState
@@ -39,8 +40,10 @@ class _StockTransferState extends State<StockTransfer> {
 
   itemList() async {
     list = await Provider.of<Controller>(context, listen: false)
-        .getProductDetails();
+        .getProductDetails("0", "");
+    hint =await  Provider.of<Controller>(context, listen: false).dropdwnVal;
 
+    print("selected==-===$hint");
     print("listttt----$list");
   }
 
@@ -156,6 +159,7 @@ class _StockTransferState extends State<StockTransfer> {
                 list: list,
                 transVal: widget.transVal,
                 transType: widget.transType,
+                page: "first",
               );
             } else {
               return Container();
