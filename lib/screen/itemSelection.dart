@@ -16,12 +16,14 @@ class ItemSelection extends StatefulWidget {
   int transVal;
   String transType;
   String page;
+  String? hint;
 
   ItemSelection(
       {required this.list,
       required this.transVal,
       required this.transType,
-      required this.page});
+      required this.page,
+      this.hint});
 
   @override
   State<ItemSelection> createState() => _ItemSelectionState();
@@ -29,7 +31,7 @@ class ItemSelection extends StatefulWidget {
 
 class _ItemSelectionState extends State<ItemSelection> {
   String? selected;
-  // String? selecteditem;
+  String? selecteditem;
 
   String? hint;
   List splitted = [];
@@ -48,7 +50,9 @@ class _ItemSelectionState extends State<ItemSelection> {
     // TODO: implement initState
     super.initState();
     print("dgjxfkjgkg-----${widget.list}");
-
+    // hint = Provider.of<Controller>(context, listen: false).dropdwnVal;
+    // hint = widget.hint;
+    print("nzkjnjkdzfn----$hint");
     initList(widget.list);
   }
 
@@ -107,7 +111,8 @@ class _ItemSelectionState extends State<ItemSelection> {
         // ),
         body: Consumer<Controller>(
       builder: (context, value, child) {
-        print("value.dropdwn-------${value.dropdwnVal}");
+        // selected="dkjszdnkj";
+        print("value.dropdwn-------${value.dropdwnString}");
         if (value.isLoading) {
           return SpinKitFadingCircle(
             color: P_Settings.loginPagetheme,
@@ -138,10 +143,13 @@ class _ItemSelectionState extends State<ItemSelection> {
                 child: DropdownButton<String>(
                   isExpanded: true,
                   value: selected,
+                  // value: selected,
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(value.dropdwnVal!),
+                    child: Text(value.dropdwnString == null
+                        ? value.dropdwnVal.toString()
+                        : value.dropdwnString.toString()),
                   ),
                   // isExpanded: true,
                   autofocus: false,
@@ -182,6 +190,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                       //     .setbardata();
                       print("se;ected---$item");
                     }
+                    Provider.of<Controller>(context, listen: false)
+                        .getProductDetails(splitted[0], splitted[1]);
                   },
                 ),
               ),

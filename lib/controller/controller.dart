@@ -24,8 +24,12 @@ class Controller extends ChangeNotifier {
   bool isProdLoading = false;
   bool isSearch = false;
   String? dropdwnVal;
+<<<<<<< HEAD
   String? catidd;
   // String? dropdwnString;
+=======
+  String? dropdwnString;
+>>>>>>> a82afb497975ddb9e1321ba799b63e2ba8bce020
 
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
@@ -902,7 +906,7 @@ class Controller extends ChangeNotifier {
   }
 
 /////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getProductDetails(String cat_id) async {
+  Future<List<Map<String, dynamic>>> getProductDetails(String cat_name,String cat_id) async {
     print("cat_id.......$cat_id-");
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -966,7 +970,11 @@ class Controller extends ChangeNotifier {
       uniquelist.sort();
       print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
+<<<<<<< HEAD
       // dropdwnVal = catName.toString();
+=======
+      dropdwnString = catName.toString();
+>>>>>>> a82afb497975ddb9e1321ba799b63e2ba8bce020
       print("catName-----$dropdwnVal");
       notifyListeners();
       return productList;
