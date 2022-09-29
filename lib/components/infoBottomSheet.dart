@@ -101,9 +101,14 @@ class InfoBottomsheet {
                             children: [
                               CircleAvatar(
                                 radius: 80,
-                                backgroundImage: NetworkImage(
-                                  imgGlobal + value.infoList[0]["item_img"],
+                                child: PhotoView(
+                                  imageProvider: NetworkImage(
+                                    imgGlobal + value.infoList[0]["item_img"],
+                                  ),
                                 ),
+                                // backgroundImage: NetworkImage(
+                                //   imgGlobal + value.infoList[0]["item_img"],
+                                // ),
                                 backgroundColor: Colors.transparent,
                                 // child: Image.network(
                                 //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
