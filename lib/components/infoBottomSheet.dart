@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
+import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ class InfoBottomsheet {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
+    String imgGlobal = Globaldata.imageurl;
 
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
@@ -79,15 +81,28 @@ class InfoBottomsheet {
                         SizedBox(
                           height: size.height * 0.01,
                         ),
+                        // Container(
+                        //   height: size.height * 0.2,
+                        //   child: FadeInImage(
+                        //     height: 200,
+                        //     width: 300,
+                        //     fit: BoxFit.fill,
+                        //     placeholder: AssetImage("asset/ajax_loader.gif"),
+                        //     image: NetworkImage(
+                        //       imgGlobal + value.infoList[0]["item_img"],
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.only(top: 5.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                radius: 70,
+                                radius: 80,
                                 backgroundImage: NetworkImage(
-                                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                                  imgGlobal + value.infoList[0]["item_img"],
+                                ),
                                 backgroundColor: Colors.transparent,
                                 // child: Image.network(
                                 //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
@@ -95,21 +110,21 @@ class InfoBottomsheet {
                                 // ),
                                 // child: Image.asset("asset/"),
                               ),
-                              //  SizedBox(
-                              //   width: size.width * 0.5,
-                              // ),
+                              //       //  SizedBox(
+                              //       //   width: size.width * 0.5,
+                              //       // ),
 
-                              // Spacer(),
-                              // Text(
-                              //       prodName.toString(),
-                              //       style: GoogleFonts.aBeeZee(
-                              //         textStyle:
-                              //             Theme.of(context).textTheme.bodyText2,
-                              //         fontSize: 17,
-                              //         // fontWeight: FontWeight.bold,
-                              //         color: P_Settings.loginPagetheme,
-                              //       ),
-                              //     ),
+                              //       // Spacer(),
+                              //       // Text(
+                              //       //       prodName.toString(),
+                              //       //       style: GoogleFonts.aBeeZee(
+                              //       //         textStyle:
+                              //       //             Theme.of(context).textTheme.bodyText2,
+                              //       //         fontSize: 17,
+                              //       //         // fontWeight: FontWeight.bold,
+                              //       //         color: P_Settings.loginPagetheme,
+                              //       //       ),
+                              //       //     ),
                             ],
                           ),
                         ),
@@ -273,7 +288,10 @@ class InfoBottomsheet {
                         Container(
                           height: value.stockList.length == 2
                               ? size.height * 0.1
-                              : size.height * 0.2,
+                              : size.height * 0.4,
+                          // value.stockList.length == 2
+                          //     ? size.height * 0.1
+                          //     : size.height * 0.2,
                           child: ListView.builder(
                             itemCount: value.stockList.length,
                             itemBuilder: (context, index) {

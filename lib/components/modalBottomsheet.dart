@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
+import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,8 @@ class Bottomsheet {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
+    String imgGlobal = Globaldata.imageurl;
+
     print("bottom sheet value----$itemName----------$srate1----$qtyf-----");
     // CommonPopup salepopup = CommonPopup();
     return showModalBottomSheet<void>(
@@ -57,38 +60,17 @@ class Bottomsheet {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                             CircleAvatar(
-                              radius: 70,
-                              backgroundImage: NetworkImage(
-                                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                              backgroundColor: Colors.transparent,
-                              // child: Image.network(
-                              //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                              //   fit: BoxFit.cover,
-                              // ),
-                              // child: Image.asset("asset/"),
-                            ),
-                            //  SizedBox(
-                            //   width: size.width * 0.5,
-                            // ),
-
-                            // Spacer(),
-                            // Text(
-                            //       prodName.toString(),
-                            //       style: GoogleFonts.aBeeZee(
-                            //         textStyle:
-                            //             Theme.of(context).textTheme.bodyText2,
-                            //         fontSize: 17,
-                            //         // fontWeight: FontWeight.bold,
-                            //         color: P_Settings.loginPagetheme,
-                            //       ),
-                            //     ),
-                          ],
+                      Container(
+                        height: size.height * 0.3,
+                        width: size.width * 0.6,
+                        child: FadeInImage(
+                          height: 200,
+                          width: 300,
+                          fit: BoxFit.fill,
+                          placeholder: AssetImage("asset/ajax_loader.gif"),
+                          image: NetworkImage(
+                            imgGlobal + value.infoList[0]["item_img"],
+                          ),
                         ),
                       ),
                       ListTile(
@@ -361,8 +343,6 @@ class Bottomsheet {
                                   print("value.qtyerror ----${value.qtyerror}");
 
                                   if (value.qtyerror == false) {
-
-
                                     // value.cartCountFun(
                                     //     int.parse(value.cartCount!));
 
