@@ -19,7 +19,8 @@ class Bottomsheet {
       double srate2,
       double stock,
       int transval,
-      String qtyf,String img) {
+      String qtyf,
+      String img) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
     CustomSnackbar snackbar = CustomSnackbar();
@@ -62,7 +63,7 @@ class Bottomsheet {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                             CircleAvatar(
+                            CircleAvatar(
                               radius: 70,
                               backgroundImage: NetworkImage(
                                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
@@ -361,8 +362,6 @@ class Bottomsheet {
                                   print("value.qtyerror ----${value.qtyerror}");
 
                                   if (value.qtyerror == false) {
-
-
                                     // value.cartCountFun(
                                     //     int.parse(value.cartCount!));
 
