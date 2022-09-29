@@ -276,7 +276,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
                             list = await Provider.of<Controller>(context,
                                     listen: false)
-                                .getProductDetails("0", "");
+                                .getProductDetails("0",);
                             String hint = value.dropdwnVal.toString();
 
 

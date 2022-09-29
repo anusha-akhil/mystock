@@ -137,12 +137,11 @@ class _ItemSelectionState extends State<ItemSelection> {
                 ),
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value:value.dropdwnVal,
-                  // value: selected,
+                  value: selected,
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(hint.toString()),
+                    child: Text(value.dropdwnVal!),
                   ),
                   // isExpanded: true,
                   autofocus: false,
@@ -150,7 +149,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   elevation: 0,
                   items: value.itemCategoryList
                       .map((item) => DropdownMenuItem<String>(
-                          value: "${item.catId},${item.catName}",
+                          value: item.catId.toString(),
                           child: Container(
                             width: size.width * 0.9,
                             child: Padding(
@@ -166,16 +165,23 @@ class _ItemSelectionState extends State<ItemSelection> {
                     print("clicked");
                     if (item != null) {
                       setState(() {
+                        Provider.of<Controller>(context, listen: false)
+                            .setfilter(true);
                         selected = item;
                       });
-                      splitted = selected!.split(',');
-                      print("splitted---$splitted");
+
                       // Provider.of<Controller>(context, listen: false)
                       //     .filterProduct(selected!);
+                      Provider.of<Controller>(context, listen: false)
+                          .getDropdownVal(selected!);
+                      Provider.of<Controller>(context, listen: false)
+                          .getProductDetails(value.catidd!);
+                      // initList(value.filteredproductList);
+
+                      // Provider.of<Controller>(context, listen: false)
+                      //     .setbardata();
                       print("se;ected---$item");
                     }
-                    Provider.of<Controller>(context, listen: false)
-                        .getProductDetails(splitted[0],splitted[1]);
                   },
                 ),
               ),
