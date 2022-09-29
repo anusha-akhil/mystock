@@ -40,13 +40,8 @@ class _StockTransferState extends State<StockTransfer> {
 
   itemList() async {
     list = await Provider.of<Controller>(context, listen: false)
-<<<<<<< HEAD
-        .getProductDetails("0",);
-    hint =await  Provider.of<Controller>(context, listen: false).dropdwnVal;
-=======
         .getProductDetails("0", "");
     // hint =await  Provider.of<Controller>(context, listen: false).dropdwnVal;
->>>>>>> a82afb497975ddb9e1321ba799b63e2ba8bce020
 
     print("selected==-===$hint");
     print("listttt----$list");

@@ -147,9 +147,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(value.dropdwnString == null
-                        ? value.dropdwnVal.toString()
-                        : value.dropdwnString.toString()),
+                    child: Text(value.dropdwnString == null || value.dropdwnString!.isEmpty ? value.dropdwnVal.toString() : value.dropdwnString.toString()),
                   ),
                   // isExpanded: true,
                   autofocus: false,
@@ -157,7 +155,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   elevation: 0,
                   items: value.itemCategoryList
                       .map((item) => DropdownMenuItem<String>(
-                          value: item.catId.toString(),
+                          value: "${item.catId},${item.catName}",
                           child: Container(
                             width: size.width * 0.9,
                             child: Padding(
@@ -173,21 +171,12 @@ class _ItemSelectionState extends State<ItemSelection> {
                     print("clicked");
                     if (item != null) {
                       setState(() {
-                        Provider.of<Controller>(context, listen: false)
-                            .setfilter(true);
                         selected = item;
                       });
-
+                      splitted = selected!.split(',');
+                      print("splitted---$splitted");
                       // Provider.of<Controller>(context, listen: false)
                       //     .filterProduct(selected!);
-                      Provider.of<Controller>(context, listen: false)
-                          .getDropdownVal(selected!);
-                      Provider.of<Controller>(context, listen: false)
-                          .getProductDetails(value.catidd!);
-                      // initList(value.filteredproductList);
-
-                      // Provider.of<Controller>(context, listen: false)
-                      //     .setbardata();
                       print("se;ected---$item");
                     }
                     Provider.of<Controller>(context, listen: false)

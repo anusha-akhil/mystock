@@ -64,6 +64,7 @@ dependencies:
   sqflite: ^2.0.3+1
   badges: ^2.0.3
   pull_to_refresh: ^2.0.0
+  photo_view: ^0.14.0
 
 
 

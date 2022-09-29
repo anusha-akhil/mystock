@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:photo_view/photo_view.dart';
 
 class CommonPopup {
   String? stockio;

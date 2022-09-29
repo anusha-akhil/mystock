@@ -447,7 +447,7 @@ class TransaInfoBottomsheet {
                                   ),
                                   subtitle: Row(children: [
                                     Text(
-                                      "SRate1 :  ${value.transiteminfoList[index]["s_rate_1"]}",
+                                      "MOP :  ${value.transiteminfoList[index]["s_rate_1"]}",
                                       style: GoogleFonts.aBeeZee(
                                         textStyle: Theme.of(context)
                                             .textTheme
@@ -461,7 +461,7 @@ class TransaInfoBottomsheet {
                                       width: size.width * 0.01,
                                     ),
                                     Text(
-                                      "SRate2 :  ${value.transiteminfoList[index]["s_rate_2"]}",
+                                      "MRP :  ${value.transiteminfoList[index]["s_rate_2"]}",
                                       style: GoogleFonts.aBeeZee(
                                         textStyle: Theme.of(context)
                                             .textTheme

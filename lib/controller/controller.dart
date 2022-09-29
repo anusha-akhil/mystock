@@ -24,12 +24,7 @@ class Controller extends ChangeNotifier {
   bool isProdLoading = false;
   bool isSearch = false;
   String? dropdwnVal;
-<<<<<<< HEAD
-  String? catidd;
-  // String? dropdwnString;
-=======
   String? dropdwnString;
->>>>>>> a82afb497975ddb9e1321ba799b63e2ba8bce020
 
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
@@ -899,15 +894,10 @@ class Controller extends ChangeNotifier {
     });
   }
 
-  getDropdownVal(String catnm) {
-    print("category nmmmmm.....$catnm");
-    catidd = catnm;
-    notifyListeners();
-  }
-
 /////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getProductDetails(String cat_name,String cat_id) async {
-    print("cat_id.......$cat_id-");
+  Future<List<Map<String, dynamic>>> getProductDetails(
+      String cat_id, String catName) async {
+    print("cat_id.......$cat_id---$catName");
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       branch_id = prefs.getString("branch_id");
@@ -936,7 +926,7 @@ class Controller extends ChangeNotifier {
       isProdLoading = false;
       notifyListeners();
 
-      print("body.........get product ${body}");
+      print("body ${body}");
       var map = jsonDecode(response.body);
 
       print("nmnmkzd-------${map}");
@@ -951,7 +941,6 @@ class Controller extends ChangeNotifier {
         print("pro------$pro");
         productbar.add(pro["item_name"][0]);
         productList.add(pro);
-          print("productList------$productList");
       }
       qty =
           List.generate(productList.length, (index) => TextEditingController());
@@ -970,11 +959,7 @@ class Controller extends ChangeNotifier {
       uniquelist.sort();
       print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
-<<<<<<< HEAD
-      // dropdwnVal = catName.toString();
-=======
       dropdwnString = catName.toString();
->>>>>>> a82afb497975ddb9e1321ba799b63e2ba8bce020
       print("catName-----$dropdwnVal");
       notifyListeners();
       return productList;

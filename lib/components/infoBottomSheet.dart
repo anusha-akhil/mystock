@@ -5,6 +5,7 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:photo_view/photo_view.dart';
 
 class InfoBottomsheet {
   showInfoSheet(BuildContext context) {
@@ -38,8 +39,19 @@ class InfoBottomsheet {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Text(
+                              "Item Info :",
+                              style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme,
+                              ),
+                            ),
+                            Spacer(),
                             IconButton(
                                 onPressed: () {
                                   Navigator.pop(context);
@@ -47,43 +59,78 @@ class InfoBottomsheet {
                                 icon: Icon(Icons.close))
                           ],
                         ),
-                        ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // Text("Product Name"),Spacer(),
-                              Text(
-                                "Item Info :",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle:
-                                      Theme.of(context).textTheme.bodyText2,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: P_Settings.loginPagetheme,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // ListTile(
+                        //   title: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     children: [
+                        //       // Text("Product Name"),Spacer(),
+                        //       Text(
+                        //         "Item Info :",
+                        //         style: GoogleFonts.aBeeZee(
+                        //           textStyle:
+                        //               Theme.of(context).textTheme.bodyText2,
+                        //           fontSize: 17,
+                        //           fontWeight: FontWeight.bold,
+                        //           color: P_Settings.loginPagetheme,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 70,
+                                backgroundImage: NetworkImage(
+                                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                                backgroundColor: Colors.transparent,
+                                // child: Image.network(
+                                //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                                //   fit: BoxFit.cover,
+                                // ),
+                                // child: Image.asset("asset/"),
+                              ),
+                              //  SizedBox(
+                              //   width: size.width * 0.5,
+                              // ),
+
+                              // Spacer(),
+                              // Text(
+                              //       prodName.toString(),
+                              //       style: GoogleFonts.aBeeZee(
+                              //         textStyle:
+                              //             Theme.of(context).textTheme.bodyText2,
+                              //         fontSize: 17,
+                              //         // fontWeight: FontWeight.bold,
+                              //         color: P_Settings.loginPagetheme,
+                              //       ),
+                              //     ),
+                            ],
+                          ),
+                        ),
+
                         ListTile(
                           visualDensity:
                               VisualDensity(horizontal: 0, vertical: -4),
-                          leading: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                            backgroundColor: Colors.transparent,
-                            // child: Image.network(
-                            //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                            //   fit: BoxFit.cover,
-                            // ),
-                            // child: Image.asset("asset/"),
-                          ),
+                          // leading: CircleAvatar(
+                          //   radius: 30,
+                          //   backgroundImage: NetworkImage(
+                          //       'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                          //   backgroundColor: Colors.transparent,
+                          //   // child: Image.network(
+                          //   //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                          //   //   fit: BoxFit.cover,
+                          //   // ),
+                          //   // child: Image.asset("asset/"),
+                          // ),
                           title: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
                                   child: Text(
@@ -91,7 +138,7 @@ class InfoBottomsheet {
                                     style: GoogleFonts.aBeeZee(
                                       textStyle:
                                           Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       // fontWeight: FontWeight.bold,
                                       color: P_Settings.loginPagetheme,
                                     ),
@@ -107,7 +154,7 @@ class InfoBottomsheet {
                             title: Row(
                               children: [
                                 Text(
-                                  "SRate 1",
+                                  "MOP",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,
@@ -139,7 +186,7 @@ class InfoBottomsheet {
                             title: Row(
                               children: [
                                 Text(
-                                  "SRate 2",
+                                  "MRP",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle:
                                         Theme.of(context).textTheme.bodyText2,

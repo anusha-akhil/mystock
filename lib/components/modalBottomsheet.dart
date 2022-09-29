@@ -62,8 +62,8 @@ class Bottomsheet {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const CircleAvatar(
-                              radius: 30,
+                             CircleAvatar(
+                              radius: 70,
                               backgroundImage: NetworkImage(
                                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
                               backgroundColor: Colors.transparent,
@@ -221,7 +221,7 @@ class Bottomsheet {
                           title: Row(
                             children: [
                               Text(
-                                "SRate 1",
+                                "MOP",
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
@@ -251,7 +251,7 @@ class Bottomsheet {
                           title: Row(
                             children: [
                               Text(
-                                "SRate 2",
+                                "MRP",
                                 style: GoogleFonts.aBeeZee(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText2,
