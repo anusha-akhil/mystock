@@ -24,7 +24,7 @@ class Controller extends ChangeNotifier {
   bool isProdLoading = false;
   bool isSearch = false;
   String? dropdwnVal;
-  // String? dropdwnString;
+  String? dropdwnString;
 
   String? todate;
   String urlgolabl = Globaldata.apiglobal;
@@ -114,7 +114,6 @@ class Controller extends ChangeNotifier {
 
           dropdwnVal = itemCategoryList[0].catName.toString();
           notifyListeners();
-
 
           // notifyListeners();
 
@@ -337,7 +336,7 @@ class Controller extends ChangeNotifier {
   }
 
 ///////////////////////////////////////////////////
-   historyData(BuildContext context, String trans_id, String action,
+  historyData(BuildContext context, String trans_id, String action,
       String fromDate, String tillDate) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
@@ -960,7 +959,7 @@ class Controller extends ChangeNotifier {
       uniquelist.sort();
       print("productDetailsTable--map ${productList}");
       print("productbar--map ${uniquelist}");
-      dropdwnVal = catName.toString();
+      dropdwnString = catName.toString();
       print("catName-----$dropdwnVal");
       notifyListeners();
       return productList;
