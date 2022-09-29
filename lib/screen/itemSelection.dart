@@ -285,7 +285,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                              value.qty[index].text);
+                              value.qty[index].text,item.itemImg!);
                         },
                         icon: Icon(
                           Icons.add,
@@ -309,7 +309,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                              value.qty[index].text);
+                              value.qty[index].text,item.itemImg!);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 18.0),
