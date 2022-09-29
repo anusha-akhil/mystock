@@ -5,11 +5,11 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 class Bottomsheet {
-  String imgGlobal = Globaldata.imageurl;
-
+ String imgGlobal = Globaldata.imageurl;
   showSheet(
       BuildContext context,
       int index,
@@ -26,7 +26,6 @@ class Bottomsheet {
       String img) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
-
     CustomSnackbar snackbar = CustomSnackbar();
     print("bottom sheet value----$itemName----------$srate1----$qtyf-----");
     // CommonPopup salepopup = CommonPopup();
@@ -34,6 +33,7 @@ class Bottomsheet {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
+        String imgGlobal = Globaldata.imageurl;
         return Consumer<Controller>(
           builder: (context, value, child) {
             // value.qty[index].text=qty.toString();
@@ -68,11 +68,15 @@ class Bottomsheet {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircleAvatar(
-                              radius: 80,
-                              backgroundImage: NetworkImage(
-                                imgGlobal + img,
+                              radius: 70,
+                              child: PhotoView(
+                                imageProvider: NetworkImage(
+                                  imgGlobal + img,
+                                ),
                               ),
-                              backgroundColor: Colors.transparent,
+                              // backgroundImage: NetworkImage(
+                              //     'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                              // backgroundColor: Colors.transparent,
                               // child: Image.network(
                               //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
                               //   fit: BoxFit.cover,
