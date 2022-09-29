@@ -11,6 +11,7 @@ import 'package:mystock/components/radioButton.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/confirmationPage.dart';
 import 'package:mystock/screen/transactionPage.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 class BagPage extends StatefulWidget {
@@ -372,11 +373,17 @@ class _BagPageState extends State<BagPage> {
                               //       imgGlobal +
                               //           value.productList![index]["pi_files"],
                               //     ),
-                              child: Image.network(
-                                imgGlobal + img,
-                                fit: BoxFit.fill,
+                              child: PhotoView(
+                                imageProvider: NetworkImage(
+                                  imgGlobal + img,
+                                ),
                               ),
                               color: Colors.grey,
+                              // Image.network(
+                              //   imgGlobal + img,
+                              //   fit: BoxFit.fill,
+                              // ),
+                              // color: Colors.grey,
                             ),
                           ),
                           SizedBox(
