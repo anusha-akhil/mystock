@@ -65,7 +65,8 @@ class _BagPageState extends State<BagPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Provider.of<Controller>(context, listen: false).getProductDetails("0","");
+            Provider.of<Controller>(context, listen: false)
+                .getProductDetails("0", "");
 
             Navigator.pop(context);
           },
@@ -109,18 +110,18 @@ class _BagPageState extends State<BagPage> {
                       itemCount: value.bagList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return listItemFunction(
-                          // 1, "fjidxjfijdx", 100, 200, "800", 2, size, index,
-                          value.bagList[index]["item_id"],
-                          value.bagList[index]["item_name"],
-                          double.parse(value.bagList[index]["s_rate_1"]),
-                          double.parse(value.bagList[index]["s_rate_2"]),
-                          int.parse(value.bagList[index]["qty"]),
-                          size,
-                          index,
-                          value.bagList[index]["batch_code"],
-                          double.parse(value.bagList[index]["stock"]),
-                          value.bagList[index]["cart_id"],
-                        );
+                            // 1, "fjidxjfijdx", 100, 200, "800", 2, size, index,
+                            value.bagList[index]["item_id"],
+                            value.bagList[index]["item_name"],
+                            double.parse(value.bagList[index]["s_rate_1"]),
+                            double.parse(value.bagList[index]["s_rate_2"]),
+                            int.parse(value.bagList[index]["qty"]),
+                            size,
+                            index,
+                            value.bagList[index]["batch_code"],
+                            double.parse(value.bagList[index]["stock"]),
+                            value.bagList[index]["cart_id"],
+                            value.bagList[index]["item_img"]);
                       },
                     ),
                   ),
@@ -138,7 +139,6 @@ class _BagPageState extends State<BagPage> {
                           onPressed: () async {
                             Provider.of<Controller>(context, listen: false)
                                 .saveCartDetails(
-                                    
                                     context,
                                     widget.transId,
                                     widget.branchId!,
@@ -175,7 +175,8 @@ class _BagPageState extends State<BagPage> {
       int index,
       String? batch_code,
       double stock,
-      String cart_id) {
+      String cart_id,
+      String img) {
     print("qty number-----$itemName----------$srate1----$srate2-----$qty");
     // _controller.text = qty.toString();
 
@@ -211,7 +212,8 @@ class _BagPageState extends State<BagPage> {
                       srate2,
                       stock,
                       0,
-                      qty.toString());
+                      qty.toString(),
+                      img);
                   // Provider.of<Controller>(context, listen: false)
                   //     .setAmt(totalamount);
                   // showModalBottomSheet<void>(
@@ -371,8 +373,8 @@ class _BagPageState extends State<BagPage> {
                               //           value.productList![index]["pi_files"],
                               //     ),
                               child: Image.network(
-                                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                                fit: BoxFit.cover,
+                                imgGlobal + img,
+                                fit: BoxFit.fill,
                               ),
                               color: Colors.grey,
                             ),
