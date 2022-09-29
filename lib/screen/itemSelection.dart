@@ -147,7 +147,7 @@ class _ItemSelectionState extends State<ItemSelection> {
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(value.dropdwnString == null ? value.dropdwnVal.toString() : value.dropdwnString.toString()),
+                    child: Text(value.dropdwnString == null || value.dropdwnString!.isEmpty ? value.dropdwnVal.toString() : value.dropdwnString.toString()),
                   ),
                   // isExpanded: true,
                   autofocus: false,
