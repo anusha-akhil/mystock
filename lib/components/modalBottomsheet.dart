@@ -9,8 +9,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 class Bottomsheet {
-  String imgGlobal = Globaldata.imageurl;
-
+ String imgGlobal = Globaldata.imageurl;
   showSheet(
       BuildContext context,
       int index,
@@ -27,7 +26,6 @@ class Bottomsheet {
       String img) {
     Size size = MediaQuery.of(context).size;
     String? payment_mode;
-
     CustomSnackbar snackbar = CustomSnackbar();
     print("bottom sheet value----$itemName----------$srate1----$qtyf-----");
     // CommonPopup salepopup = CommonPopup();
@@ -35,6 +33,7 @@ class Bottomsheet {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
+        String imgGlobal = Globaldata.imageurl;
         return Consumer<Controller>(
           builder: (context, value, child) {
             // value.qty[index].text=qty.toString();

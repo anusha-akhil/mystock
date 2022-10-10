@@ -279,7 +279,6 @@ class _TransactionPageState extends State<TransactionPage> {
                                 .getProductDetails("0", "");
                             // String hint = value.dropdwnVal.toString();
 
-
                             // print("fkjdfjdjfnzskfn;lg---$hint---");
                             if (list.length > 0) {
                               // setState(() {

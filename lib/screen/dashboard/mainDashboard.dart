@@ -226,7 +226,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             ),
                           ),
                     value.isLoading
-                        ? Flexible(
+                        ? Expanded(
                             child: Container(
                               height: double.infinity,
                               child: SpinKitFadingCircle(

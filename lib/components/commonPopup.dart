@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
+
 class CommonPopup {
   String? stockio;
   int sales_id = 0;
