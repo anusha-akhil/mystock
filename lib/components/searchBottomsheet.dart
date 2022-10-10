@@ -10,6 +10,7 @@ class SearchBottomSheet {
   // TextEditingController qtycontroller = TextEditingController();
 
   showsearchSheet(BuildContext context, Size size) {
+    searchcontroller.text= "";
     return showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,

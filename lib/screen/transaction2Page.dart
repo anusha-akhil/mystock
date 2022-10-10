@@ -264,11 +264,14 @@ class _TransactionPage2State extends State<TransactionPage2> {
                     itemCount: value.bagList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(value.bagList[index]["item_name"],style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 15,
-                          // fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme),),
+                        title: Text(
+                          value.bagList[index]["item_name"],
+                          style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 15,
+                              // fontWeight: FontWeight.bold,
+                              color: P_Settings.loginPagetheme),
+                        ),
                       );
                     },
                   ),
