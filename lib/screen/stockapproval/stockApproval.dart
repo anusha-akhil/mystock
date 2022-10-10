@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/itemSelection.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,8 @@ class StockApprovalPage extends StatefulWidget {
 }
 
 class _StockApprovalPageState extends State<StockApprovalPage> {
+  String imgGlobal = Globaldata.imageurl;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,10 +40,10 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
               children: [
                 value.isLoading
                     ? Expanded(
-                      child: SpinKitFadingCircle(
+                        child: SpinKitFadingCircle(
                           color: P_Settings.loginPagetheme,
                         ),
-                    )
+                      )
                     : Expanded(
                         child: ListView.builder(
                           itemCount: value.stock_approve_detaillist.length,
@@ -56,16 +59,33 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                                 ),
                                 child: ListTile(
                                   leading: CircleAvatar(
-                                    radius: 25.0,
-                                    backgroundImage: NetworkImage(
-                                        'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
-                                    backgroundColor: Colors.transparent,
-                                    // child: Image.network(
+                                      radius: 25.0,
+                                      backgroundImage:
+                                          value.stock_approve_detaillist[index]
+                                                          ["img"] ==
+                                                      null ||
+                                                  value
+                                                      .stock_approve_detaillist[
+                                                          index]["img"]
+                                                      .isEmpty
+                                              ? NetworkImage(
+                                                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg')
+                                              : NetworkImage(
+                                                  imgGlobal +
+                                                      value.stock_approve_detaillist[
+                                                          index]["img"],
+                                                  // fit: BoxFit.cover,
+                                                )
 
-                                    //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                                    //   fit: BoxFit.fill,
-                                    // ),
-                                  ),
+                                      //  NetworkImage(
+                                      //     'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'),
+                                      // backgroundColor: Colors.transparent,
+                                      // child: Image.network(
+
+                                      //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                                      //   fit: BoxFit.fill,
+                                      // ),
+                                      ),
                                   title: Text(
                                     value.stock_approve_detaillist[index]
                                         ["item_name"],
@@ -86,13 +106,13 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                            "Srate1 :    ${value.stock_approve_detaillist[index]["s_rate_1"]} ,"),
+                                            "MOP :    ${value.stock_approve_detaillist[index]["s_rate_1"]} ,"),
                                       ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                            "Srate2 :    ${value.stock_approve_detaillist[index]["s_rate_2"]}"),
+                                            "MRP :    ${value.stock_approve_detaillist[index]["s_rate_2"]}"),
                                       ),
                                     ],
                                   ),

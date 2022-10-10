@@ -701,7 +701,7 @@ class Controller extends ChangeNotifier {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Stock Approved!!!',
+                        map["msg"].toString(),
                         style: TextStyle(color: P_Settings.loginPagetheme),
                       ),
                       Icon(

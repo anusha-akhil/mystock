@@ -310,7 +310,7 @@ class InfoBottomsheet {
                               ? size.height * 0.1
                               : value.stockList.length == 1
                                   ? size.height * 0.2
-                                  : size.height * 0.4,
+                                  : size.height * 0.25,
                           // value.stockList.length == 2
                           //     ? size.height * 0.1
                           //     : size.height * 0.2,
