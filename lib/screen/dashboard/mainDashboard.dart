@@ -9,6 +9,7 @@ import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/screen/search_page/searchscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
+import 'package:mystock/screen/transaction2Page.dart';
 import 'package:mystock/screen/transactionPage.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -164,6 +165,36 @@ class _MainDashboardState extends State<MainDashboard> {
                           trailing: Icon(Icons.arrow_forward),
                           title: Text(
                             "Transaction",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.loginPagetheme,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Provider.of<Controller>(context, listen: false)
+                                .getTransactionList(context);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TransactionPage2()),
+                            );
+                          },
+                          leading: CircleAvatar(
+                              radius: 20,
+                              child: Image.asset("asset/exchanging.png")),
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Transaction2",
                             style: GoogleFonts.aBeeZee(
                               textStyle: Theme.of(context).textTheme.bodyText2,
                               fontSize: 16,
