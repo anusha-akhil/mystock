@@ -17,6 +17,8 @@ import 'package:mystock/screen/transactionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
+  // bool isVisible = false;
+
   bool addtoDone = false;
   String? fromDate;
   String? brName;
@@ -1263,6 +1265,11 @@ class Controller extends ChangeNotifier {
   ///////////////////////////////////////////////
   addToCartClicked(bool clicked, int index) {
     addtoCart[index] = clicked;
+    notifyListeners();
+  }
+
+  setisVisible(bool isvis) {
+    isVisible = isvis;
     notifyListeners();
   }
 }
