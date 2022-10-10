@@ -105,12 +105,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       subtitle: Row(
                         children: [
                           Text(
-                              "SRate1 :  ${value.searchList[index]["s_rate_1"]}"),
+                              "MOP :  ${value.searchList[index]["s_rate_1"]}"),
                           SizedBox(
                             width: size.width * 0.03,
                           ),
                           Text(
-                              "SRate2 :  ${value.searchList[index]["s_rate_2"]}"),
+                              "MRP :  ${value.searchList[index]["s_rate_2"]}"),
                         ],
                       ),
                     );
