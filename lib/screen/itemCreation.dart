@@ -82,11 +82,12 @@ class _ItemCreationState extends State<ItemCreation> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                              // focusNode: myFocusNode,
-                              // controller: cusname,
-                              decoration: new InputDecoration(
-                            border: InputBorder.none,
-                          )),
+                            // focusNode: myFocusNode,
+                            // controller: cusname,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
                       ),
                     ),
