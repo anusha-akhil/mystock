@@ -182,7 +182,8 @@ class _MainDashboardState extends State<MainDashboard> {
                           onTap: () {
                             Provider.of<Controller>(context, listen: false)
                                 .getTransactionList(context);
-
+                            Provider.of<Controller>(context, listen: false)
+                                .getbagData1(context);
                             Navigator.push(
                               context,
                               MaterialPageRoute(

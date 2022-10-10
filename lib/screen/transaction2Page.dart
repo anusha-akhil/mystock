@@ -403,10 +403,10 @@ class _TransactionPage2State extends State<TransactionPage2> {
                             child: TextField(
                               // autofocus: true,
                               onTap: () {
-                                // value.qty[index].selection = TextSelection(
-                                //     baseOffset: 0,
-                                //     extentOffset:
-                                //         value.qty[index].value.text.length);
+                                value.qty[index].selection = TextSelection(
+                                    baseOffset: 0,
+                                    extentOffset:
+                                        value.qty[index].value.text.length);
                               },
 
                               // autofocus: true,
@@ -428,15 +428,15 @@ class _TransactionPage2State extends State<TransactionPage2> {
                               keyboardType: TextInputType.number,
                               onSubmitted: (values) {
                                 double valueqty = 0.0;
-                                // // Provider.of<Controller>(context,
-                                // //         listen: false)
-                                // //     .fromDb = false;
-                                // if (values.isNotEmpty) {
-                                //   print("emtyyyy");
-                                //   valueqty = double.parse(values);
-                                // } else {
-                                //   valueqty = 0.0;
-                                // }
+                                // Provider.of<Controller>(context,
+                                //         listen: false)
+                                //     .fromDb = false;
+                                if (values.isNotEmpty) {
+                                  print("emtyyyy");
+                                  valueqty = double.parse(values);
+                                } else {
+                                  valueqty = 0.0;
+                                }
                                 // // Provider.of<Controller>(context,
                                 // //         listen: false)
                                 // //     .fromDb = false;
