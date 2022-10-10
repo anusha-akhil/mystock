@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mystock/components/commonColor.dart';
+import 'package:mystock/components/searchBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:mystock/screen/dashboard/mainDashboard.dart';
 import 'package:mystock/screen/historyPage.dart';
@@ -22,6 +23,7 @@ class TransactionPage2 extends StatefulWidget {
 }
 
 class _TransactionPage2State extends State<TransactionPage2> {
+  SearchBottomSheet searchSheet = SearchBottomSheet();
   List<String> splitted = [];
   ValueNotifier<bool> visible = ValueNotifier(false);
   List<Map<String, dynamic>> list = [];
@@ -212,9 +214,10 @@ class _TransactionPage2State extends State<TransactionPage2> {
                         hintText: "Enter remark"),
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.08,
-                ),
+                Divider(),
+                // SizedBox(
+                //   height: size.height * 0.08,
+                // ),
                 ValueListenableBuilder(
                     valueListenable: visible,
                     builder: (BuildContext context, bool v, Widget? child) {
@@ -235,8 +238,32 @@ class _TransactionPage2State extends State<TransactionPage2> {
                         ),
                       );
                     }),
-                SizedBox(
-                  height: size.height * 0.015,
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 10),
+                  child: ListTile(
+                    onTap: () {
+                      searchSheet.showsearchSheet(context,size);
+                    },
+                    title: Text(
+                      "Search item here",
+                      style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: P_Settings.loginPagetheme),
+                    ),
+                    leading: CircleAvatar(
+                        radius: 10, child: Image.asset("asset/search.png")),
+                  ),
+                ),
+                Container(
+                  height: size.height * 0.55,
+                  child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return ListTile();
+                    },
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -331,14 +358,14 @@ class _TransactionPage2State extends State<TransactionPage2> {
                     ),
                   ],
                 ),
-                value.isProdLoading
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 80.0),
-                        child: SpinKitFadingCircle(
-                          color: P_Settings.loginPagetheme,
-                        ),
-                      )
-                    : Container()
+                // value.isProdLoading
+                //     ? Padding(
+                //         padding: const EdgeInsets.only(top: 80.0),
+                //         child: SpinKitFadingCircle(
+                //           color: P_Settings.loginPagetheme,
+                //         ),
+                //       )
+                //     : Container()
               ],
             ),
           );
