@@ -632,7 +632,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.0"
-<<<<<<< HEAD
   pinch_zoom_release_unzoom:
     dependency: "direct main"
     description:
@@ -640,8 +639,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.10"
-=======
->>>>>>> 5323d1bbab724d8e545b644d1ee5a5086897cdbe
   platform:
     dependency: transitive
     description:
