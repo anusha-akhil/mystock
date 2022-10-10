@@ -294,8 +294,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                                   item.itemImg!);
                             },
                             child: Container(
-                              width: size.width*0.05,
-                              child: Icon(Icons.add)),
+                                width: size.width * 0.05,
+                                child: Icon(Icons.add)),
                           )
                         //  IconButton(
                         //     onPressed: () {
@@ -347,7 +347,9 @@ class _ItemSelectionState extends State<ItemSelection> {
                                   item.itemImg!);
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(left:0,),
+                              padding: const EdgeInsets.only(
+                                left: 0,
+                              ),
                               child: Text(
                                 value.qty[index].text,
                                 style: TextStyle(

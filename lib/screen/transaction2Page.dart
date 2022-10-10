@@ -85,6 +85,98 @@ class _TransactionPage2State extends State<TransactionPage2> {
     double topInsets = MediaQuery.of(context).viewInsets.top;
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: Container(
+            height: size.height * 0.05,
+            width: size.width * 0.5,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: P_Settings.loginPagetheme,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2), // <-- Radius
+                ),
+              ),
+              onPressed: () async {
+                print("selectedtransaction----$selectedtransaction");
+
+                if (selectedtransaction != null) {
+                  visible.value = false;
+                  Provider.of<Controller>(context, listen: false)
+                      .getItemCategory(context);
+
+                  list = await Provider.of<Controller>(context, listen: false)
+                      .getProductDetails("0", "");
+                  // String hint = value.dropdwnVal.toString();
+
+                  // print("fkjdfjdjfnzskfn;lg---$hint---");
+                  if (list.length > 0) {
+                    // setState(() {
+                    //   isLoad=true;
+                    // });
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                          opaque: false, // set to false
+                          pageBuilder: (_, __, ___) => StockTransfer(
+                                list: list,
+                                transVal: int.parse(
+                                  splitted[3],
+                                ),
+                                transType: splitted[2],
+                                transId: splitted[0],
+                                branchId: selectedbranch.toString(),
+                                remark: remrk.text,
+                              )
+                          // OrderForm(widget.areaname,"return"),
+                          ),
+                    );
+                  }
+                } else if (widget.page == "history") {
+                  visible.value = false;
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                        opaque: false, // set to false
+                        pageBuilder: (_, __, ___) => StockTransfer(
+                              list: list,
+                              transVal: int.parse(widget.translist![3]),
+                              transType: widget.translist![2],
+                              transId: widget.translist![0],
+                              branchId: widget.translist![4],
+                              remark: remrk.text,
+                            )
+                        // OrderForm(widget.areaname,"return"),
+                        ),
+                  );
+                } else {
+                  visible.value = true;
+                }
+
+                // return await showDialog(
+                //     context: context,
+                //     barrierDismissible: false, // user must tap button!
+                //     builder: (BuildContext context) {
+                //       return WillPopScope(
+                //         onWillPop: () async => false,
+                //         child: buildPopupDialog("content", context, size),
+                //       );
+                //     });
+              },
+              child: Text(
+                'Save',
+                style: GoogleFonts.aBeeZee(
+                  textStyle: Theme.of(context).textTheme.bodyText2,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: P_Settings.buttonColor,
+                ),
+              ),
+            ),
+          ),
+        ),
+        elevation: 0,
+      ),
       appBar: AppBar(
           actions: [
             IconButton(
@@ -257,20 +349,150 @@ class _TransactionPage2State extends State<TransactionPage2> {
                         radius: 10, child: Image.asset("asset/search.png")),
                   ),
                 ),
+                SizedBox(height: size.height * 0.032),
                 Container(
                   height: size.height * 0.55,
                   child: ListView.builder(
-                    itemExtent: 40,
+                    itemExtent: 80,
                     itemCount: value.bagList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          value.bagList[index]["item_name"],
-                          style: GoogleFonts.aBeeZee(
-                              textStyle: Theme.of(context).textTheme.bodyText2,
-                              fontSize: 15,
-                              // fontWeight: FontWeight.bold,
-                              color: P_Settings.loginPagetheme),
+                      return Card(
+                        child: ListTile(
+                          title: Text(
+                            value.bagList[index]["item_name"],
+                            style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 15,
+                                // fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(right: 100),
+                            child: Flexible(
+                              flex: 1,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "MOP :\u{20B9}${value.bagList[index]["s_rate_1"]}",
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 14,
+                                      color: P_Settings.bagText,
+                                    ),
+                                  ),
+                                  SizedBox(width: size.width * 0.032),
+                                  Text(
+                                    "MRP :\u{20B9}${value.bagList[index]["s_rate_2"]}",
+                                    style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 14,
+                                      color: P_Settings.bagText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          trailing: Container(
+                            width: size.width * 0.05,
+                            child: TextField(
+                              controller: value.t2qtycontroller[index],
+                              // autofocus: true,
+                              onTap: () {
+                                // value.qty[index].selection = TextSelection(
+                                //     baseOffset: 0,
+                                //     extentOffset:
+                                //         value.qty[index].value.text.length);
+                              },
+
+                              // autofocus: true,
+                              style: GoogleFonts.aBeeZee(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontSize: 17,
+                                // fontWeight: FontWeight.bold,
+                                color: P_Settings.loginPagetheme,
+                              ),
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(0),
+                                //border: InputBorder.none
+                              ),
+
+                              // maxLines: 1,
+                              // minLines: 1,
+                              keyboardType: TextInputType.number,
+                              onSubmitted: (values) {
+                                double valueqty = 0.0;
+                                Provider.of<Controller>(context, listen: false)
+                                    .addDeletebagItem(
+                                        value.bagList[index]["item_id"],
+                                        value.bagList[index]["s_rate_1"]
+                                            .toString(),
+                                        value.bagList[index]["s_rate_2"]
+                                            .toString(),
+                                        value.t2qtycontroller[index].text,
+                                        "0",
+                                        "0",
+                                        context,
+                                        "save");
+                                // // Provider.of<Controller>(context,
+                                // //         listen: false)
+                                // //     .fromDb = false;
+                                // if (values.isNotEmpty) {
+                                //   print("emtyyyy");
+                                //   valueqty = double.parse(values);
+                                // } else {
+                                //   valueqty = 0.0;
+                                // }
+                                // // Provider.of<Controller>(context,
+                                // //         listen: false)
+                                // //     .fromDb = false;
+
+                                // // Provider.of<Controller>(context,
+                                // //         listen: false)
+                                // //     .rawCalculation(
+                                // //         srate1,
+                                // //         valueqty,
+                                // //         disc_per,
+                                // //         disc_amt,
+                                // //         tax_per,
+                                // //         cess_per,
+                                // //         "0",
+                                // //         gtype,
+                                // //         index,
+                                // //         true,
+                                // //         "qty");
+                                // // Provider.of<Controller>(context,
+                                // //         listen: false)
+                                // //     .addDeletebagItem(
+                                // //         itemId,
+                                // //         srate1.toString(),
+                                // //         value.qty[index].text,
+                                // //         "0",
+                                // //         "1",
+                                // //         context,
+                                // //         "save",
+                                // //         formType);
+                                // print("values----$values");
+                                // // double valueqty = 0.0;
+                                // // value.discount_amount[index].text=;
+                                // if (values.isNotEmpty) {
+                                //   print("emtyyyy");
+                                //   valueqty = double.parse(values);
+                                // } else {
+                                //   valueqty = 0.0;
+                                // }
+                              },
+                              textAlign: TextAlign.right,
+                              // controller: value.qty[index],
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -279,94 +501,94 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: size.height * 0.05,
-                      width: size.width * 0.5,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: P_Settings.loginPagetheme,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(2), // <-- Radius
-                          ),
-                        ),
-                        onPressed: () async {
-                          print("selectedtransaction----$selectedtransaction");
+                    // Container(
+                    //   height: size.height * 0.05,
+                    //   width: size.width * 0.5,
+                    //   child: ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //       primary: P_Settings.loginPagetheme,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius:
+                    //             BorderRadius.circular(2), // <-- Radius
+                    //       ),
+                    //     ),
+                    //     onPressed: () async {
+                    //       print("selectedtransaction----$selectedtransaction");
 
-                          if (selectedtransaction != null) {
-                            visible.value = false;
-                            Provider.of<Controller>(context, listen: false)
-                                .getItemCategory(context);
+                    //       if (selectedtransaction != null) {
+                    //         visible.value = false;
+                    //         Provider.of<Controller>(context, listen: false)
+                    //             .getItemCategory(context);
 
-                            list = await Provider.of<Controller>(context,
-                                    listen: false)
-                                .getProductDetails("0", "");
-                            // String hint = value.dropdwnVal.toString();
+                    //         list = await Provider.of<Controller>(context,
+                    //                 listen: false)
+                    //             .getProductDetails("0", "");
+                    //         // String hint = value.dropdwnVal.toString();
 
-                            // print("fkjdfjdjfnzskfn;lg---$hint---");
-                            if (list.length > 0) {
-                              // setState(() {
-                              //   isLoad=true;
-                              // });
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                    opaque: false, // set to false
-                                    pageBuilder: (_, __, ___) => StockTransfer(
-                                          list: list,
-                                          transVal: int.parse(
-                                            splitted[3],
-                                          ),
-                                          transType: splitted[2],
-                                          transId: splitted[0],
-                                          branchId: selectedbranch.toString(),
-                                          remark: remrk.text,
-                                        )
-                                    // OrderForm(widget.areaname,"return"),
-                                    ),
-                              );
-                            }
-                          } else if (widget.page == "history") {
-                            visible.value = false;
-                            Navigator.of(context).push(
-                              PageRouteBuilder(
-                                  opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => StockTransfer(
-                                        list: list,
-                                        transVal:
-                                            int.parse(widget.translist![3]),
-                                        transType: widget.translist![2],
-                                        transId: widget.translist![0],
-                                        branchId: widget.translist![4],
-                                        remark: remrk.text,
-                                      )
-                                  // OrderForm(widget.areaname,"return"),
-                                  ),
-                            );
-                          } else {
-                            visible.value = true;
-                          }
+                    //         // print("fkjdfjdjfnzskfn;lg---$hint---");
+                    //         if (list.length > 0) {
+                    //           // setState(() {
+                    //           //   isLoad=true;
+                    //           // });
+                    //           Navigator.of(context).push(
+                    //             PageRouteBuilder(
+                    //                 opaque: false, // set to false
+                    //                 pageBuilder: (_, __, ___) => StockTransfer(
+                    //                       list: list,
+                    //                       transVal: int.parse(
+                    //                         splitted[3],
+                    //                       ),
+                    //                       transType: splitted[2],
+                    //                       transId: splitted[0],
+                    //                       branchId: selectedbranch.toString(),
+                    //                       remark: remrk.text,
+                    //                     )
+                    //                 // OrderForm(widget.areaname,"return"),
+                    //                 ),
+                    //           );
+                    //         }
+                    //       } else if (widget.page == "history") {
+                    //         visible.value = false;
+                    //         Navigator.of(context).push(
+                    //           PageRouteBuilder(
+                    //               opaque: false, // set to false
+                    //               pageBuilder: (_, __, ___) => StockTransfer(
+                    //                     list: list,
+                    //                     transVal:
+                    //                         int.parse(widget.translist![3]),
+                    //                     transType: widget.translist![2],
+                    //                     transId: widget.translist![0],
+                    //                     branchId: widget.translist![4],
+                    //                     remark: remrk.text,
+                    //                   )
+                    //               // OrderForm(widget.areaname,"return"),
+                    //               ),
+                    //         );
+                    //       } else {
+                    //         visible.value = true;
+                    //       }
 
-                          // return await showDialog(
-                          //     context: context,
-                          //     barrierDismissible: false, // user must tap button!
-                          //     builder: (BuildContext context) {
-                          //       return WillPopScope(
-                          //         onWillPop: () async => false,
-                          //         child: buildPopupDialog("content", context, size),
-                          //       );
-                          //     });
-                        },
-                        child: Text(
-                          'Save',
-                          style: GoogleFonts.aBeeZee(
-                            textStyle: Theme.of(context).textTheme.bodyText2,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: P_Settings.buttonColor,
-                          ),
-                        ),
-                      ),
-                    ),
+                    //       // return await showDialog(
+                    //       //     context: context,
+                    //       //     barrierDismissible: false, // user must tap button!
+                    //       //     builder: (BuildContext context) {
+                    //       //       return WillPopScope(
+                    //       //         onWillPop: () async => false,
+                    //       //         child: buildPopupDialog("content", context, size),
+                    //       //       );
+                    //       //     });
+                    //     },
+                    //     child: Text(
+                    //       'Save',
+                    //       style: GoogleFonts.aBeeZee(
+                    //         textStyle: Theme.of(context).textTheme.bodyText2,
+                    //         fontSize: 17,
+                    //         fontWeight: FontWeight.bold,
+                    //         color: P_Settings.buttonColor,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 // value.isProdLoading

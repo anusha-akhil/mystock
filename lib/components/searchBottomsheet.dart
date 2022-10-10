@@ -6,11 +6,11 @@ import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class SearchBottomSheet {
-  TextEditingController searchcontroller = TextEditingController();
+  // TextEditingController searchcontroller = TextEditingController();
   // TextEditingController qtycontroller = TextEditingController();
 
   showsearchSheet(BuildContext context, Size size) {
-    searchcontroller.text= "";
+    // searchcontroller.text = "";
     return showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -36,7 +36,10 @@ class SearchBottomSheet {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                await Provider.of<Controller>(context,
+                                        listen: false)
+                                    .getbagData1(context);
                                 Navigator.pop(context);
                               },
                               icon: Icon(
@@ -53,12 +56,12 @@ class SearchBottomSheet {
                               width: size.width * 0.9,
                               height: size.height * 0.09,
                               child: TextField(
-                                controller: searchcontroller,
-                                onChanged: (value) {
+                                controller: value.searchcontroller,
+                                onChanged: (values) {
                                   Provider.of<Controller>(context,
                                           listen: false)
                                       .setisVisible(true);
-                                  value = searchcontroller.text;
+                                  values = value.searchcontroller.text;
                                   // if (value != null || value.isNotEmpty) {
                                   //   print("value-----$value");
                                   //   Provider.of<Controller>(context,
@@ -76,10 +79,10 @@ class SearchBottomSheet {
                                 },
                                 decoration: InputDecoration(
                                   hintText: "Search Item here",
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: P_Settings.loginPagetheme,
-                                  ),
+                                  // prefixIcon: Icon(
+                                  //   Icons.search,
+                                  //   color: P_Settings.loginPagetheme,
+                                  // ),
                                   suffixIcon: value.isVisible
                                       ? Wrap(
                                           children: [
@@ -94,9 +97,10 @@ class SearchBottomSheet {
                                                   //             listen: false)
                                                   //         .searchkey =
                                                   // sear
-                                                  if (searchcontroller.text !=
+                                                  if (value.searchcontroller
+                                                              .text !=
                                                           null ||
-                                                      searchcontroller
+                                                      value.searchcontroller
                                                           .text.isNotEmpty) {
                                                     print("value-----$value");
                                                     Provider.of<Controller>(
@@ -109,7 +113,8 @@ class SearchBottomSheet {
                                                             listen: false)
                                                         .searchItem(
                                                             context,
-                                                            searchcontroller
+                                                            value
+                                                                .searchcontroller
                                                                 .text);
                                                   } else {
                                                     Provider.of<Controller>(
@@ -124,6 +129,11 @@ class SearchBottomSheet {
                                                   size: 20,
                                                 ),
                                                 onPressed: () {
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .searchList
+                                                      .clear();
                                                   // Provider.of<Controller>(
                                                   //         context,
                                                   //         listen: false)
@@ -141,7 +151,8 @@ class SearchBottomSheet {
                                                   //         listen: false)
                                                   //     .newList
                                                   //     .clear();
-                                                  searchcontroller.clear();
+                                                  value.searchcontroller
+                                                      .clear();
                                                   // print(
                                                   //     "rtsyt----${Provider.of<Controller>(context, listen: false).returnirtemExists}");
                                                 }),
@@ -172,117 +183,109 @@ class SearchBottomSheet {
                                 ? SpinKitCircle(
                                     color: P_Settings.loginPagetheme,
                                   )
-                                : value.searchList.length == 0
-                                    ? Text("No Item Found!!!")
-                                    : ListView.builder(
-                                        itemCount: value.searchList.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            trailing: Wrap(
-                                              children: [
-                                                Container(
-                                                    width: size.width * 0.06,
-                                                    child: TextField(
-                                                      controller: value
-                                                          .qtycontroller[index],
-                                                    )),
-                                                SizedBox(
-                                                  width: size.width * 0.02,
-                                                ),
-                                                value.addtoCart[index] == true
-                                                    ? Icon(
-                                                        Icons.done,
-                                                        color: Colors.green,
-                                                      )
-                                                    : GestureDetector(
-                                                        onTap: () async {
-                                                          Provider.of<Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .addToCartClicked(
-                                                                  true, index);
+                                // : value.searchList.length == 0
+                                //     ? Text("No Item Found!!!")
+                                : ListView.builder(
+                                    itemCount: value.searchList.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        trailing: Wrap(
+                                          children: [
+                                            Container(
+                                                width: size.width * 0.06,
+                                                child: TextField(
+                                                  controller: value
+                                                      .qtycontroller[index],
+                                                )),
+                                            SizedBox(
+                                              width: size.width * 0.02,
+                                            ),
+                                            value.addtoCart[index] == true
+                                                ? Icon(
+                                                    Icons.done,
+                                                    color: Colors.green,
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () async {
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .addToCartClicked(
+                                                              true, index);
 
-                                                          Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .addDeletebagItem(
-                                                                  value.searchList[
-                                                                          index]
+                                                      Provider.of<Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .addDeletebagItem(
+                                                              value.searchList[
+                                                                      index][
+                                                                  "item_id"],
+                                                              value
+                                                                  .searchList[index]
                                                                       [
-                                                                      "item_id"],
-                                                                  value
-                                                                      .searchList[
-                                                                          index]
-                                                                          [
-                                                                          "s_rate_1"]
-                                                                      .toString(),
-                                                                  value
-                                                                      .searchList[
-                                                                          index]
-                                                                          [
-                                                                          "s_rate_2"]
-                                                                      .toString(),
-                                                                  value
-                                                                      .qtycontroller[
-                                                                          index]
-                                                                      .text,
-                                                                  "0",
-                                                                  "0",
-                                                                  context,
-                                                                  "save");
+                                                                      "s_rate_1"]
+                                                                  .toString(),
+                                                              value.searchList[
+                                                                      index][
+                                                                      "s_rate_2"]
+                                                                  .toString(),
+                                                              value
+                                                                  .qtycontroller[
+                                                                      index]
+                                                                  .text,
+                                                              "0",
+                                                              "0",
+                                                              context,
+                                                              "save");
 
-                                                          await Provider.of<
-                                                                      Controller>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getbagData1(
-                                                                  context);
-                                                        },
-                                                        child: Icon(Icons.add)),
-                                              ],
-                                            ),
-                                            onTap: () {
-                                              // Provider.of<Controller>(context,
-                                              //         listen: false)
-                                              //     .addDeletebagItem(
-                                              //         value.searchList[index]["item_id"],
-                                              //         value.searchList[index]["s_rate_1"]
-                                              //             .toString(),
-                                              //         value.searchList[index]["s_rate_2"]
-                                              //             .toString(),
-                                              //         "1",
-                                              //         "0",
-                                              //         "0",
-                                              //         context,
-                                              //         "save");
-                                            },
-                                            title: Text(
-                                              value.searchList[index]
-                                                  ["item_name"],
-                                              style: GoogleFonts.aBeeZee(
-                                                  textStyle: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText2,
-                                                  fontSize: 16,
-                                                  // fontWeight: FontWeight.bold,
-                                                  color: P_Settings
-                                                      .loginPagetheme),
-                                            ),
-                                            subtitle: Row(
-                                              children: [
-                                                Text(
-                                                    "MOP :  ${value.searchList[index]["s_rate_1"]}"),
-                                                SizedBox(
-                                                  width: size.width * 0.03,
-                                                ),
-                                                Text(
-                                                    "MRP :  ${value.searchList[index]["s_rate_2"]}"),
-                                              ],
-                                            ),
-                                          );
+                                                      await Provider.of<
+                                                                  Controller>(
+                                                              context,
+                                                              listen: false)
+                                                          .getbagData1(context);
+                                                    },
+                                                    child: Icon(Icons.add)),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          // Provider.of<Controller>(context,
+                                          //         listen: false)
+                                          //     .addDeletebagItem(
+                                          //         value.searchList[index]["item_id"],
+                                          //         value.searchList[index]["s_rate_1"]
+                                          //             .toString(),
+                                          //         value.searchList[index]["s_rate_2"]
+                                          //             .toString(),
+                                          //         "1",
+                                          //         "0",
+                                          //         "0",
+                                          //         context,
+                                          //         "save");
                                         },
-                                      ))
+                                        title: Text(
+                                          value.searchList[index]["item_name"],
+                                          style: GoogleFonts.aBeeZee(
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
+                                              fontSize: 16,
+                                              // fontWeight: FontWeight.bold,
+                                              color: P_Settings.loginPagetheme),
+                                        ),
+                                        subtitle: Row(
+                                          children: [
+                                            Text(
+                                                "MOP :  ${value.searchList[index]["s_rate_1"]}"),
+                                            SizedBox(
+                                              width: size.width * 0.03,
+                                            ),
+                                            Text(
+                                                "MRP :  ${value.searchList[index]["s_rate_2"]}"),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ))
                       ],
                     ),
                   ),

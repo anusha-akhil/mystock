@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
   // bool isVisible = false;
+  TextEditingController searchcontroller = TextEditingController();
 
   bool addtoDone = false;
   String? fromDate;
@@ -63,6 +64,8 @@ class Controller extends ChangeNotifier {
   List<bool> errorClicked = [];
   List<TextEditingController> qty = [];
   List<TextEditingController> qtycontroller = [];
+  List<TextEditingController> t2qtycontroller = [];
+
   List<TextEditingController> historyqty = [];
   List<TextEditingController> oldhistoryqty = [];
   List<bool> addtoCart = [];
@@ -324,6 +327,14 @@ class Controller extends ChangeNotifier {
               productListModel = ProductListModel.fromJson(item);
               bagList.add(item);
             }
+          }
+          t2qtycontroller = List.generate(
+            bagList.length,
+            (index) => TextEditingController(),
+          );
+
+          for (var i = 0; i < bagList.length; i++) {
+            t2qtycontroller[i].text = bagList[i]["qty"].toString();
           }
           print("bag list data........${bagList.length}");
           isLoading = false;
