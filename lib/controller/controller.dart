@@ -17,6 +17,9 @@ import 'package:mystock/screen/transactionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
+  // bool isVisible = false;
+
+  bool addtoDone = false;
   String? fromDate;
   String? brName;
   List<bool> transinfohide = [];
@@ -59,9 +62,10 @@ class Controller extends ChangeNotifier {
   String? priceval;
   List<bool> errorClicked = [];
   List<TextEditingController> qty = [];
+  List<TextEditingController> qtycontroller = [];
   List<TextEditingController> historyqty = [];
   List<TextEditingController> oldhistoryqty = [];
-
+  List<bool> addtoCart = [];
   String? cartCount;
   int? cartCountInc;
 
@@ -881,6 +885,12 @@ class Controller extends ChangeNotifier {
             searchList.add(item);
           }
 
+          qtycontroller = List.generate(
+            searchList.length,
+            (index) => TextEditingController(),
+          );
+          addtoCart = List.generate(searchList.length, (index) => false);
+
           isLoading = false;
           notifyListeners();
 
@@ -1251,14 +1261,15 @@ class Controller extends ChangeNotifier {
     cartCountInc = count + 1;
     notifyListeners();
   }
+
   ///////////////////////////////////////////////
-  // getbranchFrombId(String brId) {
-  //   print("brjhdjsz-----$branchist");
-  //   for (var i = 0; i < branchist.length; i++) {
-  //     if (branchist[i].uID == brId) {
-  //       return branchist[i].branchName;
-  //     }
-  //   }
-  //   // notifyListeners();
-  // }
+  addToCartClicked(bool clicked, int index) {
+    addtoCart[index] = clicked;
+    notifyListeners();
+  }
+
+  setisVisible(bool isvis) {
+    isVisible = isvis;
+    notifyListeners();
+  }
 }
