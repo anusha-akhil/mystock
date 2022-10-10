@@ -93,30 +93,37 @@ class SearchBottomSheet {
                               itemCount: value.searchList.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  trailing: GestureDetector(
-                                      onTap: () async {
-                                        Provider.of<Controller>(context,
-                                                listen: false)
-                                            .addDeletebagItem(
-                                                value.searchList[index]
-                                                    ["item_id"],
-                                                value.searchList[index]
-                                                        ["s_rate_1"]
-                                                    .toString(),
-                                                value.searchList[index]
-                                                        ["s_rate_2"]
-                                                    .toString(),
-                                                "1",
-                                                "0",
-                                                "0",
-                                                context,
-                                                "save");
+                                  trailing: Wrap(
+                                    children: [
+                                      Container(
+                                        width: size.width*0.05,
+                                        child: TextField()),
+                                      GestureDetector(
+                                          onTap: () async {
+                                            Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .addDeletebagItem(
+                                                    value.searchList[index]
+                                                        ["item_id"],
+                                                    value.searchList[index]
+                                                            ["s_rate_1"]
+                                                        .toString(),
+                                                    value.searchList[index]
+                                                            ["s_rate_2"]
+                                                        .toString(),
+                                                    "1",
+                                                    "0",
+                                                    "0",
+                                                    context,
+                                                    "save");
 
-                                        await Provider.of<Controller>(context,
-                                                listen: false)
-                                            .getbagData1(context);
-                                      },
-                                      child: Icon(Icons.add)),
+                                            await Provider.of<Controller>(context,
+                                                    listen: false)
+                                                .getbagData1(context);
+                                          },
+                                          child: Icon(Icons.add)),
+                                    ],
+                                  ),
                                   onTap: () {
                                     // Provider.of<Controller>(context,
                                     //         listen: false)

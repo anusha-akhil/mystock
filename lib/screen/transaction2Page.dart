@@ -239,10 +239,10 @@ class _TransactionPage2State extends State<TransactionPage2> {
                       );
                     }),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 10),
+                  padding: const EdgeInsets.only(left: 10.0, right: 10),
                   child: ListTile(
                     onTap: () {
-                      searchSheet.showsearchSheet(context,size);
+                      searchSheet.showsearchSheet(context, size);
                     },
                     title: Text(
                       "Search item here",
@@ -259,9 +259,16 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 Container(
                   height: size.height * 0.55,
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemExtent: 40,
+                    itemCount: value.bagList.length,
                     itemBuilder: (context, index) {
-                      return ListTile();
+                      return ListTile(
+                        title: Text(value.bagList[index]["item_name"],style: GoogleFonts.aBeeZee(
+                          textStyle: Theme.of(context).textTheme.bodyText2,
+                          fontSize: 15,
+                          // fontWeight: FontWeight.bold,
+                          color: P_Settings.loginPagetheme),),
+                      );
                     },
                   ),
                 ),
