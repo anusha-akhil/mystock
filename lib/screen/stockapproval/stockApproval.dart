@@ -62,18 +62,18 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                                       radius: 25.0,
                                       backgroundImage:
                                           value.stock_approve_detaillist[index]
-                                                          ["img"] ==
+                                                          ["item_img"] ==
                                                       null ||
                                                   value
                                                       .stock_approve_detaillist[
-                                                          index]["img"]
+                                                          index]["item_img"]
                                                       .isEmpty
                                               ? NetworkImage(
                                                   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg')
                                               : NetworkImage(
                                                   imgGlobal +
                                                       value.stock_approve_detaillist[
-                                                          index]["img"],
+                                                          index]["item_img"],
                                                   // fit: BoxFit.cover,
                                                 )
 
@@ -101,18 +101,18 @@ class _StockApprovalPageState extends State<StockApprovalPage> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "Qty :    ${value.stock_approve_detaillist[index]["qty"]} ,"),
+                                          "Qty : ${value.stock_approve_detaillist[index]["qty"]} ,"),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                            "MOP :    ${value.stock_approve_detaillist[index]["s_rate_1"]} ,"),
+                                            "MOP : ${value.stock_approve_detaillist[index]["s_rate_1"]} ,"),
                                       ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                            "MRP :    ${value.stock_approve_detaillist[index]["s_rate_2"]}"),
+                                            "MRP : ${value.stock_approve_detaillist[index]["s_rate_2"]}"),
                                       ),
                                     ],
                                   ),
