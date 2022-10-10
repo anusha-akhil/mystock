@@ -368,15 +368,25 @@ class _BagPageState extends State<BagPage> {
                             child: Container(
                               height: size.height * 0.3,
                               width: size.width * 0.2,
-                              // child: Image.network(
-                              //       imgGlobal +
-                              //           value.productList![index]["pi_files"],
+                              // decoration: BoxDecoration(
+                              //   image: DecorationImage(
+                              //     fit: BoxFit.fill,
+                              //     image: NetworkImage(
+                              //       imgGlobal + img,
                               //     ),
-                              child: Image.network(
-                                imgGlobal + img,
-                                fit: BoxFit.fill,
-                              ),
-                              color: Colors.grey,
+                              //   ),
+                              // ),
+
+                              child: img == null || img.isEmpty
+                                  ? Image.asset(
+                                      'asset/noImg.png',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      imgGlobal + img,
+                                      fit: BoxFit.cover,
+                                    ),
+                              // color: Colors.grey,
                             ),
                           ),
                           SizedBox(
@@ -417,7 +427,7 @@ class _BagPageState extends State<BagPage> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "Rate 1:",
+                                          "MOP:",
                                           style: TextStyle(fontSize: 13),
                                         ),
                                         SizedBox(
@@ -432,7 +442,7 @@ class _BagPageState extends State<BagPage> {
                                         ),
                                         SizedBox(width: size.width * 0.02),
                                         Text(
-                                          "Rate 2 :",
+                                          "MRP:",
                                           style: TextStyle(fontSize: 13),
                                         ),
                                         SizedBox(

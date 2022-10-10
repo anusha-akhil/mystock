@@ -147,7 +147,10 @@ class _ItemSelectionState extends State<ItemSelection> {
                   // isDense: true,
                   hint: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(value.dropdwnString == null || value.dropdwnString!.isEmpty ? value.dropdwnVal.toString() : value.dropdwnString.toString()),
+                    child: Text(value.dropdwnString == null ||
+                            value.dropdwnString!.isEmpty
+                        ? value.dropdwnVal.toString()
+                        : value.dropdwnString.toString()),
                   ),
                   // isExpanded: true,
                   autofocus: false,
@@ -285,7 +288,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                              value.qty[index].text,item.itemImg!);
+                              value.qty[index].text,
+                              item.itemImg!);
                         },
                         icon: Icon(
                           Icons.add,
@@ -309,7 +313,8 @@ class _ItemSelectionState extends State<ItemSelection> {
                               double.parse(item.sRate2!),
                               double.parse(item.stock!),
                               widget.transVal,
-                              value.qty[index].text,item.itemImg!);
+                              value.qty[index].text,
+                              item.itemImg!);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 18.0),
@@ -331,17 +336,23 @@ class _ItemSelectionState extends State<ItemSelection> {
                       color: P_Settings.loginPagetheme,
                     )),
                 subtitle: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
-                        width: size.width * 0.2,
-                        child: Text("SR1:${item.sRate1}")),
-                    Container(
-                        width: size.width * 0.2,
-                        child: Text("SR2:${item.sRate1}")),
-                    Container(
-                        width: size.width * 0.2,
-                        child: Text("Stock:${item.stock}")),
+                    Flexible(
+                      child: Container(
+                          // width: size.width * 0.,
+                          child: Text("MOP:${item.sRate1},")),
+                    ),
+                    Flexible(
+                      child: Container(
+                          // width: size.width * 0.3,
+                          child: Text(" MRP:${item.sRate2},")),
+                    ),
+                    Flexible(
+                      child: Container(
+                          // width: size.width * 0.3,
+                          child: Text(" Stock:${item.stock}")),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Provider.of<Controller>(context, listen: false)

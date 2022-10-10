@@ -23,6 +23,8 @@ import 'package:mystock/screen/set_photo_screen.dart';
 import 'package:mystock/screen/splashscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
 import 'package:mystock/screen/stocktransfer.dart/stockTransfer.dart';
+import 'package:mystock/screen/testimage/imageZoom.dart';
+import 'package:mystock/screen/testimage/pinchZoom.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

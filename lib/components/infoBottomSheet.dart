@@ -6,6 +6,7 @@ import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:photo_view/photo_view.dart';
 
 class InfoBottomsheet {
   showInfoSheet(BuildContext context) {
@@ -100,10 +101,29 @@ class InfoBottomsheet {
                             children: [
                               CircleAvatar(
                                 radius: 80,
-                                backgroundImage: NetworkImage(
-                                  imgGlobal + value.infoList[0]["item_img"],
-                                ),
-                                backgroundColor: Colors.transparent,
+                                child: value.infoList[0]["item_img"] == null ||
+                                        value.infoList[0]["item_img"].isEmpty
+                                    ? Image.asset(
+                                        'asset/noImg.png',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : PhotoView(
+                                        imageProvider: NetworkImage(
+                                          imgGlobal +
+                                              value.infoList[0]["item_img"],
+                                          // fit: BoxFit.cover,
+                                        ),
+                                        // minScale:
+                                        //     PhotoViewComputedScale.contained *
+                                        //         0.8,
+                                        // maxScale:
+                                        //     PhotoViewComputedScale.covered * 2,
+                                      ),
+
+                                // backgroundImage: NetworkImage(
+                                //   imgGlobal + value.infoList[0]["item_img"],
+                                // ),
+                                // backgroundColor: Colors.transparent,
                                 // child: Image.network(
                                 //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
                                 //   fit: BoxFit.cover,
@@ -286,9 +306,11 @@ class InfoBottomsheet {
                           endIndent: 20,
                         ),
                         Container(
-                          height: value.stockList.length == 2
+                          height: value.stockList.length == 1
                               ? size.height * 0.1
-                              : size.height * 0.4,
+                              : value.stockList.length == 1
+                                  ? size.height * 0.2
+                                  : size.height * 0.4,
                           // value.stockList.length == 2
                           //     ? size.height * 0.1
                           //     : size.height * 0.2,
@@ -309,7 +331,11 @@ class InfoBottomsheet {
                                                 .bodyText2,
                                             fontSize: 17,
                                             // fontWeight: FontWeight.bold,
-                                            color: Colors.grey[600],
+                                            color: value.stockList[index]
+                                                        ["st"] ==
+                                                    "0"
+                                                ? Colors.grey[600]
+                                                : Colors.red,
                                           ),
                                         ),
                                       ),
@@ -322,7 +348,10 @@ class InfoBottomsheet {
                                               .bodyText2,
                                           fontSize: 17,
                                           // fontWeight: FontWeight.bold,
-                                          color: Colors.grey[600],
+                                          color: value.stockList[index]["st"] ==
+                                                  "0"
+                                              ? Colors.grey[600]
+                                              : Colors.red,
                                         ),
                                       ),
                                     ],

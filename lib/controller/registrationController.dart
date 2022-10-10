@@ -19,7 +19,6 @@ class RegistrationController extends ChangeNotifier {
   bool isLoading = false;
   StaffDetails staffModel = StaffDetails();
   String urlgolabl = Globaldata.apiglobal;
-
   ExternalDir externalDir = ExternalDir();
   String? fp;
   String? cid;
@@ -155,7 +154,10 @@ class RegistrationController extends ChangeNotifier {
       LoginModel loginModel;
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      if (map != null) {
+      if (map == null || map.length == 0 ) {
+        CustomSnackbar snackbar = CustomSnackbar();
+        snackbar.showSnackbar(context, "Incorrect Username or Password", "");
+      } else {
         prefs.setString("st_uname", userName);
         prefs.setString("st_pwd", password);
 
@@ -175,9 +177,6 @@ class RegistrationController extends ChangeNotifier {
           context,
           MaterialPageRoute(builder: (context) => MainDashboard()),
         );
-      } else {
-        CustomSnackbar snackbar = CustomSnackbar();
-        snackbar.showSnackbar(context, "Incorrect Username or Password", "");
       }
 
       // print("stafff-------${loginModel.staffName}");

@@ -5,6 +5,7 @@ import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/customSnackbar.dart';
 import 'package:mystock/components/globalData.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 class Bottomsheet {
@@ -67,17 +68,42 @@ class Bottomsheet {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              radius: 80,
-                              backgroundImage: NetworkImage(
-                                imgGlobal + img,
+                            GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        ImageDialog(img: imgGlobal + img));
+                              },
+                              child: CircleAvatar(
+                                radius: 80,
+                                child: img == null || img.isEmpty
+                                    ? Image.asset(
+                                        'asset/noImg.png',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : PhotoView(
+                                        imageProvider: NetworkImage(
+                                          imgGlobal + img,
+
+                                          // fit: BoxFit.cover,
+                                        ),
+                                        // minScale:
+                                        //     PhotoViewComputedScale.contained *
+                                        //         0.8,
+                                        // maxScale:
+                                        //     PhotoViewComputedScale.covered * 2,
+                                      ),
+                                // backgroundImage: NetworkImage(
+                                //   imgGlobal + img,
+                                // ),
+                                // backgroundColor: Colors.transparent,
+                                // child: Image.network(
+                                //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                                //   fit: BoxFit.cover,
+                                // ),
+                                // child: Image.asset("asset/"),
                               ),
-                              backgroundColor: Colors.transparent,
-                              // child: Image.network(
-                              //   'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-                              //   fit: BoxFit.cover,
-                              // ),
-                              // child: Image.asset("asset/"),
                             ),
                             //  SizedBox(
                             //   width: size.width * 0.5,
@@ -411,6 +437,24 @@ class Bottomsheet {
           },
         );
       },
+    );
+  }
+}
+
+//////////////////////////////////////////////////////////////////
+class ImageDialog extends StatelessWidget {
+  String? img;
+  ImageDialog({this.img});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: NetworkImage(img!), fit: BoxFit.cover)),
+      ),
     );
   }
 }
