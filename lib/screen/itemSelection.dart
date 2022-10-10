@@ -270,106 +270,93 @@ class _ItemSelectionState extends State<ItemSelection> {
               child: ListTile(
                 trailing: Wrap(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Provider.of<Controller>(context, listen: false)
-                            .getinfoList(context, item.itemId!);
-                        infoshowsheet.showInfoSheet(
-                          context,
-                        );
-                      },
-                      child: Icon(
-                        Icons.info,
-                        size: 20,
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          // int qty;
-                          value.setqtyErrormsg(false);
-                          value.qty[index].selection = TextSelection(
-                              baseOffset: 0,
-                              extentOffset: value.qty[index].value.text.length);
-                          showsheet.showSheet(
-                              context,
-                              index,
-                              item.itemId!,
-                              item.catId!,
-                              item.batchCode!,
-                              item.itemName!,
-                              item.itemImg!,
-                              double.parse(item.sRate1!),
-                              double.parse(item.sRate2!),
-                              double.parse(item.stock!),
-                              widget.transVal,
-                              value.qty[index].text,
-                              item.itemImg!);
-                        },
-                        icon: Icon(
-                          Icons.add,
-                          size: 20,
-                        )),
-                    // value.qty[index].text == "0"
-                    //     ? IconButton(
-                    //         onPressed: () {
-                    //           // int qty;
-                    //           value.setqtyErrormsg(false);
-                    //           value.qty[index].selection = TextSelection(
-                    //               baseOffset: 0,
-                    //               extentOffset:
-                    //                   value.qty[index].value.text.length);
-                    //           showsheet.showSheet(
-                    //               context,
-                    //               index,
-                    //               item.itemId!,
-                    //               item.catId!,
-                    //               item.batchCode!,
-                    //               item.itemName!,
-                    //               item.itemImg!,
-                    //               double.parse(item.sRate1!),
-                    //               double.parse(item.sRate2!),
-                    //               double.parse(item.stock!),
-                    //               widget.transVal,
-                    //               value.qty[index].text,
-                    //               item.itemImg!);
-                    //         },
-                    //         icon: Icon(
-                    //           Icons.add,
-                    //           size: 20,
-                    //         ))
-                    //     : GestureDetector(
-                    //         onTap: () {
-                    //           value.setqtyErrormsg(false);
-                    //           value.qty[index].selection = TextSelection(
-                    //               baseOffset: 0,
-                    //               extentOffset:
-                    //                   value.qty[index].value.text.length);
-                    //           showsheet.showSheet(
-                    //               context,
-                    //               index,
-                    //               item.itemId!,
-                    //               item.catId!,
-                    //               item.batchCode!,
-                    //               item.itemName!,
-                    //               item.itemImg!,
-                    //               double.parse(item.sRate1!),
-                    //               double.parse(item.sRate2!),
-                    //               double.parse(item.stock!),
-                    //               widget.transVal,
-                    //               value.qty[index].text,
-                    //               item.itemImg!);
-                    //         },
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.only(right: 18.0),
-                    //           child: Text(
-                    //             value.qty[index].text,
-                    //             style: TextStyle(
-                    //                 fontSize: 17,
-                    //                 fontWeight: FontWeight.bold,
-                    //                 color: Colors.red),
-                    //           ),
-                    //         ),
-                    //       ),
+                    value.qty[index].text == "0"
+                        ? GestureDetector(
+                            onTap: () {
+                              value.setqtyErrormsg(false);
+                              value.qty[index].selection = TextSelection(
+                                  baseOffset: 0,
+                                  extentOffset:
+                                      value.qty[index].value.text.length);
+                              showsheet.showSheet(
+                                  context,
+                                  index,
+                                  item.itemId!,
+                                  item.catId!,
+                                  item.batchCode!,
+                                  item.itemName!,
+                                  item.itemImg!,
+                                  double.parse(item.sRate1!),
+                                  double.parse(item.sRate2!),
+                                  double.parse(item.stock!),
+                                  widget.transVal,
+                                  value.qty[index].text,
+                                  item.itemImg!);
+                            },
+                            child: Container(
+                              width: size.width*0.05,
+                              child: Icon(Icons.add)),
+                          )
+                        //  IconButton(
+                        //     onPressed: () {
+                        //       // int qty;
+                        //       value.setqtyErrormsg(false);
+                        //       value.qty[index].selection = TextSelection(
+                        //           baseOffset: 0,
+                        //           extentOffset:
+                        //               value.qty[index].value.text.length);
+                        //       showsheet.showSheet(
+                        //           context,
+                        //           index,
+                        //           item.itemId!,
+                        //           item.catId!,
+                        //           item.batchCode!,
+                        //           item.itemName!,
+                        //           item.itemImg!,
+                        //           double.parse(item.sRate1!),
+                        //           double.parse(item.sRate2!),
+                        //           double.parse(item.stock!),
+                        //           widget.transVal,
+                        //           value.qty[index].text,
+                        //           item.itemImg!);
+                        //     },
+                        //     icon: Icon(
+                        //       Icons.add,
+                        //       size: 20,
+                        //     ))
+                        : GestureDetector(
+                            onTap: () {
+                              value.setqtyErrormsg(false);
+                              value.qty[index].selection = TextSelection(
+                                  baseOffset: 0,
+                                  extentOffset:
+                                      value.qty[index].value.text.length);
+                              showsheet.showSheet(
+                                  context,
+                                  index,
+                                  item.itemId!,
+                                  item.catId!,
+                                  item.batchCode!,
+                                  item.itemName!,
+                                  item.itemImg!,
+                                  double.parse(item.sRate1!),
+                                  double.parse(item.sRate2!),
+                                  double.parse(item.stock!),
+                                  widget.transVal,
+                                  value.qty[index].text,
+                                  item.itemImg!);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left:0,),
+                              child: Text(
+                                value.qty[index].text,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
+                              ),
+                            ),
+                          ),
                   ],
                 ),
 
@@ -389,20 +376,20 @@ class _ItemSelectionState extends State<ItemSelection> {
                         Container(width: size.width * 0.2, child: Text("MOP")),
                         Container(width: size.width * 0.2, child: Text(" MRP")),
                         Container(
-                            width: size.width * 0.1, child: Text(" Stock")),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     Provider.of<Controller>(context, listen: false)
-                        //         .getinfoList(context, item.itemId!);
-                        //     infoshowsheet.showInfoSheet(
-                        //       context,
-                        //     );
-                        //   },
-                        //   child: Icon(
-                        //     Icons.info,
-                        //     size: 19,
-                        //   ),
-                        // )
+                            width: size.width * 0.11, child: Text(" Stock")),
+                        GestureDetector(
+                          onTap: () {
+                            Provider.of<Controller>(context, listen: false)
+                                .getinfoList(context, item.itemId!);
+                            infoshowsheet.showInfoSheet(
+                              context,
+                            );
+                          },
+                          child: Icon(
+                            Icons.info,
+                            size: 19,
+                          ),
+                        )
                       ],
                     ),
                     Row(

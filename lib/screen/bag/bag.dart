@@ -404,8 +404,8 @@ class _BagPageState extends State<BagPage> {
                                     children: [
                                       Flexible(
                                         flex: 5,
-                                        child: Text("${itemName} ",
-                                            overflow: TextOverflow.ellipsis,
+                                        child: Text("${itemName}",
+                                            // overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.aBeeZee(
                                               textStyle: Theme.of(context)
                                                   .textTheme
