@@ -242,6 +242,7 @@ class _TransactionPage2State extends State<TransactionPage2> {
                   padding: const EdgeInsets.only(left: 10.0, right: 10),
                   child: ListTile(
                     onTap: () {
+                      value.searchList.clear();
                       searchSheet.showsearchSheet(context, size);
                     },
                     title: Text(

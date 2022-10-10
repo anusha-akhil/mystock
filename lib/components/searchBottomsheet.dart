@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
 import 'package:provider/provider.dart';
 
 class SearchBottomSheet {
   TextEditingController searchcontroller = TextEditingController();
+  // TextEditingController qtycontroller = TextEditingController();
 
   showsearchSheet(BuildContext context, Size size) {
     return showModalBottomSheet<void>(
@@ -17,7 +19,7 @@ class SearchBottomSheet {
             // value.qty[index].text=qty.toString();
 
             return Container(
-              height: size.height * 0.6,
+              // height: size.height * 0.6,
               child: SingleChildScrollView(
                 child: Center(
                   child: Padding(
@@ -96,32 +98,49 @@ class SearchBottomSheet {
                                   trailing: Wrap(
                                     children: [
                                       Container(
-                                        width: size.width*0.05,
-                                        child: TextField()),
-                                      GestureDetector(
-                                          onTap: () async {
-                                            Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .addDeletebagItem(
-                                                    value.searchList[index]
-                                                        ["item_id"],
-                                                    value.searchList[index]
-                                                            ["s_rate_1"]
-                                                        .toString(),
-                                                    value.searchList[index]
-                                                            ["s_rate_2"]
-                                                        .toString(),
-                                                    "1",
-                                                    "0",
-                                                    "0",
-                                                    context,
-                                                    "save");
+                                          width: size.width * 0.06,
+                                          child: TextField(
+                                            controller:
+                                                value.qtycontroller[index],
+                                          )),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      value.addtoCart[index] == true
+                                          ? Icon(
+                                              Icons.done,
+                                              color: Colors.green,
+                                            )
+                                          : GestureDetector(
+                                              onTap: () async {
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .addToCartClicked(
+                                                        true, index);
 
-                                            await Provider.of<Controller>(context,
-                                                    listen: false)
-                                                .getbagData1(context);
-                                          },
-                                          child: Icon(Icons.add)),
+                                                Provider.of<Controller>(context,
+                                                        listen: false)
+                                                    .addDeletebagItem(
+                                                        value.searchList[index]
+                                                            ["item_id"],
+                                                        value.searchList[index]
+                                                                ["s_rate_1"]
+                                                            .toString(),
+                                                        value.searchList[index]
+                                                                ["s_rate_2"]
+                                                            .toString(),
+                                                        value.qtycontroller[index].text,
+                                                        "0",
+                                                        "0",
+                                                        context,
+                                                        "save");
+
+                                                await Provider.of<Controller>(
+                                                        context,
+                                                        listen: false)
+                                                    .getbagData1(context);
+                                              },
+                                              child: Icon(Icons.add)),
                                     ],
                                   ),
                                   onTap: () {
@@ -139,10 +158,15 @@ class SearchBottomSheet {
                                     //         context,
                                     //         "save");
                                   },
-                                  title: Row(
-                                    children: [
-                                      Text(value.searchList[index]["item_name"])
-                                    ],
+                                  title: Text(
+                                    value.searchList[index]["item_name"],
+                                    style: GoogleFonts.aBeeZee(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                        fontSize: 16,
+                                        // fontWeight: FontWeight.bold,
+                                        color: P_Settings.loginPagetheme),
                                   ),
                                   subtitle: Row(
                                     children: [
