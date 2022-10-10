@@ -404,10 +404,10 @@ class _TransactionPage2State extends State<TransactionPage2> {
                               controller: value.t2qtycontroller[index],
                               // autofocus: true,
                               onTap: () {
-                                // value.qty[index].selection = TextSelection(
-                                //     baseOffset: 0,
-                                //     extentOffset:
-                                //         value.qty[index].value.text.length);
+                                value.qty[index].selection = TextSelection(
+                                    baseOffset: 0,
+                                    extentOffset:
+                                        value.qty[index].value.text.length);
                               },
 
                               // autofocus: true,

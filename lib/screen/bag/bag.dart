@@ -403,14 +403,14 @@ class _BagPageState extends State<BagPage> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Flexible(
-                                        flex: 5,
+                                        flex: 2,
                                         child: Text("${itemName}",
                                             // overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.aBeeZee(
                                               textStyle: Theme.of(context)
                                                   .textTheme
                                                   .bodyText2,
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
 
                                               // fontWeight: FontWeight.bold,
