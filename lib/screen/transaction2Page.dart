@@ -427,7 +427,7 @@ class _TransactionPage2State extends State<TransactionPage2> {
                               // minLines: 1,
                               keyboardType: TextInputType.number,
                               onSubmitted: (values) {
-                                // double valueqty = 0.0;
+                                double valueqty = 0.0;
                                 // // Provider.of<Controller>(context,
                                 // //         listen: false)
                                 // //     .fromDb = false;
