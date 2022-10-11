@@ -197,9 +197,9 @@ class SearchBottomSheet {
                                                   controller: value
                                                       .qtycontroller[index],
                                                 )),
-                                            SizedBox(
-                                              width: size.width * 0.02,
-                                            ),
+                                            // SizedBox(
+                                            //   width: size.width * 0.02,
+                                            // ),
                                             value.addtoCart[index] == true
                                                 ? Icon(
                                                     Icons.done,
@@ -244,7 +244,11 @@ class SearchBottomSheet {
                                                               listen: false)
                                                           .getbagData1(context);
                                                     },
-                                                    child: Icon(Icons.add)),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(top:30),
+                                                      child: Icon(Icons.add),
+                                                    ),
+                                                  ),
                                           ],
                                         ),
                                         onTap: () {
