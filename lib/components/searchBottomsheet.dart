@@ -245,7 +245,9 @@ class SearchBottomSheet {
                                                           .getbagData1(context);
                                                     },
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(top:30),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 30),
                                                       child: Icon(Icons.add),
                                                     ),
                                                   ),
@@ -279,12 +281,12 @@ class SearchBottomSheet {
                                         subtitle: Row(
                                           children: [
                                             Text(
-                                                "MOP :  ${value.searchList[index]["s_rate_1"]}"),
+                                                "MOP :\u{20B9}${value.searchList[index]["s_rate_1"]}"),
                                             SizedBox(
                                               width: size.width * 0.03,
                                             ),
                                             Text(
-                                                "MRP :  ${value.searchList[index]["s_rate_2"]}"),
+                                                "MRP :\u{20B9}${value.searchList[index]["s_rate_2"]}"),
                                           ],
                                         ),
                                       );
