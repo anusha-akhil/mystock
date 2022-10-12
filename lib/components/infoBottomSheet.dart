@@ -308,9 +308,9 @@ class InfoBottomsheet {
                         Container(
                           height: value.stockList.length == 1
                               ? size.height * 0.1
-                              : value.stockList.length == 1
+                              : value.stockList.length == 2
                                   ? size.height * 0.2
-                                  : size.height * 0.25,
+                                  : size.height * 0.3,
                           // value.stockList.length == 2
                           //     ? size.height * 0.1
                           //     : size.height * 0.2,

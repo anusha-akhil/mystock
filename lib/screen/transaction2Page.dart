@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/components/searchBottomsheet.dart';
 import 'package:mystock/controller/controller.dart';
@@ -100,68 +101,78 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 ),
               ),
               onPressed: () async {
-                print("selectedtransaction----$selectedtransaction");
-
-                if (selectedtransaction != null) {
-                  visible.value = false;
-                  Provider.of<Controller>(context, listen: false)
-                      .getItemCategory(context);
-
-                  list = await Provider.of<Controller>(context, listen: false)
-                      .getProductDetails("0", "");
-                  // String hint = value.dropdwnVal.toString();
-
-                  // print("fkjdfjdjfnzskfn;lg---$hint---");
-                  if (list.length > 0) {
-                    // setState(() {
-                    //   isLoad=true;
-                    // });
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                          opaque: false, // set to false
-                          pageBuilder: (_, __, ___) => StockTransfer(
-                                list: list,
-                                transVal: int.parse(
-                                  splitted[3],
-                                ),
-                                transType: splitted[2],
-                                transId: splitted[0],
-                                branchId: selectedbranch.toString(),
-                                remark: remrk.text,
-                              )
-                          // OrderForm(widget.areaname,"return"),
-                          ),
-                    );
-                  }
-                } else if (widget.page == "history") {
-                  visible.value = false;
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                        opaque: false, // set to false
-                        pageBuilder: (_, __, ___) => StockTransfer(
-                              list: list,
-                              transVal: int.parse(widget.translist![3]),
-                              transType: widget.translist![2],
-                              transId: widget.translist![0],
-                              branchId: widget.translist![4],
-                              remark: remrk.text,
-                            )
-                        // OrderForm(widget.areaname,"return"),
-                        ),
-                  );
+                if (Provider.of<Controller>(context, listen: false)
+                        .bagList
+                        .length ==
+                    0) {
                 } else {
-                  visible.value = true;
-                }
+                  if (selectedtransaction == null) {
+                    visible.value = true;
+                  } else {
+                    visible.value = false;
+                    return showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext ctx) {
+                          return new AlertDialog(
+                            content: Text("Do you want to save ???"),
+                            actions: <Widget>[
+                              Consumer<Controller>(
+                                builder: (context, value, child) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: P_Settings.loginPagetheme),
+                                        onPressed: () async {
+                                          print(
+                                              "heloooooooooooooooo-----${splitted}");
 
-                // return await showDialog(
-                //     context: context,
-                //     barrierDismissible: false, // user must tap button!
-                //     builder: (BuildContext context) {
-                //       return WillPopScope(
-                //         onWillPop: () async => false,
-                //         child: buildPopupDialog("content", context, size),
-                //       );
-                //     });
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .saveCartDetails(
+                                                  ctx,
+                                                  splitted[0],
+                                                  selectedbranch.toString(),
+                                                  remrk.text,
+                                                  "0",
+                                                  "0",
+                                                  "save",
+                                                  "transaction2");
+
+                                          // Navigator.of(ctx).pop();
+                                        },
+                                        child: Text("Ok"),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.01,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: P_Settings.loginPagetheme),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Cancel"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  }
+                }
+                // Provider.of<Controller>(context, listen: false).saveCartDetails(
+                //     context,
+                //     splitted[0],
+                //     selectedbranch.toString(),
+                //     remrk.text,
+                //     "0",
+                //     "0",
+                //     "save");
               },
               child: Text(
                 'Save',
@@ -259,9 +270,34 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 value.stocktransferselected
                     ? dropDownbranch(size)
                     : Container(),
-                // SizedBox(
-                //   height: size.height * 0.08,
-                // ),
+                ValueListenableBuilder(
+                    valueListenable: visible,
+                    builder: (BuildContext context, bool v, Widget? child) {
+                      print("value===${visible.value}");
+                      return Visibility(
+                        visible: v,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 40.0),
+                                child: Text(
+                                  "Please choose TransactionType",
+                                  style: GoogleFonts.aBeeZee(
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      fontSize: 16,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                 Container(
                   width: size.height * 0.4,
                   child: TextFormField(
@@ -310,193 +346,295 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 // SizedBox(
                 //   height: size.height * 0.08,
                 // ),
-                ValueListenableBuilder(
-                    valueListenable: visible,
-                    builder: (BuildContext context, bool v, Widget? child) {
-                      print("value===${visible.value}");
-                      return Visibility(
-                        visible: v,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 18.0),
-                          child: Text(
-                            "Please choose TransactionType",
-                            style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 16,
-                                // fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ),
-                        ),
-                      );
-                    }),
+
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0, right: 10),
-                  child: ListTile(
-                    onTap: () {
-                      value.searchList.clear();
-                      searchSheet.showsearchSheet(context, size);
-                    },
-                    title: Text(
-                      "Search item here",
-                      style: GoogleFonts.aBeeZee(
-                          textStyle: Theme.of(context).textTheme.bodyText2,
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: P_Settings.loginPagetheme),
+                  child: Card(
+                    elevation: 12,
+                    child: ListTile(
+                      tileColor: Colors.green[100],
+                      onTap: () {
+                        value.searchList.clear();
+                        value.searchcontroller.clear();
+                        searchSheet.showsearchSheet(context, size);
+                      },
+                      title: Text(
+                        "Search item here",
+                        style: GoogleFonts.aBeeZee(
+                            textStyle: Theme.of(context).textTheme.bodyText2,
+                            fontSize: 16,
+                            // fontWeight: FontWeight.bold,
+                            color: P_Settings.loginPagetheme),
+                      ),
+                      leading: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 10,
+                          child: Icon(
+                            Icons.search,
+                            color: P_Settings.loginPagetheme,
+                          )),
                     ),
-                    leading: CircleAvatar(
-                        radius: 10, child: Image.asset("asset/search.png")),
                   ),
                 ),
-                SizedBox(height: size.height * 0.032),
+                // SizedBox(height: size.height * 0.01),
                 Container(
                   height: size.height * 0.55,
-                  child: ListView.builder(
-                    itemExtent: 80,
-                    itemCount: value.bagList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(
-                            value.bagList[index]["item_name"],
-                            style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 15,
-                                // fontWeight: FontWeight.bold,
-                                color: P_Settings.loginPagetheme),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(right: 100),
-                            child: Flexible(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "MOP :\u{20B9}${value.bagList[index]["s_rate_1"]}",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 14,
-                                      color: P_Settings.bagText,
+                  child: value.isLoading
+                      ? SpinKitFadingCircle(
+                          color: P_Settings.loginPagetheme,
+                        )
+                      : value.bagList.length == 0
+                          ? Container(
+                              // height: size.height * 0.2,
+                              child: Lottie.asset(
+                              'asset/emptycart.json',
+                              height: size.height * 0.2,
+                              width: size.height * 0.2,
+                            ))
+                          : ListView.builder(
+                              itemExtent: 80,
+                              itemCount: value.bagList.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Card(
+                                    color: Colors.grey[100],
+                                    child: ListTile(
+                                      title: Text(
+                                        value.bagList[index]["item_name"],
+                                        style: GoogleFonts.aBeeZee(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            fontSize: 15,
+                                            // fontWeight: FontWeight.bold,
+                                            color: P_Settings.loginPagetheme),
+                                      ),
+                                      subtitle: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "MOP :\u{20B9}${value.bagList[index]["s_rate_1"]}",
+                                              style: GoogleFonts.aBeeZee(
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2,
+                                                fontSize: 14,
+                                                color: P_Settings.bagText,
+                                              ),
+                                            ),
+                                            // SizedBox(width: size.width * 0.032),
+                                            Text(
+                                              "MRP :\u{20B9}${value.bagList[index]["s_rate_2"]}",
+                                              style: GoogleFonts.aBeeZee(
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2,
+                                                fontSize: 14,
+                                                color: P_Settings.bagText,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      trailing: Wrap(
+                                        children: [
+                                          Container(
+                                            width: size.width * 0.12,
+                                            child: FocusScope(
+                                              // onFocusChange: (valuess) {
+                                              //   double valueqty = 0.0;
+                                              //   if (valuess == false) {
+                                              //     Provider.of<Controller>(
+                                              //             context,
+                                              //             listen: false)
+                                              //         .addDeletebagItem(
+                                              //             value.bagList[index]
+                                              //                 ["item_id"],
+                                              //             value.bagList[index]
+                                              //                     ["s_rate_1"]
+                                              //                 .toString(),
+                                              //             value.bagList[index]
+                                              //                     ["s_rate_2"]
+                                              //                 .toString(),
+                                              //             value
+                                              //                 .t2qtycontroller[
+                                              //                     index]
+                                              //                 .text,
+                                              //             "0",
+                                              //             "0",
+                                              //             context,
+                                              //             "save",
+                                              //             "transaction2");
+                                              //   }
+                                              // },
+                                              child: TextField(
+                                                controller: value
+                                                    .t2qtycontroller[index],
+                                                // autofocus: true,
+                                                onTap: () {
+                                                  value.t2qtycontroller[index]
+                                                          .selection =
+                                                      TextSelection(
+                                                          baseOffset: 0,
+                                                          extentOffset: value
+                                                              .t2qtycontroller[
+                                                                  index]
+                                                              .value
+                                                              .text
+                                                              .length);
+                                                },
+
+                                                // autofocus: true,
+                                                style: GoogleFonts.aBeeZee(
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                  fontSize: 17,
+                                                  // fontWeight: FontWeight.bold,
+                                                  color:
+                                                      P_Settings.loginPagetheme,
+                                                ),
+                                                decoration: InputDecoration(
+                                                  isDense: true,
+                                                  contentPadding:
+                                                      EdgeInsets.all(0),
+                                                  //border: InputBorder.none
+                                                ),
+
+                                                // maxLines: 1,
+                                                // minLines: 1,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onSubmitted: (values) {
+                                                  double valueqty = 0.0;
+                                                  Provider.of<Controller>(
+                                                          context,
+                                                          listen: false)
+                                                      .addDeletebagItem(
+                                                          value.bagList[index]
+                                                              ["item_id"],
+                                                          value.bagList[index]
+                                                                  ["s_rate_1"]
+                                                              .toString(),
+                                                          value.bagList[index]
+                                                                  ["s_rate_2"]
+                                                              .toString(),
+                                                          value
+                                                              .t2qtycontroller[
+                                                                  index]
+                                                              .text,
+                                                          "0",
+                                                          "0",
+                                                          context,
+                                                          "save",
+                                                          "transaction2");
+                                                },
+
+                                                textAlign: TextAlign.right,
+                                                // controller: value.qty[index],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 28.0),
+                                            child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (ctx) =>
+                                                        AlertDialog(
+                                                      content: Text(
+                                                          "Do you want to delete (${value.bagList[index]["item_name"]}) ???"),
+                                                      actions: <Widget>[
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
+                                                                      primary:
+                                                                          P_Settings
+                                                                              .loginPagetheme),
+                                                              onPressed:
+                                                                  () async {
+                                                                var response = await Provider.of<Controller>(context, listen: false).addDeletebagItem(
+                                                                    value.bagList[index][
+                                                                        "item_id"],
+                                                                    value
+                                                                        .bagList[index]
+                                                                            [
+                                                                            "s_rate_1"]
+                                                                        .toString(),
+                                                                    value
+                                                                        .bagList[index]
+                                                                            [
+                                                                            "s_rate_2"]
+                                                                        .toString(),
+                                                                    value
+                                                                        .t2qtycontroller[
+                                                                            index]
+                                                                        .text
+                                                                        .toString(),
+                                                                    "2",
+                                                                    value.bagList[
+                                                                            index]
+                                                                        ["cart_id"],
+                                                                    context,
+                                                                    "delete",
+                                                                    "transaction2");
+
+                                                                Navigator.of(
+                                                                        ctx)
+                                                                    .pop();
+                                                              },
+                                                              child: Text("Ok"),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  size.width *
+                                                                      0.01,
+                                                            ),
+                                                            ElevatedButton(
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
+                                                                      primary:
+                                                                          P_Settings
+                                                                              .loginPagetheme),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        ctx)
+                                                                    .pop();
+                                                              },
+                                                              child: Text(
+                                                                  "Cancel"),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  size: 20,
+                                                )),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(width: size.width * 0.032),
-                                  Text(
-                                    "MRP :\u{20B9}${value.bagList[index]["s_rate_2"]}",
-                                    style: GoogleFonts.aBeeZee(
-                                      textStyle:
-                                          Theme.of(context).textTheme.bodyText2,
-                                      fontSize: 14,
-                                      color: P_Settings.bagText,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          trailing: Container(
-                            width: size.width * 0.05,
-                            child: TextField(
-                              controller: value.t2qtycontroller[index],
-                              // autofocus: true,
-                              onTap: () {
-                                value.qty[index].selection = TextSelection(
-                                    baseOffset: 0,
-                                    extentOffset:
-                                        value.qty[index].value.text.length);
+                                );
                               },
-
-                              // autofocus: true,
-                              style: GoogleFonts.aBeeZee(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontSize: 17,
-                                // fontWeight: FontWeight.bold,
-                                color: P_Settings.loginPagetheme,
-                              ),
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(0),
-                                //border: InputBorder.none
-                              ),
-
-                              // maxLines: 1,
-                              // minLines: 1,
-                              keyboardType: TextInputType.number,
-                              onSubmitted: (values) {
-                                double valueqty = 0.0;
-                                Provider.of<Controller>(context, listen: false)
-                                    .addDeletebagItem(
-                                        value.bagList[index]["item_id"],
-                                        value.bagList[index]["s_rate_1"]
-                                            .toString(),
-                                        value.bagList[index]["s_rate_2"]
-                                            .toString(),
-                                        value.t2qtycontroller[index].text,
-                                        "0",
-                                        "0",
-                                        context,
-                                        "save");
-                                // // Provider.of<Controller>(context,
-                                // //         listen: false)
-                                // //     .fromDb = false;
-                                // if (values.isNotEmpty) {
-                                //   print("emtyyyy");
-                                //   valueqty = double.parse(values);
-                                // } else {
-                                //   valueqty = 0.0;
-                                // }
-                                // // Provider.of<Controller>(context,
-                                // //         listen: false)
-                                // //     .fromDb = false;
-
-                                // // Provider.of<Controller>(context,
-                                // //         listen: false)
-                                // //     .rawCalculation(
-                                // //         srate1,
-                                // //         valueqty,
-                                // //         disc_per,
-                                // //         disc_amt,
-                                // //         tax_per,
-                                // //         cess_per,
-                                // //         "0",
-                                // //         gtype,
-                                // //         index,
-                                // //         true,
-                                // //         "qty");
-                                // // Provider.of<Controller>(context,
-                                // //         listen: false)
-                                // //     .addDeletebagItem(
-                                // //         itemId,
-                                // //         srate1.toString(),
-                                // //         value.qty[index].text,
-                                // //         "0",
-                                // //         "1",
-                                // //         context,
-                                // //         "save",
-                                // //         formType);
-                                // print("values----$values");
-                                // // double valueqty = 0.0;
-                                // // value.discount_amount[index].text=;
-                                // if (values.isNotEmpty) {
-                                //   print("emtyyyy");
-                                //   valueqty = double.parse(values);
-                                // } else {
-                                //   valueqty = 0.0;
-                                // }
-                              },
-                              textAlign: TextAlign.right,
-                              // controller: value.qty[index],
                             ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

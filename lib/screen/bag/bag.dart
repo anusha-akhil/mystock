@@ -48,7 +48,7 @@ class _BagPageState extends State<BagPage> {
     // TODO: implement initState
     super.initState();
     Provider.of<Controller>(context, listen: false).getbagData1(
-      context,
+      context,""
     );
     EasyLoading.addStatusCallback((status) {
       print('EasyLoading Status $status');
@@ -145,7 +145,7 @@ class _BagPageState extends State<BagPage> {
                                     widget.remark!,
                                     "0",
                                     "0",
-                                    "save");
+                                    "save","transaction1");
                           },
                           child: Text(
                             "Save",
@@ -511,7 +511,7 @@ class _BagPageState extends State<BagPage> {
                                                                   "2",
                                                                   cart_id,
                                                                   context,
-                                                                  "delete");
+                                                                  "delete","transaction1");
 
                                                           // Provider.of<Controller>(
                                                           //         context,

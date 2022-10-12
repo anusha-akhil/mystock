@@ -9,7 +9,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 class Bottomsheet {
- String imgGlobal = Globaldata.imageurl;
+  String imgGlobal = Globaldata.imageurl;
   showSheet(
       BuildContext context,
       int index,
@@ -189,7 +189,8 @@ class Bottomsheet {
                                             "0",
                                             "0",
                                             context,
-                                            "save");
+                                            "save",
+                                            "transaction1");
 
                                     print(
                                         "quantity......${value.qty[index].value.text}");
@@ -227,7 +228,8 @@ class Bottomsheet {
                                             "0",
                                             "0",
                                             context,
-                                            "save");
+                                            "save",
+                                            "transaction1");
                                     print("values----$values");
                                     double valueqty = 0.0;
                                     // value.discount_amount[index].text=;
@@ -409,11 +411,11 @@ class Bottomsheet {
                                             "0",
                                             "0",
                                             context,
-                                            "save");
+                                            "save","transaction1");
                                     Provider.of<Controller>(context,
                                             listen: false)
                                         .getbagData1(
-                                      context,
+                                      context,""
                                     );
                                     print(
                                         "quantityyyyyy.....${value.qty[index].text}........");

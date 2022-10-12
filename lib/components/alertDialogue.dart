@@ -34,7 +34,7 @@ class AlertCommon {
                                   value.historyList[index]['trans_remark'],
                                   "2",
                                   value.historyList[index]['os_id'],
-                                  "delete");
+                                  "delete","transaction1");
                           String df;
                           String tf;
 

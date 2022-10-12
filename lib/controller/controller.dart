@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Controller extends ChangeNotifier {
   // bool isVisible = false;
   TextEditingController searchcontroller = TextEditingController();
-
+  bool isSearchLoading = false;
   bool addtoDone = false;
   String? fromDate;
   String? brName;
@@ -242,7 +242,8 @@ class Controller extends ChangeNotifier {
       String event,
       String cart_id,
       BuildContext context,
-      String action) async {
+      String action,
+      String page) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -279,8 +280,11 @@ class Controller extends ChangeNotifier {
           print("delete response-----------------${map}");
           cartCount = map["cart_count"];
           var res = map["msg"];
+          if (res == "Bag Edit Successfully" && page == "transaction2") {
+            getbagData1(context, page);
+          }
           if (res == "Bag deleted Successfully") {
-            getbagData1(context);
+            getbagData1(context, "");
           }
           return res;
           /////////////// insert into local db /////////////////////
@@ -294,7 +298,7 @@ class Controller extends ChangeNotifier {
   }
 
   //////////////////////////////////////////////////////////////////////
-  getbagData1(BuildContext context) async {
+  getbagData1(BuildContext context, String page) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         try {
@@ -308,9 +312,10 @@ class Controller extends ChangeNotifier {
             'branch_id': branch_id,
           };
           print("cart body-----$body");
-
-          isLoading = true;
-          notifyListeners();
+          if (page != "transaction2") {
+            isLoading = true;
+            notifyListeners();
+          }
 
           http.Response response = await http.post(
             url,
@@ -336,9 +341,11 @@ class Controller extends ChangeNotifier {
           for (var i = 0; i < bagList.length; i++) {
             t2qtycontroller[i].text = bagList[i]["qty"].toString();
           }
-          print("bag list data........${bagList.length}");
-          isLoading = false;
-          notifyListeners();
+          print("bag list data........${bagList}");
+          if (page != "transaction2") {
+            isLoading = false;
+            notifyListeners();
+          }
 
           /////////////// insert into local db /////////////////////
         } catch (e) {
@@ -409,8 +416,15 @@ class Controller extends ChangeNotifier {
   }
 
 // //////////////////////////////////////////////
-  saveCartDetails(BuildContext context, String transid, String to_branch_id,
-      String remark, String event, String os_id, String action) async {
+  saveCartDetails(
+      BuildContext context,
+      String transid,
+      String to_branch_id,
+      String remark,
+      String event,
+      String os_id,
+      String action,
+      String page) async {
     List<Map<String, dynamic>> jsonResult = [];
     Map<String, dynamic> itemmap = {};
     Map<String, dynamic> resultmmap = {};
@@ -491,18 +505,28 @@ class Controller extends ChangeNotifier {
           print("savedd");
           return showDialog(
               context: context,
-              builder: (ct) {
+              builder: (BuildContext ct) {
                 Size size = MediaQuery.of(ct).size;
 
                 Future.delayed(Duration(seconds: 2), () {
                   Navigator.of(ct).pop(true);
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                        opaque: false, // set to false
-                        pageBuilder: (_, __, ___) => TransactionPage()
-                        // OrderForm(widget.areaname,"return"),
-                        ),
-                  );
+
+                  Navigator.pop(context);
+
+                  if (map["err_status"] == 0) {
+                    clearBagList();
+                    // bagList.clear();
+                    // print("after clear baglist----${bagList.length}");
+                  }
+                  if (page == "transaction1") {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                          opaque: false, // set to false
+                          pageBuilder: (_, __, ___) => TransactionPage()
+                          // OrderForm(widget.areaname,"return"),
+                          ),
+                    );
+                  }
                 });
                 return AlertDialog(
                     content: Row(
@@ -882,8 +906,8 @@ class Controller extends ChangeNotifier {
           };
           print("body-----$body");
           // isDownloaded = true;
-          isLoading = true;
-          // notifyListeners();
+          isSearchLoading = true;
+          notifyListeners();
 
           http.Response response = await http.post(
             url,
@@ -902,7 +926,7 @@ class Controller extends ChangeNotifier {
           );
           addtoCart = List.generate(searchList.length, (index) => false);
 
-          isLoading = false;
+          isSearchLoading = false;
           notifyListeners();
 
           /////////////// insert into local db /////////////////////
@@ -1281,6 +1305,16 @@ class Controller extends ChangeNotifier {
 
   setisVisible(bool isvis) {
     isVisible = isvis;
+    notifyListeners();
+  }
+
+  clearBagList() {
+    bagList.clear();
+    notifyListeners();
+  }
+
+  justFun(String hhh) {
+    print("hhh-------$hhh");
     notifyListeners();
   }
 }

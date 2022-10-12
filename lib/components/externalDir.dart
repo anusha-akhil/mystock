@@ -38,7 +38,7 @@ class ExternalDir {
 
     String dirPath = '${extDir!.path}/VgFp';
     dirPath =
-        dirPath.replaceAll("Android/data/com.example.orderapp/files/", "");
+        dirPath.replaceAll("Android/data/com.example.mystock/files/", "");
     await Directory(dirPath).create(recursive: true);
 
     // Directory? baseDir = Directory('storage/emulated/0/Android/data');

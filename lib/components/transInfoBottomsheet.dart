@@ -232,7 +232,11 @@ class TransaInfoBottomsheet {
                           height: size.height * 0.01,
                         ),
                         Container(
-                          height: size.height * 0.2,
+                          height: value.transiteminfoList.length == 1
+                              ? size.height * 0.1
+                              : value.transiteminfoList.length == 2
+                                  ? size.height * 0.15
+                                  : size.height * 0.3,
                           child: ListView.builder(
                             itemCount: value.transiteminfoList.length,
                             itemBuilder: (context, index) {

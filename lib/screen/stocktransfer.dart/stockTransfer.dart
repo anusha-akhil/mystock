@@ -44,7 +44,7 @@ class _StockTransferState extends State<StockTransfer> {
     // hint =await  Provider.of<Controller>(context, listen: false).dropdwnVal;
 
     print("selected==-===$hint");
-    print("listttt----$list");
+    print("branchId-st--${widget.branchId}");
   }
 
   @override
@@ -87,7 +87,7 @@ class _StockTransferState extends State<StockTransfer> {
               child: IconButton(
                 onPressed: () async {
                   await Provider.of<Controller>(context, listen: false)
-                      .getbagData1(context);
+                      .getbagData1(context,"");
                   Navigator.push(
                       context,
                       PageRouteBuilder(
@@ -156,12 +156,11 @@ class _StockTransferState extends State<StockTransfer> {
           } else {
             if (list.length > 0) {
               return ItemSelection(
-                list: list,
-                transVal: widget.transVal,
-                transType: widget.transType,
-                page: "first",
-                hint:hint
-              );
+                  list: list,
+                  transVal: widget.transVal,
+                  transType: widget.transType,
+                  page: "first",
+                  hint: hint);
             } else {
               return Container();
             }
