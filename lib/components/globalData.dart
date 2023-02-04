@@ -5,6 +5,9 @@ class Globaldata {
   //////////// g7 ////////////////
   ///
   //////company key------6L5PVSAROTSM
-  static final imageurl = "http://trafiqerp.in/webapp/ismart/item_image/";
-  static final apiglobal = "http://trafiqerp.in/webapp/ismart/api/";
+  static final imageurl = "https://trafiqerp.in/webapp/ismart/item_image/";
+  static final customerImg =
+      "https://trafiqerp.in/webapp/ismart/customer_image_1/";
+  static final apiglobal = "https://trafiqerp.in/webapp/ismart/api/";
+//  static final apiglobal = "http://192.168.18.4/ismart/api/";
 }

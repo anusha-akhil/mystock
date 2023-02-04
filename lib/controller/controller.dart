@@ -7,6 +7,7 @@ import 'package:mystock/components/externalDir.dart';
 import 'package:mystock/components/globalData.dart';
 import 'package:mystock/components/network_connectivity.dart';
 import 'package:mystock/model/branchModel.dart';
+import 'package:mystock/model/customerModel.dart';
 import 'package:mystock/model/itemcategroy.dart';
 import 'package:mystock/model/productListModel.dart';
 import 'package:mystock/model/registrationModel.dart';
@@ -17,7 +18,7 @@ import 'package:mystock/screen/transactionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends ChangeNotifier {
-  // bool isVisible = false;
+  bool isCusDetailLoading = false;
   TextEditingController searchcontroller = TextEditingController();
   bool isSearchLoading = false;
   bool addtoDone = false;
@@ -34,6 +35,7 @@ class Controller extends ChangeNotifier {
   String urlgolabl = Globaldata.apiglobal;
   bool isLoading = false;
   bool isListLoading = false;
+  bool isCusLoading = false;
 
   bool qtyerror = false;
   bool stocktransferselected = false;
@@ -48,7 +50,12 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> searchList = [];
 
   List<Map<String, dynamic>> infoList = [];
+  List<CustomerModel> cusList = [];
+  List<CustomerModel> tmpList = [];
+
   List<Map<String, dynamic>> stock_approve_list = [];
+  List<Map<String, dynamic>> customer_detail_list = [];
+
   List<Map<String, dynamic>> stock_approve_masterlist = [];
   List<Map<String, dynamic>> stock_approve_detaillist = [];
 
@@ -663,6 +670,7 @@ class Controller extends ChangeNotifier {
             url,
             body: body,
           );
+
           var map = jsonDecode(response.body);
           print("stock approval list-----------------$map");
 
@@ -1316,5 +1324,100 @@ class Controller extends ChangeNotifier {
   justFun(String hhh) {
     print("hhh-------$hhh");
     notifyListeners();
+  }
+
+  ////////////////////////////////////////////////////////
+  getCustomerList(BuildContext context) async {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+
+          Uri url = Uri.parse("$urlgolabl/customer_list.php");
+          Map body = {
+            'branch_id': branch_id,
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          isCusLoading = true;
+          notifyListeners();
+          CustomerModel cusModel = CustomerModel();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("customerlist------$map");
+          cusList.clear();
+          for (var item in map["customer_list"]) {
+            cusModel = CustomerModel.fromJson(item);
+            cusList.add(cusModel);
+          }
+          isCusLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  searchCustomer(String cusName) {
+    tmpList.clear();
+    for (int i = 0; i < cusList.length; i++) {
+      if (cusList[i].cusName!.toLowerCase().contains(cusName.toLowerCase())) {
+        tmpList.add(cusList[i]);
+      }
+    }
+
+    print("cjhxjc--------$tmpList");
+    notifyListeners();
+  }
+
+  ////////////////////////////////////////////////////
+  getCustomerDetails(BuildContext context, String c_id) {
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          branch_id = prefs.getString("branch_id");
+
+          Uri url = Uri.parse("$urlgolabl/customer_detail.php");
+          Map body = {
+            'c_id': c_id,
+          };
+          print("body-----$body");
+          // isDownloaded = true;
+          isCusDetailLoading = true;
+          notifyListeners();
+
+          http.Response response = await http.post(
+            url,
+            body: body,
+          );
+          var map = jsonDecode(response.body);
+          print("customerdetail------$map");
+          customer_detail_list.clear();
+          for (var item in map) {
+            customer_detail_list.add(item);
+          }
+          isCusDetailLoading = false;
+          notifyListeners();
+
+          /////////////// insert into local db /////////////////////
+        } catch (e) {
+          print(e);
+          // return null;
+          return [];
+        }
+      }
+    });
   }
 }

@@ -43,7 +43,7 @@ class RegistrationController extends ChangeNotifier {
       if (value == true) {
         try {
           Uri url =
-              Uri.parse("http://trafiqerp.in/order/fj/get_registration.php");
+              Uri.parse("https://trafiqerp.in/order/fj/get_registration.php");
           Map body = {
             'company_code': company_code,
             'fcode': fingerprints,
@@ -193,7 +193,7 @@ class RegistrationController extends ChangeNotifier {
     print("getStaffDetails...............${cid}");
     var restaff;
     try {
-      Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_staff.php");
+      Uri url = Uri.parse("https://trafiqerp.in/order/fj/get_staff.php");
       Map body = {
         'cid': cid,
       };
@@ -234,7 +234,7 @@ class RegistrationController extends ChangeNotifier {
         print("company_code---fp-${company_code}---${fp}..${apk_key}");
 
         try {
-          Uri url = Uri.parse("http://trafiqerp.in/order/fj/get_menu.php");
+          Uri url = Uri.parse("https://trafiqerp.in/order/fj/get_menu.php");
           Map body = {
             'apk_key': apk_key,
             'company_code': company_code,

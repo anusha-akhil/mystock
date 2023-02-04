@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,60 +63,110 @@ class _StockTransferState extends State<StockTransfer> {
         ),
         backgroundColor: P_Settings.loginPagetheme,
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Badge(
-              animationType: BadgeAnimationType.scale,
-              toAnimate: true,
-              badgeColor: Colors.white,
-              badgeContent: Consumer<Controller>(
-                builder: (context, value, child) {
-                  if (value.cartCount == null) {
-                    return SpinKitChasingDots(
-                        color: P_Settings.buttonColor, size: 9);
-                  } else {
-                    return Text(
-                      "${value.cartCount}",
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    );
-                  }
-                },
-              ),
-              position: const BadgePosition(start: 33, bottom: 25),
-              child: IconButton(
-                onPressed: () async {
-                  await Provider.of<Controller>(context, listen: false)
-                      .getbagData1(context,"");
-                  Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          opaque: false, // set to false
-                          pageBuilder: (_, __, ___) {
-                            return BagPage(
-                              transVal: widget.transVal,
-                              transType: widget.transType,
-                              transId: widget.transId,
-                              branchId: widget.branchId!,
-                              remark: widget.remark,
-                            );
-                          }));
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => BagPage(
-                  //             transVal: widget.transVal,
-                  //             transType: widget.transType,
-                  //             transId: widget.transId,
-                  //             branchId: widget.branchId!,
-                  //             remark: widget.remark,
-                  //           )),
-                  // );
-                },
-                icon: const Icon(Icons.shopping_cart),
-              ),
-            ),
+          Consumer<Controller>(
+            builder: (context, value, child) {
+              return Row(
+                children: [
+                  value.cartCount == null
+                      ? SpinKitChasingDots(
+                          color: P_Settings.buttonColor, size: 9)
+                      : Text(
+                          "${value.cartCount}",
+                          // "123",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                  IconButton(
+                    onPressed: () async {
+                      await Provider.of<Controller>(context, listen: false)
+                          .getbagData1(context, "");
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              opaque: false, // set to false
+                              pageBuilder: (_, __, ___) {
+                                return BagPage(
+                                  transVal: widget.transVal,
+                                  transType: widget.transType,
+                                  transId: widget.transId,
+                                  branchId: widget.branchId!,
+                                  remark: widget.remark,
+                                );
+                              }));
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => BagPage(
+                      //             transVal: widget.transVal,
+                      //             transType: widget.transType,
+                      //             transId: widget.transId,
+                      //             branchId: widget.branchId!,
+                      //             remark: widget.remark,
+                      //           )),
+                      // );
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                  ),
+                ],
+              );
+            },
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Badge(
+          //     animationType: BadgeAnimationType.scale,
+          //     toAnimate: true,
+          //     badgeColor: Colors.white,
+          //     badgeContent: Consumer<Controller>(
+          //       builder: (context, value, child) {
+          //         if (value.cartCount == null) {
+          //           return SpinKitChasingDots(
+          //               color: P_Settings.buttonColor, size: 9);
+          //         } else {
+          //           return Text(
+          //             "${value.cartCount}",
+          //             style:
+          //                 TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          //           );
+          //         }
+          //       },
+          //     ),
+          //     position: const BadgePosition(start: 33, bottom: 25),
+          //     child: IconButton(
+          //       onPressed: () async {
+          //         await Provider.of<Controller>(context, listen: false)
+          //             .getbagData1(context, "");
+          //         Navigator.push(
+          //             context,
+          //             PageRouteBuilder(
+          //                 opaque: false, // set to false
+          //                 pageBuilder: (_, __, ___) {
+          //                   return BagPage(
+          //                     transVal: widget.transVal,
+          //                     transType: widget.transType,
+          //                     transId: widget.transId,
+          //                     branchId: widget.branchId!,
+          //                     remark: widget.remark,
+          //                   );
+          //                 }));
+          //         // Navigator.push(
+          //         //   context,
+          //         //   MaterialPageRoute(
+          //         //       builder: (context) => BagPage(
+          //         //             transVal: widget.transVal,
+          //         //             transType: widget.transType,
+          //         //             transId: widget.transId,
+          //         //             branchId: widget.branchId!,
+          //         //             remark: widget.remark,
+          //         //           )),
+          //         // );
+          //       },
+          //       icon: const Icon(Icons.shopping_cart),
+          //     ),
+          //   ),
+          // ),
           // Padding(
           //   padding: const EdgeInsets.only(right: 18.0),
           //   child: GestureDetector(

@@ -44,7 +44,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "History",
+          "Transaction History",
           style: GoogleFonts.aBeeZee(
             textStyle: Theme.of(context).textTheme.bodyText2,
             fontSize: 16,
@@ -303,7 +303,12 @@ class _HistoryPageState extends State<HistoryPage> {
                                             color: P_Settings.delete,
                                           ),
                                           onPressed: () {
-                                            popup.buildPopupDialog(context, size, splitted, index, todaydate!);
+                                            popup.buildPopupDialog(
+                                                context,
+                                                size,
+                                                splitted,
+                                                index,
+                                                todaydate!);
                                             // showDialog(
                                             //   context: context,
                                             //   builder: (ctx) => AlertDialog(

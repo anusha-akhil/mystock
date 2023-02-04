@@ -30,7 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screen/image download/test.dart';
-
+///////////////key-6L5PVSAROTSM
 void requestPermission() async {
   var status = await Permission.storage.status;
   // var statusbl= await Permission.bluetooth.status;

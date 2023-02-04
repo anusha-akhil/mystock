@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mystock/components/commonColor.dart';
 import 'package:mystock/controller/controller.dart';
+import 'package:mystock/screen/customer/customerList.dart';
+
 import 'package:mystock/screen/loginPage.dart';
 import 'package:mystock/screen/search_page/searchscreen.dart';
 import 'package:mystock/screen/stockapproval/stockApproval.dart';
@@ -46,6 +48,7 @@ class _MainDashboardState extends State<MainDashboard> {
     Provider.of<Controller>(context, listen: false).userDetails();
     Provider.of<Controller>(context, listen: false)
         .getStockApprovalList(context);
+    Provider.of<Controller>(context, listen: false).getCustomerList(context);
     print("branch_id----$branch_id-----$branch_name");
   }
 
@@ -66,6 +69,7 @@ class _MainDashboardState extends State<MainDashboard> {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: P_Settings.loginPagetheme,
           automaticallyImplyLeading: false,
@@ -160,6 +164,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             );
                           },
                           leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
                               radius: 20,
                               child: Image.asset("asset/exchanging.png")),
                           trailing: Icon(Icons.arrow_forward),
@@ -183,7 +188,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             Provider.of<Controller>(context, listen: false)
                                 .getTransactionList(context);
                             Provider.of<Controller>(context, listen: false)
-                                .getbagData1(context,"");
+                                .getbagData1(context, "");
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -191,11 +196,46 @@ class _MainDashboardState extends State<MainDashboard> {
                             );
                           },
                           leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
                               radius: 20,
                               child: Image.asset("asset/exchanging.png")),
                           trailing: Icon(Icons.arrow_forward),
                           title: Text(
                             "Transaction2",
+                            style: GoogleFonts.aBeeZee(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: P_Settings.loginPagetheme,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Provider.of<Controller>(context, listen: false).setIssearch(false);
+                            Provider.of<Controller>(context, listen: false)
+                                .getCustomerList(context);
+                            Provider.of<Controller>(context, listen: false)
+                                .getCustomerList(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CustomerList()),
+                            );
+                          },
+                          leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: 20,
+                              child: Image.asset("asset/clist.png")),
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Customer List",
                             style: GoogleFonts.aBeeZee(
                               textStyle: Theme.of(context).textTheme.bodyText2,
                               fontSize: 16,
@@ -223,6 +263,7 @@ class _MainDashboardState extends State<MainDashboard> {
                             );
                           },
                           leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
                               radius: 20,
                               child: Image.asset("asset/search.png")),
                           trailing: Icon(Icons.arrow_forward),

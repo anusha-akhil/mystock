@@ -93,5 +93,5 @@ class _HomeState extends State<Home> {
           MaterialPageRoute(
               builder: ((context) => SecondScreen(payload: payload))));
     }
-  } 
+  }
 }
