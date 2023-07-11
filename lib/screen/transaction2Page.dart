@@ -806,7 +806,7 @@ class _TransactionPage2State extends State<TransactionPage2> {
                         print("selectedtransaction-----${selectedtransaction}");
 
                         splitted = selectedtransaction!.split(',');
-
+                        selectedbranch = null;
                         print("splitted-----${splitted}");
                         if (splitted[4] == "1") {
                           Provider.of<Controller>(context, listen: false)

@@ -610,7 +610,7 @@ class Controller extends ChangeNotifier {
             'item_id': itemId,
             'branch_id': branch_id,
           };
-          print("cart bag body-----$body");
+          print("search stock body-----$body");
           // isDownloaded = true;
           isListLoading = true;
           notifyListeners();
