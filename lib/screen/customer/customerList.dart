@@ -26,6 +26,9 @@ class _CustomerListState extends State<CustomerList> {
       // backgroundColor: Colors.grey[100],
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back,color: Colors.white,)),
         backgroundColor: P_Settings.loginPagetheme,
         title: Text("Customer List"),
       ),

@@ -124,7 +124,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 // );
                 // Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(Icons.arrow_back,color: Colors.white,)),
           backgroundColor: P_Settings.loginPagetheme),
       body: Consumer<Controller>(
         builder: (context, value, child) {

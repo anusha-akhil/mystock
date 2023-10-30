@@ -60,10 +60,18 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,color: Colors.white,)),
           backgroundColor: P_Settings.loginPagetheme,
           title: Text(
             widget.cusNma,
-            style: TextStyle(fontSize: 17),
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.white,
+            ),
           ),
         ),
         body: Consumer<Controller>(

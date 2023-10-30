@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         backgroundColor: P_Settings.loginPagetheme,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () {
             Provider.of<Controller>(context, listen: false).searchList.clear();
             Navigator.pop(context);

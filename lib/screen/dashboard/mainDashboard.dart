@@ -75,6 +75,7 @@ class _MainDashboardState extends State<MainDashboard> {
           automaticallyImplyLeading: false,
           actions: [
             PopupMenuButton(
+              color: Colors.white,
                 // add icon, by default "3 dot" icon
                 // icon: Icon(Icons.book)
                 itemBuilder: (context) {

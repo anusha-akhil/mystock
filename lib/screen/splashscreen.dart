@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String? cid;
   String? st_uname;
   String? st_pwd;
-
+  
   navigate() async {
     await Future.delayed(Duration(seconds: 3), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();

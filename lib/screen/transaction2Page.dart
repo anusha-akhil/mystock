@@ -223,7 +223,7 @@ class _TransactionPage2State extends State<TransactionPage2> {
                 // );
                 // Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(Icons.arrow_back,color: Colors.white,)),
           backgroundColor: P_Settings.loginPagetheme),
       body: Consumer<Controller>(
         builder: (context, value, child) {
